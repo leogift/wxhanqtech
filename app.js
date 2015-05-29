@@ -65,8 +65,8 @@ app.post('/wechat', handleweixin.handle);
 app.post('/studentsubscribe', handleweixin.StuSubscribe);
 app.post('/testuploadworklog', handleweixin.testuploadworklog);
 app.get('/weixinquery/:id', handleweixin.WeixinQuery);
-//app.get('/wxreg/:id', handleweixin.WeixinRegister);
-app.get('/wxreg/:id', handleweixin.WeixinQuery);
+app.get('/wxreg/:id', handleweixin.WeixinRegister);
+//app.get('/wxreg/:id', handleweixin.WeixinQuery);
 
 //app.get('/weixinquerytext/:id', handleweixin.weixinquerytext);
 //app.get('/weixinqueryimage/:id', handleweixin.weixinqueryimage);

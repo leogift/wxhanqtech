@@ -30,6 +30,41 @@ exports.handle = function(req, res){
 
 exports.WeiXinRegister = function(req, res) {
 
+	var weixin_id = req.params.id.substr(1, req.params.id.length-1);
+	console.log('WeixinQuery id= ' + weixin_id);
+
+	mgdb.FindOneByOption(mgdb.ModelSysRecord, {'stuWeixin_id':weixin_id}, function(err, docs){
+		if(err)
+		{
+			console.log('abnormal error!');
+			res.send('abnormal error!');
+		}
+		else
+		{
+			if(docs)
+			{
+				console.log('docs.length=' + docs.length);
+				console.log('docs.stuName=' + docs.stuName);
+				console.log('docs.stuNumber=' + docs.stuNumber);
+
+				res.render('weixin_query_worklog_detail_result',
+				  	{
+				  		//act: comutil.sidebaract.super.viewsyslog,
+				  		worklogs: docs.workRecords, 
+				  		stuname: docs.stuName,
+				  		stunumber: docs.stuNumber,
+				  		prjname: docs.prjName,
+						//msg: comutil.msg.msg_modifymember, 
+				  		title: comutil.msg.title_viewsysworklog, 
+				  		smalltitle: '', 
+				  		breadtext: comutil.bread.super_viewsyslog_text,
+                        breadhref: comutil.bread.super_viewsyslog_href,
+				  		//id:idStr
+				  	});
+			}
+		}
+	});
+/*
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('WeiXinRegister id= ' + idStr);
 
@@ -48,7 +83,7 @@ exports.WeiXinRegister = function(req, res) {
 		  );
 			
 	});
-
+*/
 	// mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, function(prjs){
 
 	// 	res.render('student_wx_reg',
@@ -58,6 +93,8 @@ exports.WeiXinRegister = function(req, res) {
 	// 	  	}
 	// 	  );
 	// });
+
+
 };
 
 exports.StuSubscribe = function(req, res){
