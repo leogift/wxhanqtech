@@ -52,6 +52,9 @@ exports.WeixinRegister = function(req, res) {
 */
 	mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, function(prjs){
 
+		console.log('prjNames=');
+		console.log(prjs);
+
 		res.render('student_wx_reg',
 		  	{
 		  		weixin_id: idStr,
