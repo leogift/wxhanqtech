@@ -33,15 +33,31 @@ exports.WeiXinRegister = function(req, res){
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('WeiXinRegister id= ' + idStr);
 
-	mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, function(prjs){
+	mgdb.ModelSysRecord.distinct('prjName', {prjExpired:false}, function(err, docs){
+
+		if(err)
+		{
+			console.log('error:' + err);
+		}
 
 		res.render('student_wx_reg',
 		  	{
 		  		weixin_id: idStr,
-		  		prjNames: prjs
+		  		prjNames: docs
 		  	}
 		  );
+			
 	});
+
+	// mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, function(prjs){
+
+	// 	res.render('student_wx_reg',
+	// 	  	{
+	// 	  		weixin_id: idStr,
+	// 	  		prjNames: prjs
+	// 	  	}
+	// 	  );
+	// });
 };
 
 exports.StuSubscribe = function(req, res){
