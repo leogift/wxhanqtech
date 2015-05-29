@@ -74,11 +74,11 @@ html(lang="en")
                                     label.control-label 请选择项目名称
                                     .controls
                                       select.m-wrap.small(name="selectedPrjName")
-                                      	if(prjNames)
-                                      	  each prj, i in prjNames
-                                      	  	//if(i==0)
-                                      	    //option(selected="selected", value="#{prj}") #{prj}
-                                      	    option(value="#{prj}") #{prj}
+                                        if(prjNames)
+                                          each prj, i in prjNames
+                                            //if(i==0)
+                                            //option(selected="selected", value="#{prj}") #{prj}
+                                            option(value="#{prj}") #{prj}
                                       span.help-inline 
                                   .form-actions.clearfix
                                     input(type="hidden", value="#{weixin_id}", name="weixinid")
