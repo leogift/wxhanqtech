@@ -50,7 +50,8 @@ exports.dump_dir = '/home/web/dbbackup';
 exports.dump_dbname = 'worklogrecord';
 exports.dump_dumpbin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
 exports.dump_restorebin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
-exports.LocationArrayFile = '/home/web/wis/locInfoArray.json';
+//exports.LocationArrayFile = '/home/web/wis/locInfoArray.json';
+exports.LocationArrayFile = '/home/web/wis_v2/wisv2/locInfoArray.json';
 
 
 //
@@ -63,7 +64,8 @@ exports.subhtml_templatehtmlname = 'reg.html';
 exports.subhtml_errorhtmlname = 'suberror.html';
 //exports.subhtml_absolutewebroot = '/home/johnny/js/test/wis/public';   //709
 //exports.subhtml_absolutewebroot = '/home/johnny/test/web/wis/public';  //hq
-exports.subhtml_absolutewebroot = '/home/web/wis/public';                //qingcloud
+//exports.subhtml_absolutewebroot = '/home/web/wis/public';                //qingcloud
+exports.subhtml_absolutewebroot = '/home/web/wis_v2/wisv2/public';                //qingcloud
 
 
 

@@ -28,7 +28,7 @@ exports.handle = function(req, res){
 	}
 };
 
-exports.WeiXinRegister = function(req, res){
+exports.WeiXinRegister = function(req, res) {
 
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('WeiXinRegister id= ' + idStr);

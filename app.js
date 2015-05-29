@@ -66,6 +66,7 @@ app.post('/studentsubscribe', handleweixin.StuSubscribe);
 app.post('/testuploadworklog', handleweixin.testuploadworklog);
 app.get('/weixinquery/:id', handleweixin.WeixinQuery);
 app.get('/wxreg/:id', handleweixin.WeixinRegister);
+
 //app.get('/weixinquerytext/:id', handleweixin.weixinquerytext);
 //app.get('/weixinqueryimage/:id', handleweixin.weixinqueryimage);
 
@@ -162,7 +163,7 @@ app.get('/student_syslogexport/:id', userlogin.Restrict, handlestudent.SyslogExp
 //app.get('/query_log', handletutor.queryalllog);
 //app.get('/worklogdelete/:id', handletutor.deletelogbyid);
 
-console.log('WIS by HanqTech version 0.98');
+console.log('WIS by HanqTech version 2.0');
 
 // start listening
 http.createServer(app).listen(app.get('port'), function(){
@@ -195,10 +196,10 @@ http.createServer(app).listen(app.get('port'), function(){
 //     console.log(result);
 // });
 
-mgdb.ModelAdminPassword.distinct('adminUser', {}, function(err, docs){
-  if(err)
-    console.log(err);
-  else
-    console.log(docs);
-});
+// mgdb.ModelAdminPassword.distinct('adminUser', {}, function(err, docs){
+//   if(err)
+//     console.log(err);
+//   else
+//     console.log(docs);
+// });
 
