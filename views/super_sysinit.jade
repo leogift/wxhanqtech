@@ -1,0 +1,46 @@
+extends layout
+
+
+
+extends super_page_sidebarheader
+
+
+
+block PAGECONTENT
+
+  // BEGIN PAGE CONTENT
+  .row-fluid
+    .span12
+      // BEGIN SAMPLE FORM PORTLET
+      .portlet.box.green.tabbable
+        
+        .portlet-title
+          .caption
+            i.icon-warning-sign
+            span.hidden-480 系统初始化
+
+        .portlet-body.form
+          .tabbable.portlet-tabs
+            ul.nav.nav-tabs
+              li
+              li
+              li
+                a 请选择xlsx数据表格文件进行系统数据导入
+
+            .tab-content
+              #portlet_tab1.tab-pane.active
+                // BEGIN FORM
+                form.form-horizontal(action='/upload', method='post', enctype="multipart/form-data")
+                  
+                  .control-group
+                    label.control-label 请选择数据库导入文件
+                    .controls
+                      input.span6.m-wrap(type='file', name='file_to_upload')
+
+                  .control-group
+                    .controls
+                      button.btn.green.button-submit(type='submit', style="display: inline-block;")
+                        i.icon-ok
+                        |  提交
+
+      

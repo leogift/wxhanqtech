@@ -1,0 +1,65 @@
+extends layout
+
+
+extends super_page_sidebarheader
+
+
+block PAGECONTENT
+
+    //table
+    .row-fluid
+      .span6
+      // modal
+      #static.modal.hide.fade(tabindex="-1", data-backdrop="static", data-keyboard="false")
+        .modal-header
+          p 请确认操作
+        .modal-body
+          p 确定要恢复吗？
+          input(type="hidden", id="memberId", value="")
+        .modal-footer
+          button(type="button", data-dismiss="modal", class="btn blue") 
+            | 取消
+          button(id='#{mbtn}', type="button", data-dismiss="modal", class="btn red")
+            | 确定
+      // BEGIN SAMPLE TABLE PORTLET
+      .portlet.box.purple
+        .portlet-title
+          .caption
+            i.icon-folder-close
+            | 系统备份记录表
+          .tools
+            a.collapse(href="javascript:;")
+            //- a.config(data-toggle="modal", href="#portlet-config")
+            //- a.reload(href="javascript:;")
+            //- a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          table.table.table-striped.table-bordered.table-advance.table-hover
+            thead
+              tr
+                th
+                  i.icon-check
+                  |  序号
+                th
+                  i.icon-time
+                  |  备份时间
+                th
+                  i.icon-signin
+                  |  操作
+            tbody
+              each dir, i in dirs
+                tr
+                  td
+                    | #{i+1}
+                  td
+                    | #{dir}
+                  td
+                    a.btn.mini.yellow-stripe.tryDelete(data-toggle="modal", data-id=dirids[i], href="#static") 恢复
+
+        .span6
+          p 
+          a.button.btn.red.tryDelete(data-toggle="modal", data-id='removedatabase', href="#static")
+                      i.icon-retweet
+                      |  清除系统数据
+          p
+                  
+

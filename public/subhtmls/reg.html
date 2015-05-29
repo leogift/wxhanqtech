@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>WIS | 提交注册信息
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!-- BEGIN GLOBAL MANDATORY STYLES-->
+	<link type="text/css" rel="stylesheet" href="/media/css/bootstrap.min.css">
+	<link type="text/css" rel="stylesheet" href="/media/css/bootstrap-responsive.min.css">
+	<link type="text/css" rel="stylesheet" href="/media/css/font-awesome.min.css">
+	<link type="text/css" rel="stylesheet" href="/media/css/style-metro.css">
+	<link type="text/css" rel="stylesheet" href="/media/css/style.css">
+	<link type="text/css" rel="stylesheet" href="/media/css/style-responsive.css">
+	<link type="text/css" rel="stylesheet" href="/media/css/default.css" id="style_color">
+	<!-- END GLOBAL MANDATORY STYLES-->
+	<link href="/media/image/favicon.ico" rel="shortcut icon">
+</head>
+
+<body class="page-header-fixed page-full-width">
+	
+	<!-- BEGIN HEADER-->
+	<div class="header navbar navbar-inverse navbar-fixed-top">
+		<!-- BEGIN TOP NAVIGATION BAR-->
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<!-- BEGIN LOGO-->
+				<a class="brand" href="index.html">
+					<img alt="logo" src="/media/image/logo.png">
+				</a>
+				<!-- END LOGO-->
+			</div>
+		</div>
+		<!-- END TOP NAVIGATION BAR-->
+	</div>
+	<!-- END HEADER-->
+	
+	<!-- BEGIN CONTAINER-->
+	<div class="page-container row-fluid">
+		<!-- BEGIN PAGE-->
+		<div class="page-content">
+			<div class="container-fluid">
+				<div class="row-fluid">
+
+					<div class="span12">
+						<div class="row-fluid">
+							<div class="span12">
+								<h3 class="page-title">填写注册信息
+									<small> 请注意，学生学号是唯一的登录名，登录密码默认为手机号，登录后可修改
+									</small>
+								</h3>
+
+							</div>
+						</div>
+
+						<!-- BEGIN PAGE CONTENT-->
+						<div class="row-fluid">
+							<div class="span12">
+								<div class="row-fluid">
+									<div class="span12">
+										<!-- BEGIN SAMPLE FORM PORTLET-->
+										<div class="portlet box blue tabbable">
+											<div class="portlet-title">
+												<div class="caption">
+													<i class="icon-reorder">
+													</i>
+													<span class="hidden-480">注册信息</span>
+												</div>
+											</div>
+
+											<div class="portlet-body form">
+												<div class="tabbable portlet-tabs">
+													<ul class="nav nav-tabs">
+														<li></li>
+														<li></li>
+														<li>
+															<a data-toggle="tab" href="#portlet_tab1">Default
+															</a>
+														</li>
+													</ul>
+
+													<div class="tab-content">
+														<div class="tab-pane active" id="portlet_tab1">
+															<!-- BEGIN FORM-->
+															<form class="form-horizontal" novalidate="validated" method="post" action="/studentsubscribe" id="mySysInfoform">
+																<div class="control-group">
+																	<label class="control-label">学号</label>
+																	<div class="controls">
+																		<input type="text" class="m-wrap small" name="stunumber" placeholder="请输入学号">
+																		<span class="help-inline">学号是唯一登录用户名，请准确填写，密码默认为手机号</span>
+																	</div>
+																</div>
+
+																<div class="form-actions clearfix">
+																	<input type="hidden" value="weixin_id_here" name="weixinid">
+																	<button class="btn blue button-submit" style="display: inline-block;" type="submit">
+																		<i class="icon-ok"></i> 注册
+																	</button>
+																</div>
+															</form>
+
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- BEGIN FOOTER-->
+	<div class="footer">
+		<div class="footer-inner">2015 &copy; Hanqtech WZU.
+		</div>
+
+		<div class="footer-tools">
+			<span class="go-top">
+				<i class="icon-angle-up"></i>
+			</span>
+		</div>
+	</div>
+	<!-- END FOOTER-->
+
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time)-->
+	<!-- BEGIN CORE PLUGINS-->
+	<script type="text/javascript" src="/media/js/jquery-1.10.1.min.js"></script>
+
+	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip-->
+	<script type="text/javascript" src="/media/js/bootstrap.min.js"></script>
+	<!--[if lt IE 9]><script src="/media/js/excanvas.min.js"></script><script src="/media/js/respond.min.js"></script><![endif]-->
+	<!-- END CORE PLUGINS-->
+	<script src="/media/js/app.js"></script>
+	<!--script(src='/media/js/form-wizard.js')-->
+	<script>jQuery(document).ready(function() {
+        App.init();
+        //FormWizard.init();
+        });
+    </script>
+    <!-- END JAVASCRIPTS-->
+    
+</body>
+
+</html>

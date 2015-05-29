@@ -1,0 +1,110 @@
+extends layout
+
+
+extends tutor_sidebar_pageheader
+
+
+block PAGECONTENT
+    //query form
+    .row-fluid
+      .span6
+      .portlet
+        .portlet-title
+          .caption
+            i.icon-shopping-cart
+            | Query conditions
+          .tools
+            a.collapse(href="javascript:;")
+            a.config(data-toggle="modal", href="#portlet-config")
+            a.reload(href="javascript:;")
+            a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          form#notmyqueryform.form-horizontal(action='/query_cond_student', method='post')
+
+            .control-group
+              label.control-label cellphone
+              .controls
+                input.m-wrap.small(type='text', placeholder='cellphone number', name='cellphone')
+                span.help-inline Some hint here
+
+            .control-group
+              label.control-label student name
+              .controls
+                input.span6.m-wrap(type='text', placeholder='student name', name='name')
+                span.help-inline Some hint here
+
+            .control-group
+              label.control-label weixin
+              .controls
+                input.m-wrap.small(type='text', placeholder='weixin', name='weixin')
+                span.help-inline Some hint here
+              //input(type='submit') Query
+
+            .form-actions.clearfix
+              //button.btn.green.button-submit(type='submit', style="display: inline-block;")
+              button.btn.green.button-subsmit(type='submit', style="display: inline-block;")
+                i.icon-ok
+                |  Query
+
+    //table
+    .row-fluid
+      .span6
+      // BEGIN SAMPLE TABLE PORTLET
+      .portlet
+        .portlet-title
+          .caption
+            i.icon-shopping-cart
+            | Query Results
+          .tools
+            a.collapse(href="javascript:;")
+            a.config(data-toggle="modal", href="#portlet-config")
+            a.reload(href="javascript:;")
+            a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          table.table.table-striped.table-bordered.table-advance.table-hover
+            thead
+              tr
+                th
+                  i.icon-briefcase
+                  | Index
+                th.hidden-phone
+                  i.icon-question-sign
+                  | Cellphone
+                th
+                  i.icon-bookmark
+                  | Name
+                th
+                  i.icon-bookmark
+                  | Weixin
+                th
+                  i.icon-bookmark
+                  | Registered
+                th
+                  i.icon-bookmark 
+                  | Modify
+                th
+                  i.icon-bookmark
+                  | Delete
+            tbody
+              each stu, i in students
+                tr
+                  td
+                    a #{i+1}
+                  td
+                    a #{stu.cellphone}
+                    span.label.label-success.label-mini Paid
+                  td
+                    a #{stu.name}                  
+                  td
+                    a #{stu.weixin}
+                  if(stu.registered)
+                    td
+                      a.btn.mini.green-stripe(href="studentunregister/:"+stu.id) 禁止
+                  else
+                    td
+                      a.btn.mini.green-stripe(href="studentregister/:"+stu.id) 批准
+                  td
+                    a.btn.mini.green-stripe(href="studentmodify/:"+stu.id) Modify
+                  td
+                    a.btn.mini.red-stripe(href="studentdelete/:"+stu.id) Delete
+

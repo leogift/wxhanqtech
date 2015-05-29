@@ -1,0 +1,10 @@
+#ignore these files
+
+#.gitignore
+public/download/*
+public/incomingimg/*
+public/upload/*
+public/subhtmls/register_*.html
+locInfoArray.json
+
+

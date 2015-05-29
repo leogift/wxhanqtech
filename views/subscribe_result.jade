@@ -1,0 +1,67 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title
+      | WIS | &#25552;&#20132;&#27880;&#20876;&#20449;&#24687;
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="description", content="")
+    meta(name="author", content="")
+    // BEGIN GLOBAL MANDATORY STYLES
+    link(type="text/css", rel="stylesheet", href="/media/css/bootstrap.min.css")
+    link(type="text/css", rel="stylesheet", href="/media/css/bootstrap-responsive.min.css")
+    link(type="text/css", rel="stylesheet", href="/media/css/font-awesome.min.css")
+    link(type="text/css", rel="stylesheet", href="/media/css/style-metro.css")
+    link(type="text/css", rel="stylesheet", href="/media/css/style.css")
+    link(type="text/css", rel="stylesheet", href="/media/css/style-responsive.css")
+    link#style_color(type="text/css", rel="stylesheet", href="/media/css/default.css")
+    // END GLOBAL MANDATORY STYLES
+    link(href="/media/image/favicon.ico", rel="shortcut icon")
+  body.page-header-fixed.page-full-width
+    // BEGIN HEADER
+    .header.navbar.navbar-inverse.navbar-fixed-top
+      // BEGIN TOP NAVIGATION BAR
+      .navbar-inner
+        .container-fluid
+          // BEGIN LOGO
+          a.brand(href="index.html")
+            img(alt="logo", src="/media/image/logo.png")
+          // END LOGO
+      // END TOP NAVIGATION BAR
+    // END HEADER
+    // BEGIN CONTAINER
+    .page-container.row-fluid
+      // BEGIN PAGE
+      .page-content
+        .container-fluid
+          .row-fluid
+            .span12
+              .row-fluid
+                .span12
+                  h3.page-title
+                    | #{resultMsg}
+    // BEGIN FOOTER
+    .footer
+      .footer-inner
+        | 2015 &#169; WIS by Hanqtech.
+      .footer-tools
+        span.go-top
+          i.icon-angle-up
+    // END FOOTER
+    // BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time)
+    // BEGIN CORE PLUGINS
+    script(type="text/javascript", src="/media/js/jquery-1.10.1.min.js")
+    // IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip
+    script(type="text/javascript", src="/media/js/bootstrap.min.js")
+    //if lt IE 9
+      script(src="/media/js/excanvas.min.js")
+      script(src="/media/js/respond.min.js")
+    // END CORE PLUGINS
+    script(src="/media/js/app.js")
+    // script(src='/media/js/form-wizard.js')
+    script.
+      jQuery(document).ready(function() {
+      App.init();
+      //FormWizard.init();
+      });
+    // END JAVASCRIPTS

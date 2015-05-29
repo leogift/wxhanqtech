@@ -1,0 +1,76 @@
+//table
+.row-fluid
+  .span6
+  // BEGIN SAMPLE TABLE PORTLET
+  .portlet.box.purple
+    .portlet-title
+      .caption
+        i.icon-table
+        | 工作日志详情表 
+        small   姓名: #{stuname}   学号: #{stunumber}   项目: #{prjname}
+      .tools
+        a.collapse(href="javascript:;")
+        //- a.config(data-toggle="modal", href="#portlet-config")
+        //- a.reload(href="javascript:;")
+        //- a.remove(href="javascript:;")
+    .portlet-body(style="display: block;")
+      //table.table.table-striped.table-bordered.table-advance.table-hover(style="table-layout:fixed;word-wrap:break-word;word-break:break-all")
+      table.table.table-striped.table-bordered.table-advance.table-hover(style="word-wrap:break-word;word-break:break-all")
+        thead
+          tr
+            th(width="50")
+              i.icon-check
+              |  序号
+            th
+              i.icon-map-marker
+              |  地点
+            th
+              i.icon-time
+              |  提交起止时间
+            th
+              i.icon-text-width
+              |  文字
+            th
+              i.icon-picture
+              |  图片
+
+        tbody
+          each wklog, i in worklogs
+            tr
+              td
+                | #{i+1}
+              td
+                .item
+                  a.fancybox-button(href='#{wklog.logLocation}', title="Photo", data-rel="fancybox-button")
+                    .zoom
+                      img(alt="Photo", src='#{wklog.logLocation}', width="200")
+                      .zoom-icon
+                //| #{wklog.logLocation}
+              td(width="150")
+                table.table.table-striped.table-advance
+                  tbody
+                    tr
+                      td
+                        | #{wklog.startTime}
+                    tr
+                      td
+                        | #{wklog.stopTime}
+              td
+                table.table.table-striped.table-advance
+                  tbody
+                    each log, j in wklog.logText
+                      tr
+                        td(width="300")
+                          | #{log}
+              td
+                table.table.table-striped.table-advance
+                  tbody
+                    each pic, k in wklog.logPicPath
+                      tr
+                        td
+                          .item
+                            a.fancybox-button(href='#{pic}', title="可点击查看大图", data-rel="fancybox-button")
+                              .zoom
+                                img(alt="Photo", src='#{pic}', width="200")
+                                .zoom-icon
+                  

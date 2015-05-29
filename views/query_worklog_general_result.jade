@@ -1,0 +1,103 @@
+
+
+//table
+.row-fluid
+  .span6
+  // modal
+  #static.modal.hide.fade(tabindex="-1", data-backdrop="static", data-keyboard="false")
+    .modal-header
+      p 请确认操作
+    .modal-body
+      p 确定要删除该记录吗？
+      input(type="hidden", id="memberId", value="")
+    .modal-footer
+      button(type="button", data-dismiss="modal", class="btn blue") 
+        | 取消
+      button(id='#{mbtn}', type="button", data-dismiss="modal", class="btn red")
+        | 确定
+
+  // BEGIN SAMPLE TABLE PORTLET
+  .portlet.box.purple
+    .portlet-title
+      .caption
+        i.icon-sitemap
+        | 工作日志概况表
+      .tools
+        a.collapse(href="javascript:;")
+        //- a.config(data-toggle="modal", href="#portlet-config")
+        //- a.reload(href="javascript:;")
+        //- a.remove(href="javascript:;")
+    .portlet-body(style="display: block;")
+      table.table.table-striped.table-bordered.table-advance.table-hover(style="word-wrap:break-word;word-break:break-all")
+        thead
+          tr
+            th
+              i.icon-check  
+              |  序号
+            th
+              i.icon-user
+              |  学生姓名
+            th.hidden-phone
+              i.icon-key
+              |  学号
+            th
+              i.icon-briefcase
+              |  项目
+            th
+              i.icon-briefcase
+              |  项目开始
+            th
+              i.icon-briefcase
+              |  项目结束
+            th
+              i.icon-user
+              |  教师姓名
+            th.hidden-phone
+              i.icon-key
+              |  工号
+            th
+              i.icon-book
+              |  提交次数
+            //th
+            //  i.icon-eye-open
+            //  |  查看
+            th
+              i.icon-share
+              |  导出
+            //th
+            //  i.icon-remove
+            //  |  删除
+        tbody
+          if(SysRecords)
+            each syslog, i in SysRecords
+              tr
+                td
+                  | #{i+1}
+                  //span.label.label-important.label-mini 删除
+                  a.btn.mini.red.tryDelete(data-toggle="modal", data-id=syslog.id, href="#static") 删除
+                td.hidden-phone
+                  | #{syslog.stuName}
+                td
+                  | #{syslog.stuNumber}
+                td
+                  | #{syslog.prjName}
+                td
+                  | #{syslog.prjStartDate}
+                td
+                  | #{syslog.prjStopDate}
+                td
+                  | #{syslog.tutorName}
+                td
+                  | #{syslog.tutorNumber}
+                td
+                  //a
+                  | #{syslog.workRecords.length}
+                  //span.label.label-success.label-mini(href="/#{LinkDetail}/:"+syslog.id) 详细
+                  a.btn.mini.yellow(href="/#{LinkDetail}/:"+syslog.id) 详细
+                //td
+                //  a.btn.mini.yellow-stripe(href="/#{LinkDetail}/:"+syslog.id) 详细
+                td
+                  a.btn.mini.blue-stripe(href="/#{LinkExport}/:"+syslog.id) 导出
+                //td
+                //  a.btn.mini.red-stripe.tryDelete(data-toggle="modal", data-id=syslog.id, href="#static") 删除
+

@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  // Title Top
+  .row-fluid
+    .span12
+      .color-panel.hidden-phone
+      h3.pagetitle Basic Table
+        small basic table samples
+      ul.breadcrumb
+        li
+          i.icon-home
+          a(href='index.html') Home
+          i.icon-angle-right
+        li
+          a(href='#') Data Tables
+          i.icon-angle-right
+        li
+          a(href='#') Basic Tables
+
+    //table
+    .row-fluid
+      .span6
+      // BEGIN SAMPLE TABLE PORTLET
+      .portlet
+        .portlet-title
+          .caption
+            i.icon-shopping-cart
+            | Advance Table
+          .tools
+            a.collapse(href="javascript:;")
+            a.config(data-toggle="modal", href="#portlet-config")
+            a.reload(href="javascript:;")
+            a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          table.table.table-striped.table-bordered.table-advance.table-hover
+            thead
+              tr
+                th
+                  i.icon-briefcase
+                  | Index
+                th.hidden-phone
+                  i.icon-question-sign
+                  | Name
+                th
+                  i.icon-bookmark
+                  | Phone
+                th
+                  i.icon-bookmark
+                  | Email
+                th
+                  i.icon-bookmark Modify
+                th
+                  i.icon-bookmark
+                  | Delete
+            tbody
+              each stu, i in students
+                tr
+                  td
+                    a #{i+1}
+                  td.hidden-phone
+                    a(href='students/'+stu.id) #{stu.name}
+                  td
+                    a #{stu.cellphone}
+                    span.label.label-success.label-mini Paid
+                  td
+                    a #{stu.email}
+                  td
+                    a.btn.mini.green-stripe(href="#") Modify
+                  td
+                    a.btn.mini.red-stripe(href="studentsdelete/:"+stu.id) Delete
+

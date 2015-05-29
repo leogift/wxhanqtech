@@ -1,0 +1,67 @@
+extends layout
+
+
+block PAGESIDEBAR
+
+  ul.ver-inline-menu.tabbable.margin-bottom-25
+    if(act==1)
+      li.active
+        a(id='student_sidebar_modifyselfinfo', data-toggle='tab')
+          i.icon-pencil
+          | 修改个人信息
+    else
+      li
+        a(id='student_sidebar_modifyselfinfo', data-toggle='tab')
+          i.icon-pencil
+          | 修改个人信息
+    if(act==2)
+      li.active
+        a(id='student_sidebar_modifyselfpass', data-toggle="tab")
+          i.icon-key
+          | 修改个人密码
+    else
+      li
+        a(id='student_sidebar_modifyselfpass', data-toggle="tab")
+          i.icon-key
+          | 修改个人密码
+    if(act==3)
+      li.active
+        a(id='student_sidebar_viewworklog', data-toggle="tab")
+          i.icon-book
+          | 管理工作日志
+    else
+      li
+        a(id='student_sidebar_viewworklog', data-toggle="tab")
+          i.icon-book
+          | 管理工作日志
+    if(act==4)
+      li.active
+        a(id='student_sidebar_logout', data-toggle="tab")
+          i.icon-off
+          | 退出登录
+    else
+      li
+        a(id='student_sidebar_logout', data-toggle="tab")
+          i.icon-off
+          | 退出登录
+
+
+block PAGEHEADER
+
+  h3.page-title
+    | #{title}
+    small #{smalltitle}
+    
+  ul.breadcrumb
+    li
+      i.icon-home
+      a(href='/index.html')   首页
+      i.icon-angle-right
+    li
+      i.icon-user
+      a(href='/student_logout')   登录
+      i.icon-angle-right
+    li
+      i.icon-tasks
+      a(href='#{breadhref}')   #{breadtext}
+      

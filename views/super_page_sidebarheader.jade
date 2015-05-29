@@ -1,0 +1,107 @@
+extends layout
+
+
+block PAGESIDEBAR
+
+  ul.ver-inline-menu.tabbable.margin-bottom-25
+    if(act==1)
+      li.active
+        a(id='super_sidebar_sysinit', data-toggle='tab')
+          i.icon-warning-sign
+          | 数据导入
+    else
+      li
+        a(id='super_sidebar_sysinit', data-toggle='tab')
+          i.icon-warning-sign
+          | 数据导入
+    if(act==2)
+      li.active
+        a(id='super_sidebar_viewmembers', data-toggle='tab')
+          i.icon-group
+          | 查看成员信息
+    else
+      li
+        a(id='super_sidebar_viewmembers', data-toggle='tab')
+          i.icon-group
+          | 查看成员信息
+    if(act==3)
+      li.active
+        a(id='super_sidebar_addnewstudent', data-toggle="tab")
+          i.icon-user-md
+          | 新增学生记录
+    else
+      li
+        a(id='super_sidebar_addnewstudent', data-toggle="tab")
+          i.icon-user-md
+          | 新增学生记录
+    if(act==4)
+      li.active
+        a(id='super_sidebar_viewsyslog', data-toggle="tab")
+          i.icon-book
+          | 管理系统日志
+    else
+      li
+        a(id='super_sidebar_viewsyslog', data-toggle="tab")
+          i.icon-book
+          | 管理系统日志
+    if(act==5)
+      li.active
+        a(id='super_sidebar_sysdatarestore', data-toggle="tab")
+          i.icon-briefcase
+          | 备份系统数据
+    else
+      li
+        a(id='super_sidebar_sysdatarestore', data-toggle="tab")
+          i.icon-briefcase
+          | 备份系统数据
+    if(act==6)
+      li.active
+        a(id='super_sidebar_sysdatarecovery', data-toggle="tab")
+          i.icon-folder-open
+          | 恢复系统数据
+    else
+      li
+        a(id='super_sidebar_sysdatarecovery', data-toggle="tab")
+          i.icon-folder-open
+          | 恢复系统数据
+    if(act==7)
+      li.active
+        a(id='super_sidebar_modifypassword', data-toggle="tab")
+          i.icon-key
+          | 修改密码
+    else
+      li
+        a(id='super_sidebar_modifypassword', data-toggle="tab")
+          i.icon-key
+          | 修改密码
+    if(act==8)
+      li.active
+        a(id='super_sidebar_logout', data-toggle="tab")
+          i.icon-signout
+          | 退出登录
+    else
+      li
+        a(id='super_sidebar_logout', data-toggle="tab")
+          i.icon-signout
+          | 退出登录
+
+
+block PAGEHEADER
+
+  h3.page-title
+    | #{title}
+    small #{smalltitle}
+
+  ul.breadcrumb
+    li
+      i.icon-home
+      a(href='/index.html')    首页
+      i.icon-angle-right
+    li
+      i.icon-user
+      a(href='/super_logout')   登录
+      i.icon-angle-right
+    li
+      i.icon-tasks
+      a(href='#{breadhref}')    #{breadtext}
+      

@@ -1,0 +1,78 @@
+extends layout
+
+
+
+extends super_page_sidebarheader
+
+
+
+block PAGECONTENT
+
+  // BEGIN PAGE CONTENT
+  .row-fluid
+    .span12
+      // BEGIN SAMPLE FORM PORTLET
+      .portlet.box.green.tabbable
+        
+        .portlet-title
+          .caption
+            i.icon-user
+            span.hidden-480 新增学生/教师信息
+
+        .portlet-body.form
+          .tabbable.portlet-tabs
+            ul.nav.nav-tabs
+              li
+              li
+              li
+                a 请准确填写各项信息
+
+            .tab-content
+              #portlet_tab1.tab-pane.active
+                // BEGIN FORM
+                form#mySysInfoform.form-horizontal(action='/superaddmember', method='post', novalidate="validated")
+                  
+                  .control-group
+                    label.control-label 学生姓名
+                    .controls
+                      input.span6.m-wrap(type='text', placeholder='姓名', name='stuname')
+                      span.help-inline 
+                  .control-group
+                    label.control-label 学生学号
+                    .controls
+                      input.span6.m-wrap(type='text', placeholder='学号', name='stunumber')
+                      span.help-inline 学生登录用户名
+                  .control-group
+                    label.control-label 学生手机号码
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='手机号码', name='stucellphone')
+                      span.help-inline 学生登录默认密码
+                  .control-group
+                    label.control-label 项目名称
+                    .controls
+                      input.span6.m-wrap(type='text', placeholder='项目名称', name='prjname')
+                      span.help-inline 学生所属的项目名称
+                  .control-group
+                    label.control-label 教师姓名
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='教师姓名', name='tutorname')
+                      span.help-inline 项目所属的教师姓名
+                  .control-group
+                    label.control-label 教师工作证号
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='工作证号', name='tutornumber')
+                      span.help-inline 教师登录用户名
+                  .control-group
+                    label.control-label 教师手机号码
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='手机号码', name='tutorcellphone')
+                      span.help-inline 教师登录默认密码
+
+                  .form-actions.clearfix
+                    //a.btn.green.button-submit(href="javascript:;", style="display: inline-block;")
+                    button.btn.green.button-submit(type='submit', style="display: inline-block;")
+                      i.icon-plus
+                      |  增加
+
+                    //button.btn(type='button') Cancel
+      

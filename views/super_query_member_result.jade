@@ -1,0 +1,120 @@
+extends layout
+
+
+extends super_page_sidebarheader
+
+
+block PAGECONTENT
+
+    //table
+    .row-fluid
+      .span6
+      // modal
+      #static.modal.hide.fade(tabindex="-1", data-backdrop="static", data-keyboard="false")
+        .modal-header
+          p 请确认操作
+        .modal-body
+          p 确定要删除该记录吗？
+          input(type="hidden", id="memberId", value="")
+        .modal-footer
+          button(type="button", data-dismiss="modal", class="btn blue") 
+            | 取消
+          button(id="mbtnSuperDeleteMember", type="button", data-dismiss="modal", class="btn red")
+            | 确定
+
+      // BEGIN SAMPLE TABLE PORTLET
+      .portlet.box.purple
+        .portlet-title
+          .caption
+            i.icon-table
+            | 成员信息表
+          .tools
+            a.collapse(href="javascript:;")
+            //- a.config(data-toggle="modal", href="#portlet-config")
+            //- a.reload(href="javascript:;")
+            //- a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          table.table.table-striped.table-bordered.table-advance.table-hover
+            thead
+              tr
+                th
+                  i.icon-check
+                  | 序号
+                th.hidden-phone
+                  i.icon-key
+                  | 学号
+                th
+                  i.icon-user
+                  | 姓名
+                th
+                  i.icon-headphones
+                  | 学生手机
+                th
+                  i.icon-lock
+                  | 学生密码
+                th
+                  i.icon-briefcase
+                  | 项目名称
+                th
+                  i.icon-briefcase
+                  | 项目开始时间
+                th
+                  i.icon-briefcase
+                  | 项目结束时间
+                th
+                  i.icon-user
+                  | 教师姓名
+                th
+                  i.icon-key
+                  | 教师号
+                th
+                  i.icon-headphones
+                  | 手机
+                th
+                  i.icon-lock
+                  | 教师密码
+                th
+                  i.icon-warning-sign
+                  | 删除
+
+            tbody
+              each member, i in members
+                tr
+                  td
+                    a(href='super_modifymember/:'+member.id)
+                      | #{i+1}
+                      span.label.label-success.label-mini 修改
+                  td.hidden-phone
+                    //a(href='super_modifymember/:'+member.id)
+                    | #{member.stuNumber}
+                  td
+                    //a(href='super_modifymember/:'+member.id) 
+                    | #{member.stuName}
+                    //span.label.label-success.label-mini 修改
+                  td
+                    //a(href='super_modifymember/:'+member.id) 
+                    | #{member.stuPhone}
+                  td
+                    a.btn.mini.yellow-stripe(href="resetstudentpassword/:"+member.id) 重置
+                  td
+                    //a(href='super_modifymember/:'+member.id) 
+                    | #{member.prjName}
+                  td
+                    | #{member.prjStartDate}
+                  td
+                    | #{member.prjStopDate}
+                  td
+                    //a(href='super_modifymember/:'+member.id) 
+                    | #{member.tutorName}
+                    //span.label.label-success.label-mini 修改
+                  td
+                    //a(href='super_modifymember/:'+member.id) 
+                    | #{member.tutorNumber}
+                  td
+                    //a(href='super_modifymember/:'+member.id) 
+                    | #{member.tutorPhone}
+                  td
+                    a.btn.mini.yellow-stripe(id="resetbtn", memberid=member.id, href="resettutorpassword/:"+member.id) 重置
+                  td
+                    a.btn.mini.red-stripe.tryDelete(data-toggle="modal", data-id=member.id, href="#static") 删除
+

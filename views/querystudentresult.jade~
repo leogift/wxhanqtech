@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1= 'query students result!'
+
+  p
+    label #{students[0].name}
+  p
+    label #{students[1].name}
+
+  div
+    table
+      thead
+        tr
+          th Index
+          th Name
+          th Phone
+          th Email
+      tbody
+        each stu, i in students
+          tr
+            td 
+              a #{i+1}
+            td 
+              a(href='students/' + stu.id)  #{stu.name}
+            td 
+              a  #{stu.cellphone}
+            td 
+              a  #{stu.email}
+            td 
+              //-a(href='studentsmodify/:' + stu.id)  modify
+              a(href='#')  modify
+            td 
+              a(href='studentsdelete/:' + stu.id)  deleted
+

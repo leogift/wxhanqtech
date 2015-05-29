@@ -1,0 +1,16 @@
+extends layout
+
+extends super_page_sidebarheader
+
+
+block PAGECONTENT
+
+  // BEGIN PAGE CONTENT
+  .row-fluid
+    .span12
+      | #{msg}
+  // END PAGE CONTENT
+
+  div
+    script setTimeout("location.href='#{newpage}';", #{timeout});
+  

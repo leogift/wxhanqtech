@@ -1,0 +1,63 @@
+
+// BEGIN SAMPLE FORM PORTLET
+.portlet.box.green.tabbable
+  
+  .portlet-title
+    .caption
+      i.icon-search
+      span.hidden-480 查询条件
+
+  .portlet-body.form
+    .tabbable.portlet-tabs
+      ul.nav.nav-tabs
+        li
+        li
+        li
+          a 请输入查询条件；为空则查询权限内所有记录
+
+      .tab-content
+        #portlet_tab1.tab-pane.active
+          // BEGIN FORM
+          form#mySysInfoform.form-horizontal(action='#{action}', method='post', novalidate="validated")
+
+            if(IsShowStu)
+              .control-group
+                label.control-label 学生学号
+                .controls
+                  input.m-wrap.small(type='text', placeholder='按学生学号查询', name='stuNumber')
+                  span.help-inline 
+
+            if(IsShowPrj)
+              .control-group
+                label.control-label 项目名称
+                .controls
+                  input.m-wrap.small(type='text', placeholder='按项目名查询', name='prjName')
+                  span.help-inline 
+            
+            if(IsShowTutor)    
+              .control-group
+                label.control-label 教师工号
+                .controls
+                  input.m-wrap.small(type='text', placeholder='按教师工号查询', name='tutorNumber')
+                  span.help-inline 
+
+            .control-group
+              label.control-label 时间
+              .controls
+                select.m-wrap.small(name='selectedYear')
+                  option(value='0', selected="selected") 所有年份
+                  option(value='2015') 2015 年
+                  option(value='2016') 2016 年
+                  option(value='2017') 2017 年
+                  option(value='2018') 2018 年
+                  option(value='2019') 2019 年
+                  option(value='2020') 2020 年
+                  option(value='2021') 2021 年
+                  option(value='2022') 2022 年
+                span.help-inline 
+
+            .form-actions.clearfix
+              input(type='hidden', name='hiddenTutorNumber', value='#{tutorNumber}')
+              button.btn.green.button-submit(type='submit', style="display: inline-block;")
+                i.icon-search
+                |  查询

@@ -1,0 +1,112 @@
+extends layout
+
+
+extends tutor_page_sidebarheader
+
+
+block PAGECONTENT
+
+    //table
+    .row-fluid
+      .span6
+      // modal
+      #static.modal.hide.fade(tabindex="-1", data-backdrop="static", data-keyboard="false")
+        .modal-header
+          p 请确认操作
+        .modal-body
+          p 确定要删除该记录吗？
+          input(type="hidden", id="memberId", value="")
+        .modal-footer
+          button(type="button", data-dismiss="modal", class="btn blue") 
+            | 取消
+          button(id="mbtnTutorDeleteMember", type="button", data-dismiss="modal", class="btn red")
+            | 确定
+
+      // BEGIN SAMPLE TABLE PORTLET
+      .portlet.box.purple
+        .portlet-title
+          .caption
+            i.icon-group
+            |  学生信息表
+          .tools
+            a.collapse(href="javascript:;")
+            //- a.config(data-toggle="modal", href="#portlet-config")
+            //- a.reload(href="javascript:;")
+            //- a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          table.table.table-striped.table-bordered.table-advance.table-hover
+            thead
+              tr
+                th
+                  i.icon-check
+                  |  序号
+                th
+                  i.icon-key
+                  |  学号
+                th
+                  i.icon-user
+                  |  姓名
+                th
+                  i.icon-headphones
+                  |  学生手机
+                th
+                  i.icon-briefcase
+                  |  项目名称
+                th
+                  i.icon-briefcase
+                  | 项目开始时间
+                th
+                  i.icon-briefcase
+                  | 项目结束时间
+                th
+                  i.icon-comments
+                  |  微信绑定
+                th.hidden-phone
+                  i.icon-minus-sign
+                  |  允许登录
+                th
+                  i.icon-retweet
+                  |  重置密码
+                th
+                  i.icon-remove
+                  |  删除
+            tbody
+              if(members!=null)
+                each member, i in members
+                  tr
+                    td
+                      a #{i+1}
+                    td.hidden-phone
+                      a(href='modifystudent/:'+member.id)
+                        | #{member.stuNumber}
+                    td
+                      a(href='modifystudent/:'+member.id) 
+                        | #{member.stuName}
+                      //span.label.label-success.label-mini 修改
+                    td
+                      a(href='modifystudent/:'+member.id) 
+                        | #{member.stuPhone}
+                    td
+                      a(href='modifystudent/:'+member.id) 
+                        | #{member.prjName}
+                    td
+                      | #{member.prjStartDate}
+                    td
+                      | #{member.prjStopDate}
+                    if(member.stuWeixinBind)
+                      td
+                        | Yes
+                    else
+                      td
+                        | No
+                    if(member.stuLoginFlag)
+                      td.hidden-phone
+                        a.btn.mini.green-stripe(href="notallowlogin/:"+member.id) Yes
+                    else
+                      td.hidden-phone
+                        a.btn.mini.yellow-stripe(href="allowlogin/:"+member.id) No
+                    td
+                      a.btn.mini.blue-stripe(href="resetstupass/:"+member.id) 重置
+                    td
+                      a.btn.mini.red-stripe.tryDelete(data-toggle="modal", data-id=member.id, href="#static") 删除
+

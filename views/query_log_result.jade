@@ -1,0 +1,83 @@
+extends layout
+
+
+extends tutor_sidebar_pageheader
+
+
+block PAGECONTENT
+    //table
+    .row-fluid
+      //.span6
+      // BEGIN SAMPLE TABLE PORTLET
+      .portlet
+        .portlet-title
+          .caption
+            i.icon-shopping-cart
+            | Query Results
+          .tools
+            a.collapse(href="javascript:;")
+            a.config(data-toggle="modal", href="#portlet-config")
+            a.reload(href="javascript:;")
+            a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          table.table.table-striped.table-bordered.table-advance.table-hover(style="table-layout:fixed;word-wrap:break-word;word-break;break-all")
+            thead
+              tr
+                th
+                  i.icon-briefcase
+                  | Index
+                th.hidden-phone
+                  i.icon-question-sign
+                  | Cellphone
+                th
+                  i.icon-bookmark
+                  | Name
+                th
+                  i.icon-bookmark
+                  | Weixin
+                th
+                  i.icon-bookmark
+                  | LogText
+                th
+                  i.icon-bookmark
+                  | LogPic
+                th
+                  i.icon-bookmark
+                  | Delete
+            tbody
+              each wklog, i in worklogs
+                tr
+                  td
+                    a #{i+1}
+                  td
+                    a #{wklog.cellphone}
+                    span.label.label-success.label-mini Paid
+                  td
+                    a #{wklog.name}                  
+                  td
+                    a #{wklog.weixin}
+                  td
+                    a #{wklog.logtext}
+                  td
+                    //a #{wklog.logpicpath}
+                    .span3
+                      //img(alt="", src="media/image/image4.jpg")
+                      .item
+                        a.fancybox-button(href='#{wklog.logpicpath}', title="Photo", data-rel="fancybox-button")
+                          .zoom
+                            img(alt="Photo", src='#{wklog.logpicpath}')
+                            .zoom-icon
+                        //.details
+                        //  a.icon(href="#")
+                        //    i.icon-paper-clip
+                        //  a.icon(href="#")
+                        //    i.icon-link
+                        //  a.icon(href="#")
+                        //    i.icon-pencil
+                        //  a.icon(href="#")
+                        //    i.icon-remove
+                  td
+                    a.btn.mini.red-stripe(href="worklogdelete/:"+wklog.id) Delete
+
+    
+

@@ -1,0 +1,88 @@
+extends layout
+
+
+
+extends super_page_sidebarheader
+
+
+
+block PAGECONTENT
+
+  // BEGIN PAGE CONTENT
+  .row-fluid
+    .span12
+      // BEGIN SAMPLE FORM PORTLET
+      .portlet.box.blue.tabbable
+        
+        .portlet-title
+          .caption
+            i.icon-reorder
+            span.hidden-480 修改成员信息
+
+        .portlet-body.form
+          .tabbable.portlet-tabs
+            ul.nav.nav-tabs
+              li
+              li
+              li
+                a(href='#portlet_tab1', data-toggle='tab') 请正确填写成员信息
+
+            .tab-content
+              #portlet_tab1.tab-pane.active
+                // BEGIN FORM
+                form#mySysInfoform.form-horizontal(action='/super_domodifymember', method='post', novalidate="validated")
+                  
+                  .control-group
+                    label.control-label 学生姓名
+                    .controls
+                      input.span6.m-wrap(type='text', placeholder='姓名', name='stuname', value='#{member.stuName}')
+                      //span.help-inline Some hint here
+                  .control-group
+                    label.control-label 学生学号
+                    .controls
+                      input.span6.m-wrap(type='text', placeholder='学号', name='stunumber', value='#{member.stuNumber}')
+                      //span.help-inline Some hint here
+                  .control-group
+                    label.control-label 学生手机号码
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='手机号码', name='stucellphone', value='#{member.stuPhone}')
+                      //span.help-inline Some hint here
+                  .control-group
+                    label.control-label 所属项目名称
+                    .controls
+                      input.span6.m-wrap(type='text', placeholder='项目名称', name='prjname', value='#{member.prjName}')
+                      //span.help-inline Some hint here
+                  .control-group
+                    label.control-label 项目开始时间
+                    .controls
+                      input#mask_date_start.span6.m-wrap(type='text', name='prjstartdate', value='#{member.prjStartDate}')
+                      span.help-inline 格式为：年/月/日
+                  .control-group
+                    label.control-label 项目结束时间
+                    .controls
+                      input#mask_date_stop.span6.m-wrap(type='text', name='prjstopdate', value='#{member.prjStopDate}')
+                      span.help-inline 格式为：年/月/日
+                  .control-group
+                    label.control-label 所属教师姓名
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='教师姓名', name='tutorname', value='#{member.tutorName}')
+                      //span.help-inline Some hint here
+                  .control-group
+                    label.control-label 教师工作证号
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='工作证号', name='tutornumber', value='#{member.tutorNumber}')
+                      //span.help-inline Some hint here
+                  .control-group
+                    label.control-label 教师手机号码
+                    .controls
+                      input.m-wrap.small(type='text', placeholder='手机号码', name='tutorcellphone', value='#{member.tutorPhone}')
+                      //span.help-inline Some hint here
+
+                  .form-actions.clearfix
+                    input(type='hidden', name='modifyid', value='#{id}')
+                    button.btn.green.button-submit(type='submit', style="display: inline-block;")
+                      i.icon-ok
+                      |  修改
+
+                    //button.btn(type='button') Cancel
+      
