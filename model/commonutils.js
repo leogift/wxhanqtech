@@ -75,7 +75,8 @@ exports.subhtml_absolutewebroot = '/home/web/wis_v2/wisv2/public';              
 exports.subhtml_subdir = 'subhtmls';
 exports.subhtml_newprefix = 'register_';
 exports.subhtml_stringtoreplace = 'weixin_id_here';
-exports.globleip = '121.201.13.217';
+//exports.globleip = '121.201.13.217';
+exports.globleip = 'wx.hanqtech.com';
 exports.location_suffix = '_location.jpg';
 
 //
