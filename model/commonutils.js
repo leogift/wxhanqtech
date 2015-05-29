@@ -23,8 +23,8 @@ var path = require('path');
 //
 
 exports.redirect_timeout = 3000;
-exports.webserver_port = 3000;
-//exports.webserver_port = 80;
+//exports.webserver_port = 3000;
+exports.webserver_port = 80;
 // in file: johnnyMsgHandler.js : getMedia.GetAccessToken();
 
 
@@ -39,18 +39,18 @@ exports.webserver_port = 3000;
 // exports.dump_restorebin = '/home/johnny/js/mongodb/mongodb-linux-i686-2.6.0/bin/mongorestore';
 
 //hq
-exports.dump_dir = '/home/johnny/test/web/dbbackup';
-exports.dump_dbname = 'worklogrecord';
-exports.dump_dumpbin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
-exports.dump_restorebin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
-exports.LocationArrayFile = '/home/johnny/test/web/wis_v2/wis/locArray.json';
+// exports.dump_dir = '/home/johnny/test/web/dbbackup';
+// exports.dump_dbname = 'worklogrecord';
+// exports.dump_dumpbin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
+// exports.dump_restorebin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
+// exports.LocationArrayFile = '/home/johnny/test/web/wis_v2/wis/locArray.json';
 
 //qingcloud
-// exports.dump_dir = '/home/web/dbbackup';
-// exports.dump_dbname = 'worklogrecord';
-// exports.dump_dumpbin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
-// exports.dump_restorebin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
-// exports.LocationArrayFile = '/home/web/wis/locInfoArray.json';
+exports.dump_dir = '/home/web/dbbackup';
+exports.dump_dbname = 'worklogrecord';
+exports.dump_dumpbin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
+exports.dump_restorebin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
+exports.LocationArrayFile = '/home/web/wis/locInfoArray.json';
 
 
 //
@@ -62,8 +62,8 @@ exports.sysrecord_collection_name = 'sysrecords';
 exports.subhtml_templatehtmlname = 'reg.html';
 exports.subhtml_errorhtmlname = 'suberror.html';
 //exports.subhtml_absolutewebroot = '/home/johnny/js/test/wis/public';   //709
-exports.subhtml_absolutewebroot = '/home/johnny/test/web/wis/public';  //hq
-//exports.subhtml_absolutewebroot = '/home/web/wis/public';                //qingcloud
+//exports.subhtml_absolutewebroot = '/home/johnny/test/web/wis/public';  //hq
+exports.subhtml_absolutewebroot = '/home/web/wis/public';                //qingcloud
 
 
 
