@@ -833,7 +833,7 @@ var XlsxFileToDb = function (req, res) {
 			    }
 			});
             
-            setTimeout(AddPrjInfo(), 10000);
+            setTimeout(function(){AddPrjInfo();}, 10000);
 
 	    }
 	}
