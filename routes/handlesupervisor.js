@@ -839,7 +839,7 @@ var XlsxFileToDb = function (req, res) {
 
 exports.ViewPrjs = function(req, res) {
 
-	mgdb.ModelSysRecord.distinct({'prjName', 'prjStartDate', 'prjStopDate'}, {}, function(err, docs){
+	mgdb.ModelSysRecord.distinct('prjName', {}, function(err, docs){
 		if(err)
 		{
 			console.log(err);
@@ -862,10 +862,10 @@ exports.ViewPrjs = function(req, res) {
 			console.log('docs.length=' + docs.length);
 			for(i=0; i<len; i++)
 			{
-				console.log(docs[i].prjName + '\t' + docs[i].prjStartDate + '\t' + docs[i].prjStopDate);
+				console.log(docs[i]);
 			}
 
-			res.send('wait');
+			res.send(docs);
 		}
 	});
 
