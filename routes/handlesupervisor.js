@@ -869,7 +869,6 @@ exports.ViewPrjs = function(req, res) {
 					if(err)
 					{
 						console.log('error=' + err);
-						continue;
 					}
 					else
 					{
