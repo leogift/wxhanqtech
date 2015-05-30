@@ -14,6 +14,16 @@ block PAGESIDEBAR
         a(id='super_sidebar_sysinit', data-toggle='tab')
           i.icon-warning-sign
           | 数据导入
+    if(act==9)
+      li.active
+        a(id='super_sidebar_viewprjs', data-toggle='tab')
+          i.icon-group
+          | 查看项目信息
+    else
+      li
+        a(id='super_sidebar_viewprjs', data-toggle='tab')
+          i.icon-group
+          | 查看项目信息
     if(act==2)
       li.active
         a(id='super_sidebar_viewmembers', data-toggle='tab')

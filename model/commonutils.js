@@ -165,6 +165,7 @@ exports.sidebaract.super.sysdatabackup  = 5; //系统数据备份
 exports.sidebaract.super.sysdatarestore = 6; //系统数据恢复
 exports.sidebaract.super.modifypass     = 7; //修改密码
 exports.sidebaract.super.logout         = 8; //退出登录
+exports.sidebaract.super.viewprjs       = 9; //项目信息查看
 
 //exports.sidebaract.tutor = 'tutor';
 exports.sidebaract.tutor = {};
@@ -193,6 +194,8 @@ exports.bread.super_sysinit_text = '系统初始化';
 exports.bread.super_sysinit_href = '/super_sysinit';
 exports.bread.super_viewmembers_text = '成员信息查看';
 exports.bread.super_viewmembers_href = '/super_viewmembers';
+exports.bread.super_viewprjs_text = '项目信息查看';
+exports.bread.super_viewprjs_href = '/super_viewprjs';
 exports.bread.super_addnewstudent_text = '新增学生记录';
 exports.bread.super_addnewstudent_href = '/super_addnewstudent';
 exports.bread.super_viewsyslog_text = '系统日志查看';

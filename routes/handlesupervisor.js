@@ -837,6 +837,73 @@ var XlsxFileToDb = function (req, res) {
 
 };
 
+exports.ViewPrjs = function(req, res) {
+
+	mgdb.ModelSysRecord.distinct({'prjName', 'prjStartDate', 'prjStopDate'}, {}, function(err, docs){
+		if(err)
+		{
+			console.log(err);
+			res.render('super_redirect_delay', 
+		      	{
+		      		act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error_abnormal, 
+		      		breadtext: comutil.bread.super_viewprjs_text,
+			        breadhref: comutil.bread.super_viewprjs_href,
+		      		newpage: '/super_sysinit', 
+		      		timeout: comutil.redirect_timeout
+		      	});
+		}
+		else
+		{
+			//test
+			var len = docs.length;
+			console.log('docs.length=' + docs.length);
+			for(i=0; i<len; i++)
+			{
+				console.log(docs[i].prjName + '\t' + docs[i].prjStartDate + '\t' + docs[i].prjStopDate);
+			}
+
+			res.send('wait');
+		}
+	});
+
+	mgdb.DoQueryAll(mgdb.ModelSysRecord, function(err, docs){
+		if(err)
+		{
+			res.render('super_redirect_delay', 
+		      	{
+		      		act: comutil.sidebaract.super.viewmembers,
+		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error_abnormal, 
+		      		breadtext: comutil.bread.super_viewmembers_text,
+			        breadhref: comutil.bread.super_viewmembers_href,
+		      		newpage: '/super_sysinit', 
+		      		timeout: comutil.redirect_timeout
+		      	});
+		}
+		else
+		{
+			console.log('msg_ok=' + comutil.msg.title_ok);
+
+			res.render('super_query_member_result', 
+		      	{
+		      		act: comutil.sidebaract.super.viewmembers,
+		      		members: docs,
+		      		msg: comutil.msg.msg_result, 
+		      		title: comutil.msg.title_viewmembers, 
+		      		smalltitle: ('   ' + comutil.msg.stitle_viewmembers), 
+		      		breadtext: comutil.bread.super_viewmembers_text,
+			        breadhref: comutil.bread.super_viewmembers_href,
+		      		//newpage: '/super_sysinit', 
+		      		//timeout: comutil.redirect_timeout
+		      	});
+		}
+	});
+};
+
 //////////////////////////////////////////////////////////////////
 //function: supervisor view member information, including student and tutor
 //parameters:  

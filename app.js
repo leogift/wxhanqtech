@@ -110,6 +110,7 @@ app.get('/hiddenadminresetpass123', handlesupervisor.ShowHiddenAdminResetPasswor
 app.post('/dohiddenadminresetpass789', handlesupervisor.DoHiddenAdminResetPassword);
 app.get('/super_modifyselfpassword', superlogin.Restrict, handlesupervisor.ShowSuperModifyPassword);
 app.post('/super_domodifyselfpass', superlogin.Restrict, handlesupervisor.DoSuperModifyPassword);
+app.get('/super_viewprjs', superlogin.Restrict, handlesupervisor.ViewPrjs);
 
 //
 // handle tutor administration

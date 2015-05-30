@@ -17,8 +17,12 @@ $("#super_sidebar_sysinit").click(function(){
     //window.open('http://www.baidu.com'); //this is open a new page
 });
 
-$("#super_sidebar_viewmembers").click(function(){
-    location.href='/super_viewmembers';
+$("#super_sidebar_viewprjs").click(function(){
+    location.href='/super_viewprjs';
+});
+
+$("#super_sidebar_viewprjs").click(function(){
+    location.href='/super_viewprjs';
 });
 
 $("#super_sidebar_addnewstudent").click(function(){
