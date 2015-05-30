@@ -881,6 +881,7 @@ exports.ViewPrjs = function(req, res) {
 							var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
 							prjInfo.push(prjObj);
 							console.log('prjInfo.length=' + prjInfo.length);
+							console.log('prjInfo[' + i + '].prjName=' + prjInfo[i].prjName);
 						}
 					}
 
