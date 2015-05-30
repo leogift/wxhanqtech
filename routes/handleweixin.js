@@ -87,7 +87,7 @@ exports.StuSubscribe = function(req, res){
 		  {
 		    //console.log(docs);
 		    console.log(docs[0].prjName);
-		    if(docs[0].prjName==req.body.selectedPrjName.trim())
+		    if(docs[0].prjName==req.body.selectedPrjName)
 		      console.log('docs[0].prjName==selectedPrjName');
 		    else
 		      console.log('docs[0].prjName!=selectedPrjName');
