@@ -944,7 +944,7 @@ exports.ViewPrjs = function(req, res) {
 			res.render('super_redirect_delay', 
 		      	{
 		      		act: comutil.sidebaract.super.viewprjs,
-		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
+		      		msg: comutil.msg.msg_error_abnormal, 
 		      		title: comutil.msg.title_error, 
 		      		smalltitle: comutil.msg.stitle_error_abnormal, 
 		      		breadtext: comutil.bread.super_viewprjs_text,
@@ -971,6 +971,32 @@ exports.ViewPrjs = function(req, res) {
 	});
 };
 
+var RedirectFoo = function(req, res){
+
+	console.log('redirecting...');
+
+	res.redirect('/super_viewprjs');
+
+
+};
+
+exports.RefreshPrjInfo = function(req, res) {
+
+	RefreshPrjInfoCollection();
+
+	res.render('super_redirect_delay', 
+  	{
+  		act: comutil.sidebaract.super.viewprjs,
+  		msg: comutil.msg.msg_wait, 
+  		title: comutil.msg.msg_wait, 
+  		smalltitle: comutil.msg.msg_wait, 
+  		breadtext: comutil.bread.super_viewprjs_text,
+        breadhref: comutil.bread.super_viewprjs_href,
+  		newpage: '/super_viewprjs', 
+  		timeout: comutil.redirect_timeout*2
+  	});
+};
+
 //////////////////////////////////////////////////////////////////
 //function: supervisor view member information, including student and tutor
 //parameters:  
@@ -991,7 +1017,7 @@ exports.ViewMembers = function(req, res) {
 			res.render('super_redirect_delay', 
 		      	{
 		      		act: comutil.sidebaract.super.viewmembers,
-		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
+		      		msg: comutil.msg.msg_error_abnormal, 
 		      		title: comutil.msg.title_error, 
 		      		smalltitle: comutil.msg.stitle_error_abnormal, 
 		      		breadtext: comutil.bread.super_viewmembers_text,
@@ -1859,11 +1885,27 @@ var dbCollectionRestore = function(req, res){
 			      		timeout:comutil.redirect_timeout
 			  	});
 
-			  	//restore prjInfo db
+			  	//reset prjInfo collection
+			  	RefreshPrjInfoCollection();
 			}
 		}
 	});
 };
+
+var RefreshPrjInfoCollection = function(){
+
+	//clear prjInfo collection
+  	console.log('reset prjInfo collection!');
+  	mgdb.RemoveCollection(comutil.prjinfo_collection_name, function(err, result){
+  		if(err)
+  			console.log(err);
+  		else
+  		{
+  			//restore prjInfo db
+  			AddPrjInfo();
+  		}
+  	});
+}; 
 
 exports.RemoveDatabase = function(req, res) {
 

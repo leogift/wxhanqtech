@@ -1,0 +1,79 @@
+extends layout
+
+
+extends super_page_sidebarheader
+
+
+block PAGECONTENT
+
+    //table
+    .row-fluid
+      .span6
+      // modal
+      #static.modal.hide.fade(tabindex="-1", data-backdrop="static", data-keyboard="false")
+        .modal-header
+          p 请确认操作
+        .modal-body
+          p 确定要删除该记录吗？
+          input(type="hidden", id="memberId", value="")
+        .modal-footer
+          button(type="button", data-dismiss="modal", class="btn blue") 
+            | 取消
+          button(id="mbtnSuperDeleteMember", type="button", data-dismiss="modal", class="btn red")
+            | 确定
+
+      // BEGIN SAMPLE TABLE PORTLET
+      .portlet.box.purple
+        .portlet-title
+          .caption
+            i.icon-table
+            | 项目信息表
+          .tools
+            a.collapse(href="javascript:;")
+            //- a.config(data-toggle="modal", href="#portlet-config")
+            //- a.reload(href="javascript:;")
+            //- a.remove(href="javascript:;")
+        .portlet-body(style="display: block;")
+          table.table.table-striped.table-bordered.table-advance.table-hover
+            thead
+              tr
+                th
+                  i.icon-check
+                  | 序号
+                th
+                  i.icon-briefcase
+                  | 项目名称
+                th
+                  i.icon-briefcase
+                  | 项目开始时间
+                th
+                  i.icon-briefcase
+                  | 项目结束时间
+                th
+                  i.icon-user
+                  | 归档情况
+                th
+                  i.icon-warning-sign
+                  | 归档
+
+            tbody
+              each prj, i in prjs
+                tr
+                  td
+                    a(href='super_modifyprj/:'+prj.id)
+                      | #{i+1}
+                      span.label.label-success.label-mini 修改
+                  td
+                    | #{prj.prjName}
+                  td
+                    | #{prj.prjStartDate}
+                  td
+                    | #{prj.prjStopDate}
+                  td
+                    | #{prj.prjExpired}
+                  td
+                    a.btn.mini.red-stripe.tryDelete(data-toggle="modal", data-id=prj.id, href="#static") 归档
+
+
+          a.btn.purple(type='button', href='refresh_prjinfo') 刷新
+
