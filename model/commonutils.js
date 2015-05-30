@@ -23,8 +23,8 @@ var path = require('path');
 //
 
 exports.redirect_timeout = 3000;
-//exports.webserver_port = 3000;
-exports.webserver_port = 80;
+exports.webserver_port = 3000;
+//exports.webserver_port = 80;
 // in file: johnnyMsgHandler.js : getMedia.GetAccessToken();
 
 
@@ -39,19 +39,19 @@ exports.webserver_port = 80;
 // exports.dump_restorebin = '/home/johnny/js/mongodb/mongodb-linux-i686-2.6.0/bin/mongorestore';
 
 //hq
-// exports.dump_dir = '/home/johnny/test/web/dbbackup';
-// exports.dump_dbname = 'worklogrecord';
-// exports.dump_dumpbin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
-// exports.dump_restorebin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
-// exports.LocationArrayFile = '/home/johnny/test/web/wis_v2/wis/locArray.json';
+exports.dump_dir = '/home/johnny/test/web/dbbackup';
+exports.dump_dbname = 'worklogrecord';
+exports.dump_dumpbin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
+exports.dump_restorebin = '/home/johnny/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
+exports.LocationArrayFile = '/home/johnny/test/web/wis_v2/wis/locArray.json';
 
 //qingcloud
-exports.dump_dir = '/home/web/dbbackup';
-exports.dump_dbname = 'worklogrecord';
-exports.dump_dumpbin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
-exports.dump_restorebin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
-//exports.LocationArrayFile = '/home/web/wis/locInfoArray.json';
-exports.LocationArrayFile = '/home/web/wis_v2/wisv2/locInfoArray.json';
+// exports.dump_dir = '/home/web/dbbackup';
+// exports.dump_dbname = 'worklogrecord';
+// exports.dump_dumpbin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongodump';
+// exports.dump_restorebin = '/home/software/mongodb/mongodb-linux-x86_64-2.6.6/bin/mongorestore';
+// //exports.LocationArrayFile = '/home/web/wis/locInfoArray.json';
+// exports.LocationArrayFile = '/home/web/wis_v2/wisv2/locInfoArray.json';
 
 
 //
@@ -63,9 +63,9 @@ exports.sysrecord_collection_name = 'sysrecords';
 exports.subhtml_templatehtmlname = 'reg.html';
 exports.subhtml_errorhtmlname = 'suberror.html';
 //exports.subhtml_absolutewebroot = '/home/johnny/js/test/wis/public';   //709
-//exports.subhtml_absolutewebroot = '/home/johnny/test/web/wis/public';  //hq
+exports.subhtml_absolutewebroot = '/home/johnny/test/web/wis/public';  //hq
 //exports.subhtml_absolutewebroot = '/home/web/wis/public';                //qingcloud
-exports.subhtml_absolutewebroot = '/home/web/wis_v2/wisv2/public';                //qingcloud
+//exports.subhtml_absolutewebroot = '/home/web/wis_v2/wisv2/public';                //qingcloud
 
 
 
@@ -320,6 +320,11 @@ exports.msg.title_viewmembers = '查看成员信息列表';
 exports.msg.stitle_viewmembers = '\t可以进行查看、修改、删除、重置成员记录信息等操作';
 
 //
+// 查看项目信息
+exports.msg.title_viewprjs = '查看项目信息列表';
+exports.msg.stitle_viewprjs = '\t可以进行查看、修改、归档项目记录信息等操作';
+
+//
 // 增加学生信息
 exports.msg.title_addnewstudent = '增加新成员信息';
 exports.msg.stitle_addnewstudent = '\t请填写新成员信息';
@@ -337,6 +342,11 @@ exports.msg.msg_error_notfound = '数据记录未发现！';
 // 修改成员信息
 exports.msg.msg_modifymember = '修改成员信息！';
 exports.msg.msg_ok_modifymember = '修改成员信息成功 ';
+
+//
+// 修改项目信息
+exports.msg.msg_modifyprj = '修改项目信息！';
+exports.msg.msg_ok_modifyprj = '修改项目信息成功 ';
 
 //
 // 查看日志信息

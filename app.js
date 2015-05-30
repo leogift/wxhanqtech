@@ -85,6 +85,10 @@ app.get('/super_viewmembers', superlogin.Restrict, handlesupervisor.ViewMembers)
 app.get('/super_addnewstudent', superlogin.Restrict, handlesupervisor.ShowAddStudent);
 app.post('/super_domodifymember', superlogin.Restrict, handlesupervisor.DoModifyMemberById);
 app.get('/super_modifymember/:id', superlogin.Restrict, handlesupervisor.ModifyMemberById);
+
+app.post('/super_domodifyprj', superlogin.Restrict, handlesupervisor.DoModifyPrjById);
+app.get('/super_modifyprj/:id', superlogin.Restrict, handlesupervisor.ModifyPrjById);
+
 // app.get('/super_viewsyslog', superlogin.restrict, handlesupervisor.ViewSyslog);
 // app.get('/super_sysdatarestore', superlogin.restrict, handlesupervisor.SysdataRestore);
 // app.get('/super_sysdatarecovery', superlogin.restrict, handlesupervisor.SysdataRecovery);

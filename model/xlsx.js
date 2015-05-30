@@ -100,9 +100,16 @@ exports.XlsxToDb = function (fileName, callback) {
 		}
 		console.log(line);
 		var ret = LineToDb(line, function(err, entity){
-			callback(err, entity);
+			if(err)
+			{
+				callback(err);
+				//return;
+			}
+				
 		});
 	}
+
+	callback(null);
 
 };
 

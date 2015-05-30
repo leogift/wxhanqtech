@@ -800,7 +800,8 @@ var XlsxFileToDb = function (req, res) {
 	        //var xlsx = require('../model/xlsx');
 	        xlsx.PrintTable(target_path);
 
-			xlsx.XlsxToDb(target_path, function(err, entity){ //这个callback是在存入每一行就调用一次
+	        //这个callback是在存入每一行就调用一次
+			xlsx.XlsxToDb(target_path, function(err){ 
 				if(err)
 			    {
 			        console.log(err);
@@ -818,7 +819,7 @@ var XlsxFileToDb = function (req, res) {
 			    }
 			    else
 			    {
-			        console.log('save ok!' + entity);
+			        console.log('save ok!');
 			        res.render('super_redirect_delay', 
 				      	{
 				      		act: comutil.sidebaract.super.sysinit,
@@ -830,10 +831,13 @@ var XlsxFileToDb = function (req, res) {
 				      	    newpage: '/super_viewmembers', 
 				      	    timeout: comutil.redirect_timeout
 				      	});
+
+			        setTimeout(function(){AddPrjInfo();}, 10000);
 			    }
 			});
             
-            setTimeout(function(){AddPrjInfo();}, 10000);
+            //setTimeout(function(){AddPrjInfo();}, 10000);
+            //AddPrjInfo();
 
 	    }
 	}
@@ -917,6 +921,7 @@ var AddPrjInfoToDb = function(prjName, prjStartDate, prjStopDate){
 	newPrjInfo.prjFilePath = '';
 	newPrjInfo.created = Date.now();
 
+	//function name is SysRecord, but the function is ok!
 	mgdb.AddOneSysRecord(newPrjInfo, function(err, entity){
 		if(err)
 		{
@@ -930,20 +935,12 @@ var AddPrjInfoToDb = function(prjName, prjStartDate, prjStopDate){
 
 };
 
-
-var prjNames = [];
-	var prjStartDates = [];
-	var prjStopDates = [];
 exports.ViewPrjs = function(req, res) {
 
-	// var prjNames = [];
-	// var prjStartDates = [];
-	// var prjStopDates = [];
-
-	mgdb.ModelSysRecord.distinct('prjName', {}, function(err, docs){
+	//mgdb.ModelPrjInfo.find({}, null, {sort:[['prjName', 1]]}, function(err, docs){
+	mgdb.ModelPrjInfo.find({}, null, {sort:[['created', 1]]}, function(err, docs){
 		if(err)
 		{
-			console.log(err);
 			res.render('super_redirect_delay', 
 		      	{
 		      		act: comutil.sidebaract.super.viewprjs,
@@ -958,151 +955,20 @@ exports.ViewPrjs = function(req, res) {
 		}
 		else
 		{
-			var len = docs.length;
-			console.log('docs.length=' + docs.length);
-
-			for(var i=0; i<len; i++)
-			{
-				console.log(docs[i]);
-				prjNames[i] = docs[i];
-
-				// mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
-				// 	if(err)
-				// 	{
-				// 		console.log('error=' + err);
-				// 	}
-				// 	else
-				// 	{
-				// 		if(data)
-				// 		{
-				// 			console.log('prjName=' + docs[i]);
-				// 			console.log('i=' + i);
-				// 			console.log('prjStartDate' + data.prjStartDate);
-				// 			console.log('prjStopDate' + data.prjStopDate);
-
-				// 			prjStartDates[i] = data.prjStartDate;
-				// 			prjStopDates[i] = data.prjStopDate;
-
-				// 			// var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
-				// 			// prjInfo.push(prjObj);
-				// 			// console.log('prjInfo.length=' + prjInfo.length);
-				// 			// console.log('prjInfo[' + i + '].prjName=' + prjInfo[i].prjName);
-				// 		}
-				// 	}
-
-				// });
-			}
-
-			// res.send(prjNames);
-
-			// setTimeout(console.log('hehe'), 3000);
-			// setTimeout(console.log(prjNames), 3000);
-			// setTimeout(console.log(prjStartDates), 3000);
-			// setTimeout(console.log(prjStopDates), 3000);
-		}
-	});
-
-
-    mgdb.ModelSysRecord.distinct('prjStartDate', {}, function(err, docs){
-		if(err)
-		{
-			console.log(err);
-			res.render('super_redirect_delay', 
+			res.render('super_query_prj_result', 
 		      	{
 		      		act: comutil.sidebaract.super.viewprjs,
-		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
-		      		title: comutil.msg.title_error, 
-		      		smalltitle: comutil.msg.stitle_error_abnormal, 
+		      		prjs: docs,
+		      		msg: comutil.msg.msg_result, 
+		      		title: comutil.msg.title_viewprjs, 
+		      		smalltitle: ('   ' + comutil.msg.stitle_viewprjs), 
 		      		breadtext: comutil.bread.super_viewprjs_text,
 			        breadhref: comutil.bread.super_viewprjs_href,
-		      		newpage: '/super_sysinit', 
-		      		timeout: comutil.redirect_timeout
+		      		//newpage: '/super_sysinit', 
+		      		//timeout: comutil.redirect_timeout
 		      	});
 		}
-		else
-		{
-			var len = docs.length;
-			console.log('docs.length=' + docs.length);
-
-			for(var i=0; i<len; i++)
-			{
-				console.log(docs[i]);
-				prjStartDates[i] = docs[i];
-			}
-		}
 	});
-
-	mgdb.ModelSysRecord.distinct('prjStopDate', {}, function(err, docs){
-		if(err)
-		{
-			console.log(err);
-			res.render('super_redirect_delay', 
-		      	{
-		      		act: comutil.sidebaract.super.viewprjs,
-		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
-		      		title: comutil.msg.title_error, 
-		      		smalltitle: comutil.msg.stitle_error_abnormal, 
-		      		breadtext: comutil.bread.super_viewprjs_text,
-			        breadhref: comutil.bread.super_viewprjs_href,
-		      		newpage: '/super_sysinit', 
-		      		timeout: comutil.redirect_timeout
-		      	});
-		}
-		else
-		{
-			var len = docs.length;
-			console.log('docs.length=' + docs.length);
-
-			for(var i=0; i<len; i++)
-			{
-				console.log(docs[i]);
-				prjStopDates[i] = docs[i];
-			}
-		}
-	});
-
-    console.log('now see:');
-	console.log(prjNames);
-	console.log(prjStartDates);
-	console.log(prjStopDates);
-	console.log('see over');
-
-	res.send(prjNames);
-
-
-	// mgdb.DoQueryAll(mgdb.ModelSysRecord, function(err, docs){
-	// 	if(err)
-	// 	{
-	// 		res.render('super_redirect_delay', 
-	// 	      	{
-	// 	      		act: comutil.sidebaract.super.viewmembers,
-	// 	      		msg: comutil.msg.msg_error_abnormal_sysinit, 
-	// 	      		title: comutil.msg.title_error, 
-	// 	      		smalltitle: comutil.msg.stitle_error_abnormal, 
-	// 	      		breadtext: comutil.bread.super_viewmembers_text,
-	// 		        breadhref: comutil.bread.super_viewmembers_href,
-	// 	      		newpage: '/super_sysinit', 
-	// 	      		timeout: comutil.redirect_timeout
-	// 	      	});
-	// 	}
-	// 	else
-	// 	{
-	// 		console.log('msg_ok=' + comutil.msg.title_ok);
-
-	// 		res.render('super_query_member_result', 
-	// 	      	{
-	// 	      		act: comutil.sidebaract.super.viewmembers,
-	// 	      		members: docs,
-	// 	      		msg: comutil.msg.msg_result, 
-	// 	      		title: comutil.msg.title_viewmembers, 
-	// 	      		smalltitle: ('   ' + comutil.msg.stitle_viewmembers), 
-	// 	      		breadtext: comutil.bread.super_viewmembers_text,
-	// 		        breadhref: comutil.bread.super_viewmembers_href,
-	// 	      		//newpage: '/super_sysinit', 
-	// 	      		//timeout: comutil.redirect_timeout
-	// 	      	});
-	// 	}
-	// });
 };
 
 //////////////////////////////////////////////////////////////////
@@ -1608,6 +1474,135 @@ exports.DoModifyMemberById = function(req, res) {
 	);
 };
 
+exports.ModifyPrjById = function(req, res){
+
+	var idStr = req.params.id.substr(1, req.params.id.length-1);
+	console.log('modify id= ' + idStr);
+	
+	mgdb.FindOneById(mgdb.ModelPrjInfo, idStr, function(err, docs){
+		if(err)
+		{
+			console.log('abnormal error!');
+			res.render('super_redirect_delay', 
+		  	    {
+		  	    	act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_error_abnormal,
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error, 
+		      		breadtext: comutil.bread.super_viewprjs_text,
+                    breadhref: comutil.bread.super_viewprjs_href,
+		      		newpage:'/super_viewprjs', 
+		      		timeout:comutil.redirect_timeout
+		  	    });
+		}
+		else
+		{
+			if(docs)
+			{
+				res.render('super_modify_prj',
+				  	{
+				  		act: comutil.sidebaract.super.viewprjs,
+				  		prj:docs, 
+						msg: comutil.msg.msg_modifyprj, 
+				  		title: comutil.msg.title_ok, 
+				  		smalltitle: comutil.msg.stitle_ok,
+				  		breadtext: comutil.bread.super_viewprjs_text,
+                        breadhref: comutil.bread.super_viewprjs_href,
+				  		id:idStr
+				  	});
+			}
+			else
+			{
+				console.log('not found!');
+				res.render('super_redirect_delay', 
+			  	    {
+			  	    	act: comutil.sidebaract.super.viewprjs,
+						msg: comutil.msg.msg_error_notfound, 
+				  		title: comutil.msg.title_error, 
+				  		smalltitle: comutil.msg.stitle_error_abnormal, 
+				  		breadtext: comutil.bread.super_viewprjs_text,
+                        breadhref: comutil.bread.super_viewprjs_href,
+				  		newpage: '/super_viewprjs', 
+				  		timeout: comutil.redirect_timeout
+			  	    });
+			}			
+		}
+	});
+};
+
+exports.DoModifyPrjById = function(req, res) {
+
+	var newPrjName = req.body.prjnewname.trim();
+
+	console.log('id=' + req.body.modifyid + 
+		        ' prjoldname=' + req.body.prjoldname +
+		        ' prjnewname=' + req.body.prjnewname +
+		        ' prjstartdate=' + req.body.prjstartdate +
+		        ' prjstopdate=' + req.body.prjstopdate
+		        );
+
+	//check date error, stop < start
+	//...
+
+	mgdb.DoModifyById(
+		mgdb.ModelPrjInfo, 
+		req.body.modifyid, 
+		{
+			prjName:newPrjName,
+			prjStartDate:req.body.prjstartdate,
+			prjStopDate:req.body.prjstopdate,
+	    },
+		function(err, prjInfo){
+			if(err)
+			{
+			  console.log('err=' + err);
+			  res.render('super_redirect_delay', 
+			  	{
+			  		act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_error_abnormal + ' ' + err,
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error,
+		      		breadtext: comutil.bread.super_viewprjs_text,
+                    breadhref: comutil.bread.super_viewprjs_href, 
+		      		newpage:'/super_viewprjs', 
+		      		timeout:comutil.redirect_timeout
+			  	});
+
+			  return;
+			}
+			else
+			{
+			  res.render('super_redirect_delay', 
+			  	{
+			  		act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_ok_modifyprj,
+		      		title: comutil.msg.title_ok, 
+		      		smalltitle: comutil.msg.stitle_ok, 
+		      		breadtext: comutil.bread.super_viewprjs_text,
+                    breadhref: comutil.bread.super_viewprjs_href,
+		      		newpage:'/super_viewprjs', 
+		      		timeout:comutil.redirect_timeout
+			  	});
+			}
+		}
+	);
+    
+    //multiple update
+    console.log('batch update...');
+    mgdb.ModelSysRecord.update(
+    	{prjName:req.body.prjoldname}, 
+    	{prjName: newPrjName, prjStartDate: req.body.prjstartdate, prjStopDate: req.body.prjstopdate},
+    	{multi: true},
+    	function(err, numberAffected, raw){
+    		if(err)
+    			console.log(err);
+    		else
+    			console.log('numberAffected=' + numberAffected);
+    	});
+
+
+};
+
 exports.DbDump = function(req, res) {
 	var timeString = comutil.GetTimeString(1);
 	console.log('GetTimeString=' + timeString);
@@ -1863,6 +1858,8 @@ var dbCollectionRestore = function(req, res){
 			      		newpage:'/super_sysdatarestore', 
 			      		timeout:comutil.redirect_timeout
 			  	});
+
+			  	//restore prjInfo db
 			}
 		}
 	});
