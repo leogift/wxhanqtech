@@ -841,6 +841,45 @@ var XlsxFileToDb = function (req, res) {
 };
 
 
+var RescursiveFind = function (prj_names) {
+
+	var len = prj_names.length;
+
+	if(len==0)
+	{
+		console.log('recursive end!');
+		return;
+	}
+
+	var prjName = prj_names.pop();
+	console.log('len=' + len + ' prjName=' + prjName);
+
+	mgdb.ModelSysRecord.findOne({'prjName': prjName}, function(err, data){
+		if(err)
+		{
+			console.log('error=' + err);
+		}
+		else
+		{
+			if(data)
+			{
+				console.log('prjName=' + prjName);
+				console.log('len=' + len);
+				console.log('prjStartDate' + data.prjStartDate);
+				console.log('prjStopDate' + data.prjStopDate);
+
+				//add to db
+				AddPrjInfoToDb(prjName, data.prjStartDate, data.prjStopDate);
+
+				//recursive
+				RescursiveFind(prj_names);
+			}
+		}
+
+	});
+
+};
+
 var AddPrjInfo = function(){
 
 	console.log('AddPrjInfo start!');
@@ -859,31 +898,7 @@ var AddPrjInfo = function(){
 				console.log('distinct prjName is ' + docs.length);
 				console.log(docs);
 
-				for(var i=0; i<len; i++)
-				{
-					console.log(docs[i]);
-
-					mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
-						if(err)
-						{
-							console.log('error=' + err);
-						}
-						else
-						{
-							if(data)
-							{
-								console.log('prjName=' + docs[i]);
-								console.log('i=' + i);
-								console.log('prjStartDate' + data.prjStartDate);
-								console.log('prjStopDate' + data.prjStopDate);
-
-								//add to db
-								AddPrjInfoToDb(docs[i], data.prjStartDate, data.prjStopDate);
-							}
-						}
-
-					});
-				}
+				RescursiveFind(docs);
 
 			}
 		}
