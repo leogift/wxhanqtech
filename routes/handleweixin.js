@@ -115,10 +115,19 @@ exports.StuSubscribe = function(req, res){
 				}
 				else
 				{
-				  //res.send('注册成功!');
-				  res.render('subscribe_result',
-				  	{resultMsg:comutil.subscribe_resultmsg_ok}
-				  );
+				  if(docs)
+				  {
+				  	res.render('subscribe_result',
+					  	{resultMsg:comutil.subscribe_resultmsg_ok}
+					  );
+				  }
+				  else
+				  {
+				  	res.render('subscribe_result',
+					  	{resultMsg:comutil.subscribe_resultmsg_error+subscribe_resultmsg_error_prjerror}
+					  );
+				  }
+				  
 				}
 		});
 	}

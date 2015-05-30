@@ -109,6 +109,7 @@ exports.export_xlsx_sheetname = 'exported_worklog';
 // subscribe result msg
 exports.subscribe_resultmsg_ok = '注册成功!';
 exports.subscribe_resultmsg_error = '注册失败!';
+exports.subscribe_resultmsg_error_prjerror = '您不属于这个项目!';
 
 //
 // subscribe state
