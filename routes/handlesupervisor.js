@@ -896,7 +896,7 @@ exports.ViewPrjs = function(req, res) {
 				});
 			}
 
-			res.send(prjInfo);
+			res.send(prjNames);
 
 			setTimeout(console.log('hehe'), 3000);
 			setTimeout(console.log(prjNames), 3000);
