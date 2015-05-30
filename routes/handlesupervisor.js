@@ -857,15 +857,37 @@ exports.ViewPrjs = function(req, res) {
 		}
 		else
 		{
+			var prjInfo = [];
 			//test
 			var len = docs.length;
 			console.log('docs.length=' + docs.length);
-			for(i=0; i<len; i++)
+
+			for(var i=0; i<len; i++)
 			{
 				console.log(docs[i]);
+				mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
+					if(err)
+					{
+						console.log('error=' + err);
+						continue;
+					}
+					else
+					{
+						if(data)
+						{
+							console.log('prjName=' + docs[i]);
+							console.log('prjStartDate' + data.prjStartDate);
+							console.log('prjStopDate' + data.prjStopDate);
+
+							var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
+							prjInfo.push(prjObj);
+						}
+					}
+
+				});
 			}
 
-			res.send(docs);
+			res.send(prjInfo);
 		}
 	});
 
