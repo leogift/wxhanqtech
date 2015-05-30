@@ -69,17 +69,15 @@ html(lang="en")
                                     label.control-label &#23398;&#21495;
                                     .controls
                                       input.m-wrap.small(type="text", name="stunumber", placeholder="请输入学号")
-                                      span.help-inline &#23398;&#21495;&#26159;&#21807;&#19968;&#30331;&#24405;&#29992;&#25143;&#21517;&#65292;&#35831;&#20934;&#30830;&#22635;&#20889;&#65292;&#23494;&#30721;&#40664;&#35748;&#20026;&#25163;&#26426;&#21495;
+                                      span.help-inline &#23398;&#21495;&#26159;&#30331;&#24405;&#29992;&#25143;&#21517;&#65292;&#35831;&#20934;&#30830;&#22635;&#20889;&#65292;&#23494;&#30721;&#40664;&#35748;&#20026;&#25163;&#26426;&#21495;
                                   .control-group
                                     label.control-label 请选择项目名称
                                     .controls
                                       select.m-wrap.small(name="selectedPrjName")
                                         if(prjNames)
                                           each prj, i in prjNames
-                                            //if(i==0)
-                                            //option(selected="selected", value="#{prj}") #{prj}
                                             option(value="#{prj}") #{prj}
-                                      span.help-inline 
+                                      span.help-inline 请选择当前您所属的项目名称
                                   .form-actions.clearfix
                                     input(type="hidden", value="#{weixin_id}", name="weixinid")
                                     button.btn.blue.button-submit(style="display: inline-block;", type="submit")

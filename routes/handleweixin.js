@@ -33,23 +33,7 @@ exports.WeixinRegister = function(req, res) {
 	
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('WeiXinRegister id= ' + idStr);
-/*
-	mgdb.ModelSysRecord.distinct('prjName', {prjExpired:false}, function(err, docs){
 
-		if(err)
-		{
-			console.log('error:' + err);
-		}
-
-		res.render('student_wx_reg',
-		  	{
-		  		weixin_id: idStr,
-		  		prjNames: docs
-		  	}
-		  );
-			
-	});
-*/
 	mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, function(prjs){
 
 		console.log('prjNames=');
@@ -71,6 +55,7 @@ exports.StuSubscribe = function(req, res){
 
 	console.log('StuSubscribe:\n' +
 		'stunumber=' + stuNumber + '\n' +
+		'prjName=' + req.body.selectedPrjName + '\n' +
 		'weixin_id=' + req.body.weixinid);
 
 	if(stuNumber=='')
@@ -78,6 +63,12 @@ exports.StuSubscribe = function(req, res){
 		//res.send('学号不能为空!');
 		res.render('subscribe_result',
 		  	{resultMsg:'学号不能为空!'}
+		  );
+	}
+	else if(req.body.selectedPrjName=='')
+	{
+		res.render('subscribe_result',
+		  	{resultMsg:'项目名称为空，可能您当前不属于任何一个未归档的项目!'}
 		  );
 	}
 	else if(req.body.weixinid=='')
@@ -90,9 +81,9 @@ exports.StuSubscribe = function(req, res){
 	else
 	{		
 
-		mgdb.DoModifyByStuNumber(
+		mgdb.DoModifyOneByCondition(
 			mgdb.ModelSysRecord, 
-			stuNumber, 
+			{'stuNumber':stuNumber,'prjName':req.body.selectedPrjName}, 
 			{
 			    stuWeixinBind: true,
 			    stuWeixin_id: req.body.weixinid,

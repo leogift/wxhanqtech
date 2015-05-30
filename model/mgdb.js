@@ -321,6 +321,25 @@ exports.FindDocsByWinxinId = function(model, weixin_id, callback)
 		});
 };
 
+exports.DoModifyOneByCondition = function(model, condition, newjsonobj, callback){
+
+	try
+	{
+		model.findOneAndUpdate(
+			condition, 
+			newjsonobj, 
+			function(err, doc){
+				callback(err, doc);
+		});
+	}
+	catch(error)
+	{
+		console.log('DoModifyById error=' + error);
+		callback(error, null);
+	}
+
+};
+
 exports.DoModifyById = function(model, id, newjsonobj, callback){
 	
 	console.log('modify id= ' + id);
@@ -337,6 +356,7 @@ exports.DoModifyById = function(model, id, newjsonobj, callback){
 	catch(error)
 	{
 		console.log('DoModifyById error=' + error);
+		callback(error, null);
 	}	
 };
 
@@ -356,6 +376,7 @@ exports.DoModifyByStuNumber = function(model, stu_number, new_jsonobj, callback)
 	catch(error)
 	{
 		console.log('DoModifyByStuNumber error=' + error);
+		callback(error, null);
 	}	
 };
 
@@ -375,6 +396,7 @@ exports.DoModifyByWeixinId = function(model, weixin_id, new_jsonobj, callback){
 	catch(error)
 	{
 		console.log('DoModifyByWeixinId error=' + error);
+		callback(error, null);
 	}	
 };
 
@@ -394,6 +416,7 @@ exports.DoModifyByUsername = function(model, username, newjsonobj, callback){
 	catch(error)
 	{
 		console.log('DoModifyByUsername error=' + error.message);
+		callback(error, null);
 	}	
 };
 
@@ -413,6 +436,7 @@ exports.DoModifyStudentInfoByCellphone = function(model, cellphone, newjsonobj, 
 	catch(error)
 	{
 		console.log('DoModifyStudentInfoByCellphone error=' + error.message);
+		callback(error, null);
 	}	
 };
 
