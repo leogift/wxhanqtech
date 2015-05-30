@@ -84,7 +84,7 @@ exports.StuSubscribe = function(req, res){
 		mgdb.DoModifyOneByCondition(
 			mgdb.ModelSysRecord, 
 			//{'stuNumber':stuNumber},
-			{'prjName':req.body.selectedPrjName}, 
+			{'stuNumber':stuNumber, 'prjName':req.body.selectedPrjName}, 
 			{
 			    stuWeixinBind: true,
 			    stuWeixin_id: req.body.weixinid,
