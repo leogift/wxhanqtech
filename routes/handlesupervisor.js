@@ -869,41 +869,107 @@ exports.ViewPrjs = function(req, res) {
 				console.log(docs[i]);
 				prjNames[i] = docs[i];
 
-				mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
-					if(err)
-					{
-						console.log('error=' + err);
-					}
-					else
-					{
-						if(data)
-						{
-							console.log('prjName=' + docs[i]);
-							console.log('i=' + i);
-							console.log('prjStartDate' + data.prjStartDate);
-							console.log('prjStopDate' + data.prjStopDate);
+				// mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
+				// 	if(err)
+				// 	{
+				// 		console.log('error=' + err);
+				// 	}
+				// 	else
+				// 	{
+				// 		if(data)
+				// 		{
+				// 			console.log('prjName=' + docs[i]);
+				// 			console.log('i=' + i);
+				// 			console.log('prjStartDate' + data.prjStartDate);
+				// 			console.log('prjStopDate' + data.prjStopDate);
 
-							prjStartDates[i] = data.prjStartDate;
-							prjStopDates[i] = data.prjStopDate;
+				// 			prjStartDates[i] = data.prjStartDate;
+				// 			prjStopDates[i] = data.prjStopDate;
 
-							// var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
-							// prjInfo.push(prjObj);
-							// console.log('prjInfo.length=' + prjInfo.length);
-							// console.log('prjInfo[' + i + '].prjName=' + prjInfo[i].prjName);
-						}
-					}
+				// 			// var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
+				// 			// prjInfo.push(prjObj);
+				// 			// console.log('prjInfo.length=' + prjInfo.length);
+				// 			// console.log('prjInfo[' + i + '].prjName=' + prjInfo[i].prjName);
+				// 		}
+				// 	}
 
-				});
+				// });
 			}
 
-			res.send(prjNames);
+			// res.send(prjNames);
 
-			setTimeout(console.log('hehe'), 3000);
-			setTimeout(console.log(prjNames), 3000);
-			setTimeout(console.log(prjStartDates), 3000);
-			setTimeout(console.log(prjStopDates), 3000);
+			// setTimeout(console.log('hehe'), 3000);
+			// setTimeout(console.log(prjNames), 3000);
+			// setTimeout(console.log(prjStartDates), 3000);
+			// setTimeout(console.log(prjStopDates), 3000);
 		}
 	});
+
+
+    mgdb.ModelSysRecord.distinct('prjStartDate', {}, function(err, docs){
+		if(err)
+		{
+			console.log(err);
+			res.render('super_redirect_delay', 
+		      	{
+		      		act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error_abnormal, 
+		      		breadtext: comutil.bread.super_viewprjs_text,
+			        breadhref: comutil.bread.super_viewprjs_href,
+		      		newpage: '/super_sysinit', 
+		      		timeout: comutil.redirect_timeout
+		      	});
+		}
+		else
+		{
+			var len = docs.length;
+			console.log('docs.length=' + docs.length);
+
+			for(var i=0; i<len; i++)
+			{
+				console.log(docs[i]);
+				prjStartDates[i] = docs[i];
+			}
+		}
+	});
+
+	mgdb.ModelSysRecord.distinct('prjStopDate', {}, function(err, docs){
+		if(err)
+		{
+			console.log(err);
+			res.render('super_redirect_delay', 
+		      	{
+		      		act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error_abnormal, 
+		      		breadtext: comutil.bread.super_viewprjs_text,
+			        breadhref: comutil.bread.super_viewprjs_href,
+		      		newpage: '/super_sysinit', 
+		      		timeout: comutil.redirect_timeout
+		      	});
+		}
+		else
+		{
+			var len = docs.length;
+			console.log('docs.length=' + docs.length);
+
+			for(var i=0; i<len; i++)
+			{
+				console.log(docs[i]);
+				prjStopDates[i] = docs[i];
+			}
+		}
+	});
+
+	console.log(prjNames);
+	console.log(prjStartDates);
+	console.log(prjStopDates);
+
+	res.send(prjNames);
+
 
 	// mgdb.DoQueryAll(mgdb.ModelSysRecord, function(err, docs){
 	// 	if(err)
