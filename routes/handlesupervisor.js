@@ -839,6 +839,8 @@ var XlsxFileToDb = function (req, res) {
 
 exports.ViewPrjs = function(req, res) {
 
+	var prjInfo = [];
+
 	mgdb.ModelSysRecord.distinct('prjName', {}, function(err, docs){
 		if(err)
 		{
@@ -857,8 +859,6 @@ exports.ViewPrjs = function(req, res) {
 		}
 		else
 		{
-			var prjInfo = [];
-			//test
 			var len = docs.length;
 			console.log('docs.length=' + docs.length);
 
@@ -880,6 +880,7 @@ exports.ViewPrjs = function(req, res) {
 
 							var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
 							prjInfo.push(prjObj);
+							console.log('prjInfo.length=' + prjInfo.length);
 						}
 					}
 
@@ -888,43 +889,43 @@ exports.ViewPrjs = function(req, res) {
 
 			res.send(prjInfo);
 
-			setTimeout(console.dir(prjInfo), 3000);
+			setTimeout(console.log(prjInfo), 3000);
 		}
 	});
 
-	mgdb.DoQueryAll(mgdb.ModelSysRecord, function(err, docs){
-		if(err)
-		{
-			res.render('super_redirect_delay', 
-		      	{
-		      		act: comutil.sidebaract.super.viewmembers,
-		      		msg: comutil.msg.msg_error_abnormal_sysinit, 
-		      		title: comutil.msg.title_error, 
-		      		smalltitle: comutil.msg.stitle_error_abnormal, 
-		      		breadtext: comutil.bread.super_viewmembers_text,
-			        breadhref: comutil.bread.super_viewmembers_href,
-		      		newpage: '/super_sysinit', 
-		      		timeout: comutil.redirect_timeout
-		      	});
-		}
-		else
-		{
-			console.log('msg_ok=' + comutil.msg.title_ok);
+	// mgdb.DoQueryAll(mgdb.ModelSysRecord, function(err, docs){
+	// 	if(err)
+	// 	{
+	// 		res.render('super_redirect_delay', 
+	// 	      	{
+	// 	      		act: comutil.sidebaract.super.viewmembers,
+	// 	      		msg: comutil.msg.msg_error_abnormal_sysinit, 
+	// 	      		title: comutil.msg.title_error, 
+	// 	      		smalltitle: comutil.msg.stitle_error_abnormal, 
+	// 	      		breadtext: comutil.bread.super_viewmembers_text,
+	// 		        breadhref: comutil.bread.super_viewmembers_href,
+	// 	      		newpage: '/super_sysinit', 
+	// 	      		timeout: comutil.redirect_timeout
+	// 	      	});
+	// 	}
+	// 	else
+	// 	{
+	// 		console.log('msg_ok=' + comutil.msg.title_ok);
 
-			res.render('super_query_member_result', 
-		      	{
-		      		act: comutil.sidebaract.super.viewmembers,
-		      		members: docs,
-		      		msg: comutil.msg.msg_result, 
-		      		title: comutil.msg.title_viewmembers, 
-		      		smalltitle: ('   ' + comutil.msg.stitle_viewmembers), 
-		      		breadtext: comutil.bread.super_viewmembers_text,
-			        breadhref: comutil.bread.super_viewmembers_href,
-		      		//newpage: '/super_sysinit', 
-		      		//timeout: comutil.redirect_timeout
-		      	});
-		}
-	});
+	// 		res.render('super_query_member_result', 
+	// 	      	{
+	// 	      		act: comutil.sidebaract.super.viewmembers,
+	// 	      		members: docs,
+	// 	      		msg: comutil.msg.msg_result, 
+	// 	      		title: comutil.msg.title_viewmembers, 
+	// 	      		smalltitle: ('   ' + comutil.msg.stitle_viewmembers), 
+	// 	      		breadtext: comutil.bread.super_viewmembers_text,
+	// 		        breadhref: comutil.bread.super_viewmembers_href,
+	// 	      		//newpage: '/super_sysinit', 
+	// 	      		//timeout: comutil.redirect_timeout
+	// 	      	});
+	// 	}
+	// });
 };
 
 //////////////////////////////////////////////////////////////////
