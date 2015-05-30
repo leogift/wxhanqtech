@@ -839,7 +839,9 @@ var XlsxFileToDb = function (req, res) {
 
 exports.ViewPrjs = function(req, res) {
 
-	var prjInfo = [];
+	var prjNames = [];
+	var prjStartDates = [];
+	var prjStopDates = [];
 
 	mgdb.ModelSysRecord.distinct('prjName', {}, function(err, docs){
 		if(err)
@@ -865,6 +867,8 @@ exports.ViewPrjs = function(req, res) {
 			for(var i=0; i<len; i++)
 			{
 				console.log(docs[i]);
+				prjNames[i] = docs[i];
+
 				mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
 					if(err)
 					{
@@ -875,13 +879,17 @@ exports.ViewPrjs = function(req, res) {
 						if(data)
 						{
 							console.log('prjName=' + docs[i]);
+							console.log('i=' + i);
 							console.log('prjStartDate' + data.prjStartDate);
 							console.log('prjStopDate' + data.prjStopDate);
 
-							var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
-							prjInfo.push(prjObj);
-							console.log('prjInfo.length=' + prjInfo.length);
-							console.log('prjInfo[' + i + '].prjName=' + prjInfo[i].prjName);
+							prjStartDates[i] = data.prjStartDate;
+							prjStopDates[i] = data.prjStopDate;
+
+							// var prjObj = {prjName: docs[i], prjStartDate: data.prjStartDate, prjStopDate: data.prjStopDate};
+							// prjInfo.push(prjObj);
+							// console.log('prjInfo.length=' + prjInfo.length);
+							// console.log('prjInfo[' + i + '].prjName=' + prjInfo[i].prjName);
 						}
 					}
 
@@ -890,7 +898,10 @@ exports.ViewPrjs = function(req, res) {
 
 			res.send(prjInfo);
 
-			setTimeout(console.log(prjInfo), 3000);
+			setTimeout(console.log('hehe'), 3000);
+			setTimeout(console.log(prjNames), 3000);
+			setTimeout(console.log(prjStartDates), 3000);
+			setTimeout(console.log(prjStopDates), 3000);
 		}
 	});
 
