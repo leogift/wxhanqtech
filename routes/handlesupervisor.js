@@ -836,12 +836,14 @@ var XlsxFileToDb = function (req, res) {
 	}
 
 };
-
-exports.ViewPrjs = function(req, res) {
-
-	var prjNames = [];
+var prjNames = [];
 	var prjStartDates = [];
 	var prjStopDates = [];
+exports.ViewPrjs = function(req, res) {
+
+	// var prjNames = [];
+	// var prjStartDates = [];
+	// var prjStopDates = [];
 
 	mgdb.ModelSysRecord.distinct('prjName', {}, function(err, docs){
 		if(err)
@@ -964,9 +966,11 @@ exports.ViewPrjs = function(req, res) {
 		}
 	});
 
+    console.log('now see:');
 	console.log(prjNames);
 	console.log(prjStartDates);
 	console.log(prjStopDates);
+	console.log('see over');
 
 	res.send(prjNames);
 
