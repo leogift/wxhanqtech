@@ -800,7 +800,7 @@ var XlsxFileToDb = function (req, res) {
 	        //var xlsx = require('../model/xlsx');
 	        xlsx.PrintTable(target_path);
 
-			xlsx.XlsxToDb(target_path, function(err, entity){
+			xlsx.XlsxToDb(target_path, function(err, entity){ //这个callback是在存入每一行就调用一次
 				if(err)
 			    {
 			        console.log(err);
@@ -830,11 +830,11 @@ var XlsxFileToDb = function (req, res) {
 				      	    newpage: '/super_viewmembers', 
 				      	    timeout: comutil.redirect_timeout
 				      	});
-
-			        //save prjInfo db
-			        AddPrjInfo();
 			    }
 			});
+            
+            setTimeout(AddPrjInfo(), 10000);
+
 	    }
 	}
 
@@ -843,40 +843,48 @@ var XlsxFileToDb = function (req, res) {
 
 var AddPrjInfo = function(){
 
+	console.log('AddPrjInfo start!');
+
 	mgdb.ModelSysRecord.distinct('prjName', {prjExpired:false}, function(err, docs){
+
 		if(err)
 		{
 			console.log(err);
 		}
 		else
 		{
-			var len = docs.length;
-			console.log('distinct prjName is ' + docs.length);
-
-			for(var i=0; i<len; i++)
+			if(docs)
 			{
-				console.log(docs[i]);
+				var len = docs.length;
+				console.log('distinct prjName is ' + docs.length);
+				console.log(docs);
 
-				mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
-					if(err)
-					{
-						console.log('error=' + err);
-					}
-					else
-					{
-						if(data)
+				for(var i=0; i<len; i++)
+				{
+					console.log(docs[i]);
+
+					mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
+						if(err)
 						{
-							console.log('prjName=' + docs[i]);
-							console.log('i=' + i);
-							console.log('prjStartDate' + data.prjStartDate);
-							console.log('prjStopDate' + data.prjStopDate);
-
-							//add to db
-							AddPrjInfoToDb(docs[i], data.prjStartDate, data.prjStopDate);
+							console.log('error=' + err);
 						}
-					}
+						else
+						{
+							if(data)
+							{
+								console.log('prjName=' + docs[i]);
+								console.log('i=' + i);
+								console.log('prjStartDate' + data.prjStartDate);
+								console.log('prjStopDate' + data.prjStopDate);
 
-				});
+								//add to db
+								AddPrjInfoToDb(docs[i], data.prjStartDate, data.prjStopDate);
+							}
+						}
+
+					});
+				}
+
 			}
 		}
 	});
