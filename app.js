@@ -208,7 +208,7 @@ var d1 = '项目一';
 var d2 = '选择当';
 var d3 = '项'+'目'+'一';
 
-console.log(d1);
+console.log('%d',d1);
 
 if(d1==d2)
   console.log('d1==d2');
@@ -219,3 +219,20 @@ if(d1==d3)
   console.log('d1==d3');
 else
   console.log('d1!=d3');
+
+
+
+mgdb.ModelSysRecord.find({'stuNumber':'101'},function(err,docs){
+  if(err)
+    console.log(err);
+  else
+  {
+    //console.log(docs);
+    console.log(docs[0].prjName);
+    if(docs[0].prjName==d1)
+      console.log('docs[0].prjName==d1');
+    else
+      console.log('docs[0].prjName!=d1');
+  }
+
+});
