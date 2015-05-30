@@ -124,7 +124,7 @@ exports.StuSubscribe = function(req, res){
 				  else
 				  {
 				  	res.render('subscribe_result',
-					  	{resultMsg:comutil.subscribe_resultmsg_error+subscribe_resultmsg_error_prjerror}
+					  	{resultMsg:comutil.subscribe_resultmsg_error+comutil.subscribe_resultmsg_error_prjerror}
 					  );
 				  }
 				  
