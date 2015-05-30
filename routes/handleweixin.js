@@ -80,20 +80,20 @@ exports.StuSubscribe = function(req, res){
 	}
 	else
 	{
-	    mgdb.ModelSysRecord.find({'stuNumber':'101'},function(err,docs){
-		  if(err)
-		    console.log(err);
-		  else
-		  {
-		    //console.log(docs);
-		    console.log(docs[0].prjName);
-		    if(docs[0].prjName==req.body.selectedPrjName)
-		      console.log('docs[0].prjName==selectedPrjName');
-		    else
-		      console.log('docs[0].prjName!=selectedPrjName');
-		  }
+	 //    mgdb.ModelSysRecord.find({'stuNumber':'101'},function(err,docs){
+		//   if(err)
+		//     console.log(err);
+		//   else
+		//   {
+		//     //console.log(docs);
+		//     console.log(docs[0].prjName);
+		//     if(docs[0].prjName==req.body.selectedPrjName)
+		//       console.log('docs[0].prjName==selectedPrjName');
+		//     else
+		//       console.log('docs[0].prjName!=selectedPrjName');
+		//   }
 
-		});		
+		// });		
 
 		mgdb.DoModifyOneByCondition(
 			mgdb.ModelSysRecord, 
