@@ -830,12 +830,84 @@ var XlsxFileToDb = function (req, res) {
 				      	    newpage: '/super_viewmembers', 
 				      	    timeout: comutil.redirect_timeout
 				      	});
+
+			        //save prjInfo db
+			        AddPrjInfo();
 			    }
 			});
 	    }
 	}
 
 };
+
+
+var AddPrjInfo = function(){
+
+	mgdb.ModelSysRecord.distinct('prjName', {prjExpired:false}, function(err, docs){
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			var len = docs.length;
+			console.log('distinct prjName is ' + docs.length);
+
+			for(var i=0; i<len; i++)
+			{
+				console.log(docs[i]);
+
+				mgdb.ModelSysRecord.findOne({'prjName':docs[i]}, function(err, data){
+					if(err)
+					{
+						console.log('error=' + err);
+					}
+					else
+					{
+						if(data)
+						{
+							console.log('prjName=' + docs[i]);
+							console.log('i=' + i);
+							console.log('prjStartDate' + data.prjStartDate);
+							console.log('prjStopDate' + data.prjStopDate);
+
+							//add to db
+							AddPrjInfoToDb(docs[i], data.prjStartDate, data.prjStopDate);
+						}
+					}
+
+				});
+			}
+		}
+	});
+
+	
+};
+
+var AddPrjInfoToDb = function(prjName, prjStartDate, prjStopDate){
+
+	var newPrjInfo = new mgdb.ModelPrjInfo();
+	newPrjInfo.prjName = prjName;
+	newPrjInfo.prjStartDate = prjStartDate;
+	newPrjInfo.prjStopDate = prjStopDate;
+	newPrjInfo.prjExpired = false;
+	newPrjInfo.prjFilePath = '';
+	newPrjInfo.created = Date.now();
+
+	mgdb.AddOneSysRecord(newPrjInfo, function(err, entity){
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			console.log('AddPrjInfoToDb ok:' + entity); 	
+		}
+	});
+
+};
+
+
 var prjNames = [];
 	var prjStartDates = [];
 	var prjStopDates = [];

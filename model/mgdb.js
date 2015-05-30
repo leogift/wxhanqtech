@@ -66,16 +66,17 @@ var AdminPassword = new mongoose.Schema({
 var ModelAdminPassword = mongoose.model('AdminPassword', AdminPassword);
 
 //
-// project info db
+//project info db
 //
-// var PrjInfo = new mongoose.Schema({
-//     prjName: String,
-//     prjState: Number,
-//     prjStartDate: Date,
-//     prjStopDate: Date,
-//     prjFilePath: String
-// });
-// var ModelPrjInfo = mongoose.model('PrjInfo', PrjInfo);
+var PrjInfo = new mongoose.Schema({
+    prjName: String,
+    prjExpired: Boolean,
+    prjStartDate: String,
+    prjStopDate: String,
+    prjFilePath: String,
+    created  : Date,
+});
+var ModelPrjInfo = mongoose.model('PrjInfo', PrjInfo);
 
 
 //! this sentense should be before the GridFs defines!
@@ -108,7 +109,7 @@ exports.mgdb = mongoose;
 exports.ModelSysRecord = ModelSysRecord;
 exports.ModelWorkRecord = ModelWorkRecord;
 exports.ModelAdminPassword = ModelAdminPassword;
-//exports.ModelPrjInfo = ModelPrjInfo;
+exports.ModelPrjInfo = ModelPrjInfo;
 
 //
 // Exports Functions
