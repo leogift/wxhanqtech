@@ -244,6 +244,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		if(logLocation=="")
 	 		{
 	 			console.log('logLocation is empty!!');
+	 			data[k+j].push(logLocation);
 	 		}
 	 		else
 	 		{
