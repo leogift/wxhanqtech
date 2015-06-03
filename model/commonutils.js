@@ -705,6 +705,12 @@ exports.CopyFile = function (src_file, dest_file) {
 	console.log('CopyFile:' + src_file + ' to:' + dest_file);
 
 	//if not exists
+	if(src_file==""||dest_file=="")
+	{
+		console.log('src_file or dest_file is null');
+		return;
+	}
+	
 	try
 	{
 		var fileData = fs.readFileSync(src_file);
