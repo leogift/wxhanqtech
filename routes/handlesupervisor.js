@@ -391,7 +391,12 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 				}
 				else
 				{
-					res.render('super_query_worklog_general_result', 
+					mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, {}, function(prjs){
+
+						console.log('prjNames=');
+						console.log(prjs);
+
+						res.render('super_query_worklog_general_result', 
 				      	{
 				      		act: comutil.sidebaract.super.viewsyslog,
 				      		SysRecords: docs,
@@ -405,10 +410,14 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 	                        IsShowPrj: true,
 	                        IsShowTutor: true,
 					        tutorNumber: '',
+					        prjNames: prjs,
 					        LinkDelete: comutil.link.super_queryresult_delete,
 					        LinkDetail: comutil.link.super_queryresult_detail,
 					        LinkExport: comutil.link.super_queryresult_export
 				      	});
+
+					});
+					
 				}
 		});
 	}
@@ -452,7 +461,12 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 				{
 					console.log('logrecs.length=' + logRecs.length);
 
-					res.render('super_query_worklog_general_result', 
+					mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, {}, function(prjs){
+
+						console.log('prjNames=');
+						console.log(prjs);
+
+						res.render('super_query_worklog_general_result', 
 				      	{
 				      		act: comutil.sidebaract.super.viewsyslog,
 				      		SysRecords: logRecs,
@@ -466,10 +480,14 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 	                        IsShowPrj: true,
 	                        IsShowTutor: true,
 					        tutorNumber: '',
+					        prjNames: prjs,
 					        LinkDelete: comutil.link.super_queryresult_delete,
 					        LinkDetail: comutil.link.super_queryresult_detail,
 					        LinkExport: comutil.link.super_queryresult_export
 				      	});
+
+					});
+										
 				}
 		});
 	}
