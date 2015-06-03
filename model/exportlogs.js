@@ -694,7 +694,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 							console.log(err);
 							res.render('super_redirect_delay', 
 					      	{
-					      		act: comutil.sidebaract.super.viewprjs,
+					      		act:comutil.sidebaract.super.viewprjs,
 					      	    msg: comutil.msg.msg_error + ': ' + err, 
 					      	    title: comutil.msg.title_error, 
 					      	    smalltitle: comutil.msg.stitle_viewprjs, 
