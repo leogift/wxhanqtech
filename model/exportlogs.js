@@ -776,7 +776,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 	      		smalltitle: comutil.msg.stitle_error, 
 	      		breadtext: comutil.bread.super_viewprjs_text,
 	      		breadhref: comutil.bread.super_viewprjs_href,
-	      		newpage: newPage, 
+	      		newpage: '/super_viewprjs', 
 	      		timeout:comutil.redirect_timeout
 	  	    });
 		return;
@@ -798,7 +798,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 		      		smalltitle: comutil.msg.stitle_error, 
 		      		breadtext: comutil.bread.super_viewprjs_text,
 		      		breadhref: comutil.bread.super_viewprjs_href,
-		      		newpage: newPage, 
+		      		newpage: '/super_viewprjs', 
 		      		timeout:comutil.redirect_timeoutnewPage
 		  	    });
 		}
