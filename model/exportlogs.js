@@ -693,7 +693,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 						{
 							console.log(err);
 							res.render('super_redirect_delay', 
-					      	{http://wx.hanqtech.com
+					      	{
 					      		act: comutil.sidebaract.super.viewprjs,
 					      	    msg: comutil.msg.msg_error + ': ' + err, 
 					      	    title: comutil.msg.title_error, 
@@ -703,9 +703,9 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 					      	    newpage: '/super_viewprjs', 
 					      	    timeout: (comutil.redirect_timeout*2)
 					      	});
-						}http://wx.hanqtech.com
+						}
 						else
-						{http://wx.hanqtech.com
+						{
 							// batch modify expired in sysrecords
 							console.log('batch modify');
 
