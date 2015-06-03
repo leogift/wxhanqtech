@@ -487,7 +487,7 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 				      	});
 
 					});
-										
+
 				}
 		});
 	}
@@ -668,8 +668,8 @@ exports.PrjUnArchive = function(req, res) {
 		      		msg: comutil.msg.msg_error_abnormal,
 		      		title: comutil.msg.title_error, 
 		      		smalltitle: comutil.msg.stitle_error, 
-		      		breadtext: exports.bread.super_viewprjs_text,
-		      		breadhref: exports.bread.super_viewprjs_href,
+		      		breadtext: comutil.bread.super_viewprjs_text,
+		      		breadhref: comutil.bread.super_viewprjs_href,
 		      		newpage: '/super_viewprjs', 
 		      		timeout:comutil.redirect_timeout
 		  	    });
@@ -697,8 +697,8 @@ exports.PrjUnArchive = function(req, res) {
 				      		msg: comutil.msg.msg_error_abnormal + err,
 				      		title: comutil.msg.title_error, 
 				      		smalltitle: comutil.msg.stitle_error, 
-				      		breadtext: exports.bread.super_viewprjs_text,
-				      		breadhref: exports.bread.super_viewprjs_href,
+				      		breadtext: comutil.bread.super_viewprjs_text,
+				      		breadhref: comutil.bread.super_viewprjs_href,
 				      		newpage: '/super_viewprjs', 
 				      		timeout:comutil.redirect_timeout
 				  	    });
@@ -714,8 +714,8 @@ exports.PrjUnArchive = function(req, res) {
 					      		msg: comutil.msg.msg_error_abnormal + ' ' + prjName + ' not found!',
 					      		title: comutil.msg.title_error, 
 					      		smalltitle: comutil.msg.stitle_error, 
-					      		breadtext: exports.bread.super_viewprjs_text,
-					      		breadhref: exports.bread.super_viewprjs_href,
+					      		breadtext: comutil.bread.super_viewprjs_text,
+					      		breadhref: comutil.bread.super_viewprjs_href,
 					      		newpage: '/super_viewprjs', 
 					      		timeout:comutil.redirect_timeout
 					  	    });
