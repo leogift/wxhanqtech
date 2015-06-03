@@ -329,6 +329,12 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 		for(var i=1; i<data.length; i++)
 		{
 			console.log('logText:' + data[i][8]);
+			console.log('logLocation:' + data[i][6]);
+
+			var logLocation = data[i][6];
+
+			if(logLocation=="")
+				logLocation = 'not_found';
 
 			//add rows
 			writer.addRow({
@@ -338,7 +344,8 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 			    "项目名称": data[i][3],
 			    "教师姓名": data[i][4],
 			    "序号": data[i][5],
-			    "提交地点": {value:data[i][6], hyperlink:'./'+data[i][6]},
+			    //交地点": {value:data[i][6], hyperlink:'./'+data[i][6]},
+			    "提交地点": {value:logLocation, hyperlink:+logLocation},
 			    "时间": data[i][7],
 			    "文本日志": '' + data[i][8],
 			    "图片日志": {value:data[i][9], hyperlink:'./'+data[i][9]},
