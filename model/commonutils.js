@@ -700,6 +700,22 @@ exports.DirToZip = function (dir_path, zip_file) {
 
 };
 
+var IsFile = function(file){
+
+	var stat = fs.lstatSync(file);
+
+	if(stat===undefined) 
+		return false;
+
+	if(stat.isDirectory())
+	{
+		return false;
+	}
+	else
+		return true;
+
+};
+
 exports.CopyFile = function (src_file, dest_file) {
 
 	console.log('CopyFile:' + src_file + ' to:' + dest_file);
@@ -710,7 +726,12 @@ exports.CopyFile = function (src_file, dest_file) {
 		console.log('src_file or dest_file is null');
 		return;
 	}
-	
+	else if(!IsFile(src_file) || !IsFile(dest_file))
+	{
+		console.log('src_file or dest_file is not file!');
+		return;
+	}
+
 	try
 	{
 		var fileData = fs.readFileSync(src_file);
