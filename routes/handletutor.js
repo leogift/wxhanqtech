@@ -740,7 +740,12 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 			}
 			else
 			{
-				res.render('tutor_query_worklog_general_result', 
+				mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, {prjExpired:false, tutorNumber:req.session.user}, function(prjs){
+
+					console.log('prjNames=');
+					console.log(prjs);
+
+					res.render('tutor_query_worklog_general_result', 
 			      	{
 			      		act: comutil.sidebaract.tutor.viewworklog,
 			      		SysRecords: docs,
@@ -754,10 +759,14 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 				        IsShowPrj: true,
 				        IsShowTutor: false,
 				        tutorNumber: req.session.user,
+				        prjNames: prjs,
 				        LinkDelete: comutil.link.tutor_queryresult_delete,
 				        LinkDetail: comutil.link.tutor_queryresult_detail,
 				        LinkExport: comutil.link.tutor_queryresult_export
 			      	});
+
+				});
+				
 			}
 	});	
 
