@@ -331,11 +331,23 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 		{
 			console.log('logText:' + data[i][8]);
 			console.log('logLocation:' + data[i][6]);
+			console.log('logPic:' + data[i][9]);
 
 			var logLocation = data[i][6];
+			var logPic = data[i][9];
 
 			if(logLocation=="")
+			{
+				console.log('logLocation not_found');
 				logLocation = 'not_found';
+			}
+
+			if(logPic=="")
+			{
+				console.log('logPic not_found');
+				logPic = 'not_found';
+			}
+				
 
 			//add rows
 			writer.addRow({
@@ -346,10 +358,10 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 			    "教师姓名": data[i][4],
 			    "序号": data[i][5],
 			    //交地点": {value:data[i][6], hyperlink:'./'+data[i][6]},
-			    "提交地点": {value:logLocation, hyperlink:+logLocation},
+			    "提交地点": {value:logLocation, hyperlink:logLocation},
 			    "时间": data[i][7],
 			    "文本日志": '' + data[i][8],
-			    "图片日志": {value:data[i][9], hyperlink:'./'+data[i][9]},
+			    "图片日志": {value:logPic, hyperlink:logPic},
 			});
 			// writer.addRow({
 			//     index: data[i][0],
