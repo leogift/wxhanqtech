@@ -75,15 +75,19 @@ var CheckLogin = function(req, res, flag, codedpass) {
 	//check flag
 	var okPage;
 	var errPage;
+	var opt = {};
+
 	if(flag==comutil.userrole.tutor)
 	{
 		okPage = 'tutor_viewstudents';
 		errPage = 'tutor_redirect_delay';
+		opt = {tutorNumber:req.body.username, prjExpired:false};
 	}
 	else if(flag==comutil.userrole.student)
 	{
 		okPage = 'student_modifyselfinfo';
 		errPage = 'student_redirect_delay';
+		opt = {stuNumber:req.body.username, prjExpired:false};
 	}
 	else
 	{
@@ -105,11 +109,51 @@ var CheckLogin = function(req, res, flag, codedpass) {
 
 		if(err=='ok')
 		{
-			req.session.regenerate(function(){
-				req.session.role = flag; // 'tutor' or 'student'
-				req.session.user = req.body.username;				
-				res.redirect(okPage);
+			//check prj expired or not
+
+			mgdb.FindAllbyOption(mgdb.ModelSysRecord, opt, function(err, docs){
+
+				if(err)
+				{
+					console.log(err);
+					res.render(errPage, 
+					{
+						msg:err,
+						title: comutil.msg.title_error, 
+						smalltitle: comutil.msg.stitle_error_abnormal, 
+						newpage: comutil.userLoginPage, 
+						timeout:comutil.redirect_timeout
+					});
+				}
+				else
+				{
+					if(docs.length>0)
+					{
+						console.log('docs exist!?');
+						console.log(docs);
+
+						req.session.regenerate(function(){
+							req.session.role = flag; // 'tutor' or 'student'
+							req.session.user = req.body.username;				
+							res.redirect(okPage);
+						});
+
+					}
+					else
+					{
+						res.render(errPage, 
+						{
+							msg:'可能您当前不属于任何一个未归档的项目',
+							title: comutil.msg.title_error, 
+							smalltitle: comutil.msg.stitle_error_abnormal, 
+							newpage: comutil.userLoginPage, 
+							timeout:comutil.redirect_timeout*2
+						});
+					}
+				}
+
 			});
+			
 		}
 		else
 		{

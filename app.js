@@ -20,7 +20,7 @@ var mgdb = require('./model/mgdb');
 
 // self-defined const and functions
 var comutil = require('./model/commonutils');
-
+var schedule = require('node-schedule');
 
 var express = require('express')
   , handlesupervisor = require('./routes/handlesupervisor')
@@ -116,6 +116,11 @@ app.get('/super_modifyselfpassword', superlogin.Restrict, handlesupervisor.ShowS
 app.post('/super_domodifyselfpass', superlogin.Restrict, handlesupervisor.DoSuperModifyPassword);
 app.get('/super_viewprjs', superlogin.Restrict, handlesupervisor.ViewPrjs);
 app.get('/refresh_prjinfo', superlogin.Restrict, handlesupervisor.RefreshPrjInfo);
+app.get('/super_prjarchive/:id', superlogin.Restrict, handlesupervisor.PrjArchive);
+app.get('/super_prjunarchive/:id', superlogin.Restrict, handlesupervisor.PrjUnArchive);
+
+// not used!
+//app.get('/super_makearchive/:id', superlogin.Restrict, handlesupervisor.MakeArchive);
 
 //
 // handle tutor administration
@@ -187,58 +192,36 @@ http.createServer(app).listen(app.get('port'), function(){
 //test
 //comutil.CleanRegHtmls();
 
-//test db
-// mgdb.ModelAdminPassword.aggregate([
+var RunBackupSchedule = function () {
 
-//   {$unwind: '$adminUser'},
+  console.log('RunBackupSchedule');
 
-//   {$group:{
-//     adminUser:"$_adminUser"
-//   }}
+  //run schedule job
+  var rule = new schedule.RecurrenceRule();
 
-//   ], function(error, result){
-//   if(error)
-//     console.log('error=' + error);
-//   else
-//     console.log(result);
-// });
+  // var trigTime = [];
+  // trigTime.push(42);
+  // rule.minute = trigTime;
 
-// mgdb.ModelAdminPassword.distinct('adminUser', {}, function(err, docs){
-//   if(err)
-//     console.log(err);
-//   else
-//     console.log(docs);
-// });
+  rule.dayOfWeek = [0]; //sunday
+  rule.hour = 4;        // am 4:00
+  rule.minute = 0;
 
-// var d1 = '项目一';
-// var d2 = '选择当';
-// var d3 = '项'+'目'+'一';
+  var job = schedule.scheduleJob(rule, function(){
 
-// console.log('%d',d1);
+    console.log('doing Automatic Database Backup...');
 
-// if(d1==d2)
-//   console.log('d1==d2');
-// else
-//   console.log('d1!=d2');
+    comutil.CheckAndRmBackupDir(comutil.dump_dir);
 
-// if(d1==d3)
-//   console.log('d1==d3');
-// else
-//   console.log('d1!=d3');
+    console.log('CheckAndRmBackupDir over!');
+
+    mgdb.DatabaseBackup(null, null, false);
+
+  });
+
+};
 
 
+RunBackupSchedule();
 
-// mgdb.ModelSysRecord.find({'stuNumber':'101'},function(err,docs){
-//   if(err)
-//     console.log(err);
-//   else
-//   {
-//     //console.log(docs);
-//     console.log(docs[0].prjName);
-//     if(docs[0].prjName==d1)
-//       console.log('docs[0].prjName==d1');
-//     else
-//       console.log('docs[0].prjName!=d1');
-//   }
 
-// });

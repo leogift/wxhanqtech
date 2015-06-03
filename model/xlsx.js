@@ -132,7 +132,9 @@ var LineToDb = function(rec_line, callback) {
 	newSysRec.stuPassword = codedPassword;
 
 	newSysRec.stuWeixin_id = comutil.default_weixinid;
+	newSysRec.stuWeixin_id_backup = comutil.default_weixinid;
 	newSysRec.stuWeixinBind = false;
+	newSysRec.stuWeixinBind_backup = false;
 	newSysRec.stuLoginFlag = true;
 	newSysRec.prjName = rec[5];
 	//newSysRec.prjDesc = rec[1];

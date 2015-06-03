@@ -17,10 +17,27 @@ var xlsx = require('./xlsx');
 var comutil = require('./commonutils');
 
 
-var MakeDownloadDir = function (docs) {
+var MakeDownloadDir = function (docs, bArchive) {
 
 	var submitCount = docs.workRecords.length;
-	var downDir = docs.stuNumber + '_' + docs.prjName;
+	var downDir  = "";
+
+	//mkdir prjName
+	if(bArchive)
+	{
+		var fsPrjDir =  comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + docs.prjName;
+		if(!fs.existsSync(fsPrjDir))
+		{
+			console.log('mkdir ' + fsPrjDir);
+			fs.mkdirSync(fsPrjDir, 0755);
+		}	
+	}
+
+
+	if(!bArchive)
+		downDir = docs.stuNumber + '_' + docs.prjName;
+	else
+		downDir = docs.prjName + '/' + docs.stuNumber + '_' + docs.prjName;
 
 	//mkdir
 	//var path = require('path');
@@ -269,7 +286,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 };
 
 //data[0] is collumn name, and the number of collumns must be fixed
-SaveToFile = function(file_name, sheet_name, data, callback) {
+var SaveToFile = function(file_name, sheet_name, data, callback) {
 
 	try
 	{
@@ -440,7 +457,7 @@ exports.SysWorklogExport = function (req, res, role) {
 					{
 						console.log(err);
 
-						res.render(redirectRender, 
+						res.render(redirectRender,
 					  	    {
 					  	    	act: actFlag,
 					      		msg: comutil.msg.msg_error_abnormal,
@@ -449,7 +466,7 @@ exports.SysWorklogExport = function (req, res, role) {
 					      		breadtext: breadText,
 					      		breadhref: breadHref,
 					      		newpage: newPage, 
-					      		timeout:comutil.redirect_timeout
+					      		timeout:comutil.redirect_timeoutnewPage
 					  	    });
 					}
 					else
@@ -483,7 +500,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									res.render(redirectRender, 
 							  	    {
 							  	    	act: actFlag,
-							      		msg: comutil.msg.msg_error_abnormal,
+							      		msg: comutiredirectRenderl.msg.msg_error_abnormal,
 							      		title: comutil.msg.title_error, 
 							      		smalltitle: comutil.msg.stitle_error + '  服务器繁忙，请重新尝试', 
 							      		breadtext: breadText,
@@ -516,4 +533,299 @@ exports.SysWorklogExport = function (req, res, role) {
 			}			
 		}
 	});
+};
+
+exports.PrjArchive = function (req, res) {
+
+	var idStr = req.params.id.substr(1, req.params.id.length-1);
+	console.log('PrjArchive id= ' + idStr);
+
+	//get prj name by id
+	mgdb.FindOneById(mgdb.ModelPrjInfo, idStr, function(err, data){
+		if(err)
+		{
+			console.log('PrjArchive abnormal error!');
+			res.render('super_redirect_delay', 
+		  	    {
+		  	    	act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_error_abnormal,
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error, 
+		      		breadtext: exports.bread.super_viewprjs_text,
+		      		breadhref: exports.bread.super_viewprjs_href,
+		      		newpage: '/super_viewprjs', 
+		      		timeout:comutil.redirect_timeout
+		  	    });
+		}
+		else
+		{
+			if(data)
+			{
+				//get student numbers
+				var prjName = data.prjName;
+				console.log('prjName=' + prjName);
+
+				mgdb.FindAllbyOption(mgdb.ModelSysRecord, {prjName:prjName}, function(err, docs){
+					if(err)
+					{
+						console.log(err);
+						res.render('super_redirect_delay', 
+				  	    {
+				  	    	act: comutil.sidebaract.super.viewprjs,
+				      		msg: comutil.msg.msg_error_abnormal + err,
+				      		title: comutil.msg.title_error, 
+				      		smalltitle: comutil.msg.stitle_error, 
+				      		breadtext: exports.bread.super_viewprjs_text,
+				      		breadhref: exports.bread.super_viewprjs_href,
+				      		newpage: '/super_viewprjs', 
+				      		timeout:comutil.redirect_timeout
+				  	    });
+					}
+					else
+					{
+						if(!docs)
+						{
+							console.log(err);
+							res.render('super_redirect_delay', 
+					  	    {
+					  	    	act: comutil.sidebaract.super.viewprjs,
+					      		msg: comutil.msg.msg_error_abnormal + ' prjName not found!',
+					      		title: comutil.msg.title_error, 
+					      		smalltitle: comutil.msg.stitle_error, 
+					      		breadtext: exports.bread.super_viewprjs_text,
+					      		breadhref: exports.bread.super_viewprjs_href,
+					      		newpage: '/super_viewprjs', 
+					      		timeout:comutil.redirect_timeout
+					  	    });
+						}
+						else
+						{
+							var stuNumbers = [];
+							var len = docs.length;
+							console.log('docs found! len=' + len);
+							for(i=0; i<len; i++)
+							{
+								stuNumbers[i] = docs[i].stuNumber;
+							}
+							console.log(stuNumbers);
+
+							MakePrjArchive(req, res, prjName, docs);
+
+						}
+					}
+					
+				});
+            }
+		
+		}
+	});
+}
+
+var testtest = function(prj_name) {
+	console.log('testtest prj_name = ' + prj_name);
+
+	//send msg to router
+	setTimeout(function(){
+		//res.redirect('/super_makearchive/:' + prj_name);
+		console.log('setTimeout prj_name = ' + prj_name);
+		var prjSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + prj_name;
+		var prjArchiveFile = prjSrcDir + '.tar.gz';
+
+		console.log('prjSrcDir=' + prjSrcDir);
+		console.log('prjArchiveFile=' + prjArchiveFile);
+
+		comutil.DirToZip(prjSrcDir, prjArchiveFile);
+
+	}, 5000);
+};
+
+//recursive do exports
+var MakePrjArchive = function(req, res, prj_name, sys_records){
+
+	var len = sys_records.length;
+
+	if(len==0)
+	{
+		console.log('recursive MakePrjArchive end!');
+		
+		//comutil.DirToZip() can't be called in recursive function, it is suck!!
+
+		//testtest(prj_name);
+
+		//send msg to router
+		setTimeout(function(){
+			//res.redirect('/super_makearchive/:' + prj_name);
+			var prjSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + prj_name;
+			var prjArchiveFile = prjSrcDir + '.tar.gz';
+
+			console.log('prjSrcDir=' + prjSrcDir);
+			console.log('prjArchiveFile=' + prjArchiveFile);
+
+			try
+			{
+				comutil.DirToZip(prjSrcDir, prjArchiveFile);
+			}
+			catch(err)
+			{
+				res.render('super_redirect_delay', 
+			      	{
+			      		act: comutil.sidebaract.super.viewprjs,
+			      	    msg: comutil.msg.msg_error + ': ' + err, 
+			      	    title: comutil.msg.title_error, 
+			      	    smalltitle: comutil.msg.stitle_viewprjs, 
+			      	    breadtext: comutil.bread.super_viewprjs_text,
+		                breadhref: comutil.bread.super_viewprjs_href,
+			      	    newpage: '/super_viewprjs', 
+			      	    timeout: (comutil.redirect_timeout*2)
+			      	});
+
+				return;
+			}
+
+			try
+			{
+				//set db Expired flag
+				mgdb.ModelPrjInfo.findOneAndUpdate(
+					{prjName:prj_name}, 
+					{prjExpired: true, prjFilePath: comutil.export_dir + '/' + prj_name + '.tar.gz'}, 
+					function(err, doc){
+						if(err)
+						{
+							console.log(err);
+							res.render('super_redirect_delay', 
+					      	{
+					      		act: comutil.sidebaract.super.viewprjs,
+					      	    msg: comutil.msg.msg_error + ': ' + err, 
+					      	    title: comutil.msg.title_error, 
+					      	    smalltitle: comutil.msg.stitle_viewprjs, 
+					      	    breadtext: comutil.bread.super_viewprjs_text,
+				                breadhref: comutil.bread.super_viewprjs_href,
+					      	    newpage: '/super_viewprjs', 
+					      	    timeout: (comutil.redirect_timeout*2)
+					      	});
+						}
+						else
+						{
+							// batch modify expired in sysrecords
+							console.log('batch modify');
+
+							//归档后，设置归档标志，解除微信绑定
+							mgdb.ModelSysRecord.update(
+						    	{prjName:prj_name}, 
+						    	{prjExpired: true, stuWeixinBind: false, stuWeixin_id: comutil.default_weixinid},
+						    	{multi: true},
+						    	function(err, numberAffected, raw){
+						    		if(err)
+						    			console.log(err);
+						    		else
+						    			console.log('numberAffected=' + numberAffected);
+					    	});
+						}
+				});
+			}
+			catch(error)
+			{
+				res.render('super_redirect_delay', 
+			      	{
+			      		act: comutil.sidebaract.super.viewprjs,
+			      	    msg: comutil.msg.msg_error + ': ' + err, 
+			      	    title: comutil.msg.title_error, 
+			      	    smalltitle: comutil.msg.stitle_viewprjs, 
+			      	    breadtext: comutil.bread.super_viewprjs_text,
+		                breadhref: comutil.bread.super_viewprjs_href,
+			      	    newpage: '/super_viewprjs', 
+			      	    timeout: (comutil.redirect_timeout*2)
+			      	});
+
+				return;
+
+			}
+
+			res.render('super_redirect_delay', 
+			  	{
+			  		act: comutil.sidebaract.super.viewprjs,
+			  	    msg: comutil.msg.msg_ok, 
+			  	    title: comutil.msg.title_ok, 
+			  	    smalltitle: comutil.msg.stitle_ok, 
+			  	    breadtext: comutil.bread.super_viewprjs_text,
+			        breadhref: comutil.bread.super_viewprjs_href,
+			  	    newpage: '/super_viewprjs', 
+			  	    timeout: comutil.redirect_timeout
+			  	});
+
+		}, 10000);
+		
+		//res.redirect('/super_makearchive/:' + prj_name);
+
+		return;
+	}
+
+	var docs = sys_records.pop();
+	console.log('len=' + len + ' data.stuNumber=' + docs.stuNumber);
+
+	//make dir
+	var dir = MakeDownloadDir(docs, true);
+	if(dir==null)
+	{
+		console.log('MakeDownloadDir null!');
+		res.render('super_redirect_delay', 
+	  	    {
+	  	    	act: comutil.sidebaract.super.viewprjs,
+	      		msg: comutil.msg.msg_error_abnormal,
+	      		title: comutil.msg.title_error, 
+	      		smalltitle: comutil.msg.stitle_error, 
+	      		breadtext: exports.bread.super_viewprjs_text,
+	      		breadhref: exports.bread.super_viewprjs_href,
+	      		newpage: newPage, 
+	      		timeout:comutil.redirect_timeout
+	  	    });
+		return;
+	}
+
+	//save xlsx
+	var xlsxFile = dir + '/' + comutil.export_xlsx_filename;
+	console.log('xlsxFile=' + xlsxFile);
+	ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, function(err){
+		if(err)
+		{
+			console.log(err);
+
+			res.render('super_redirect_delay',
+		  	    {
+		  	    	act: actFlag,
+		      		msg: comutil.msg.msg_error_abnormal,
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error, 
+		      		breadtext: exports.bread.super_viewprjs_text,
+		      		breadhref: exports.bread.super_viewprjs_href,
+		      		newpage: newPage, 
+		      		timeout:comutil.redirect_timeoutnewPage
+		  	    });
+		}
+		else
+		{
+			console.log('SaveToFile ok!');
+
+			//do zip
+			// var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
+			// var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
+			// var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
+			// //var zipFile = zipDir + '/' + zipFilename;
+			// var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
+
+			// console.log('zipDir=' + zipDir);
+			// console.log('zipSrcDir=' + zipSrcDir);
+			// console.log('zipFilename=' + zipFilename);
+			// console.log('zipFile=' + zipFile);
+
+			//comutil.DirToZip(zipSrcDir, zipFile, res);
+			//comutil.DirToZip(zipSrcDir, zipFile);
+			//comutil.DirToZip('/home/johnny/test/web/wis_v2/wis/public/download/prj1', '/home/johnny/test/web/wis_v2/wis/public/download/prj1.tar.gz');
+
+            MakePrjArchive(req, res, prj_name, sys_records);
+
+		}
+	});
+
+	
 };

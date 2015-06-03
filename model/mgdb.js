@@ -37,7 +37,9 @@ var SysRecord = new mongoose.Schema({
     stuPhone: String,
     stuPassword: String,
     stuWeixin_id: {type:String, unique:false},
+    stuWeixin_id_backup: {type:String, unique:false},
     stuWeixinBind: Boolean,
+    stuWeixinBind_backup: Boolean,
     stuLoginFlag: Boolean,
     prjName: String,
     prjDesc: String,
@@ -560,9 +562,9 @@ exports.CheckPasswordByCellphone = function(model, cellphone, codedpass, callbac
 	});
 };
 
-exports.GetPrjUniqueName = function (model, callback) {
+exports.GetPrjUniqueName = function (model, opt, callback) {
 
-	model.distinct('prjName', {prjExpired:false}, function(err, docs){
+	model.distinct('prjName', opt, function(err, docs){
 		if(err)
 		{
 			console.log('error:' + err);
@@ -616,4 +618,82 @@ exports.RemoveCollection = function(collection_name, callback){
 		callback(err, result);
 	});
 };
+
+exports.DatabaseBackup = function (req, res, bNeedWebResponse) {
+
+	var timeString = comutil.GetTimeString(1);
+	console.log('GetTimeString=' + timeString);
+	
+	//dump database
+	//var cmdStr =  comutil.dump_dumpbin + ' -d ' + comutil.dump_dbname + ' -o ' + comutil.dump_dir + '/' + comutil.dump_dbname + '_' + timeString;
+	
+	//now, dump collection
+	var cmdStr =  comutil.dump_dumpbin + ' -d ' + comutil.dump_dbname + ' -c ' + comutil.sysrecord_collection_name + ' -o ' + comutil.dump_dir + '/' + comutil.dump_dbname + '_' + timeString;
+	console.log('cmdStr' + cmdStr);
+
+	comutil.ExecCmd(cmdStr, function(err, stdout, stderr){
+		if(err)
+		{
+			console.log('DbDump error: ' + err);
+
+			if(bNeedWebResponse)
+			{
+				res.render('super_redirect_delay', 
+			  	{
+			  		act: comutil.sidebaract.super.sysdatabackup,
+			      		msg: comutil.msg.msg_error_abnormal + ' ' + err,
+			      		title: comutil.msg.title_sysdump, 
+			      		smalltitle: comutil.msg.stitle_sysdump,
+			      		breadtext: comutil.bread.super_sysdatabackup_text,
+                        breadhref: comutil.bread.super_sysdatabackup_href, 
+			      		newpage:'/super_sysdatarestore', 
+			      		timeout:comutil.redirect_timeout
+			  	});
+			}			
+		}			
+		else
+		{
+			if(stderr)
+			{
+				console.log('DbDump stderr: ' + stderr);
+				if(bNeedWebResponse)
+				{
+					res.render('super_redirect_delay', 
+				  	{
+				  		act: comutil.sidebaract.super.sysdatabackup,
+				      		msg: comutil.msg.msg_error_abnormal + ' ' + err,
+				      		title: comutil.msg.title_sysdump, 
+				      		smalltitle: comutil.msg.stitle_sysdump, 
+				      		breadtext: comutil.bread.super_sysdatabackup_text,
+	                        breadhref: comutil.bread.super_sysdatabackup_href, 
+				      		newpage:'/super_sysdatarestore', 
+				      		timeout:comutil.redirect_timeout
+				  	});
+				}	
+			}
+			else
+			{
+				console.log('DbDump ok! ' + stdout);
+				if(bNeedWebResponse)
+				{
+					res.render('super_redirect_delay', 
+				  	{
+				  		act: comutil.sidebaract.super.sysdatabackup,
+				      		msg: comutil.msg.msg_ok,
+				      		title: comutil.msg.title_sysdump, 
+				      		smalltitle: comutil.msg.stitle_sysdump, 
+				      		breadtext: comutil.bread.super_sysdatabackup_text,
+	                        breadhref: comutil.bread.super_sysdatabackup_href, 
+				      		newpage:'/super_sysdatarestore', 
+				      		timeout:comutil.redirect_timeout
+				  	});
+
+				}
+				
+			}
+		}
+	});
+
+};
+
 

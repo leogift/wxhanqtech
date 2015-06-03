@@ -20,6 +20,18 @@ $("#mbtnSuperDeleteMember").click(function(){
     //window.open('http://www.baidu.com'); //this is open a new page
 });
 
+$("#mbtnSuperPrjArchive").click(function(){
+    
+    var id = $(".modal-body #memberId").val();
+    location.href='/super_prjarchive/:' + id;
+});
+
+$("#mbtnSuperPrjUnArchive").click(function(){
+    
+    var id = $(".modal-body #memberId").val();
+    location.href='/super_prjunarchive/:' + id;
+});
+
 
 $(document).on("click", ".tryDelete", function(){
     var id = $(this).data('id');

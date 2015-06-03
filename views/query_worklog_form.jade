@@ -31,8 +31,12 @@
               .control-group
                 label.control-label 项目名称
                 .controls
-                  input.m-wrap.small(type='text', placeholder='按项目名查询', name='prjName')
-                  span.help-inline 
+                  //input.m-wrap.small(type='text', placeholder='按项目名查询', name='prjName')
+                  //span.help-inline 
+                  select.m-wrap.small(name="prjName")
+                    if(prjNames)
+                      each prj, i in prjNames
+                        option(value="#{prj}") #{prj}
             
             if(IsShowTutor)    
               .control-group

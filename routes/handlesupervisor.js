@@ -289,7 +289,12 @@ exports.DoSuperModifyPassword = function(req, res) {
 //test
 exports.ViewSysWorklog = function(req, res) {
 
-	res.render('super_query_worklog_general_result', 
+	mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, {}, function(prjs){
+
+		console.log('prjNames=');
+		console.log(prjs);
+
+		res.render('super_query_worklog_general_result', 
       	{
       		act: comutil.sidebaract.super.viewsyslog,
       		SysRecords: null,
@@ -297,16 +302,20 @@ exports.ViewSysWorklog = function(req, res) {
       		title: comutil.msg.title_viewsysworklog, 
       		smalltitle: ('   ' + comutil.msg.stitle_viewsysworklog), 
       		breadtext: comutil.bread.super_viewsyslog_text,
-	                breadhref: comutil.bread.super_viewsyslog_href,
-	                action: comutil.link.super_queryworklog,
-	                IsShowStu: true,
-	                IsShowPrj: true,
-	                IsShowTutor: true,
-	                tutorNumber: '',
+	        breadhref: comutil.bread.super_viewsyslog_href,
+	        action: comutil.link.super_queryworklog,
+	        IsShowStu: true,
+	        IsShowPrj: true,
+	        IsShowTutor: true,
+	        tutorNumber: '',
+	        prjNames: prjs,
       		LinkDelete: comutil.link.super_queryresult_delete,
       		LinkDetail: comutil.link.super_queryresult_detail,
       		LinkExport: comutil.link.super_queryresult_export
       	});
+
+	});
+	
 };
 
 exports.ViewSysWorklogQueryResult = function(req, res) {
@@ -621,6 +630,113 @@ exports.SyslogExport = function(req, res) {
 };
 */
 
+exports.PrjArchive = function(req, res) {
+	exportlogs.PrjArchive(req, res);
+};
+
+exports.PrjUnArchive = function(req, res) {
+	
+	var idStr = req.params.id.substr(1, req.params.id.length-1);
+	console.log('PrjUnArchive id= ' + idStr);
+
+	//get prj name by id
+	mgdb.FindOneById(mgdb.ModelPrjInfo, idStr, function(err, data){
+		if(err)
+		{
+			console.log('PrjArchive abnormal error!');
+			res.render('super_redirect_delay', 
+		  	    {
+		  	    	act: comutil.sidebaract.super.viewprjs,
+		      		msg: comutil.msg.msg_error_abnormal,
+		      		title: comutil.msg.title_error, 
+		      		smalltitle: comutil.msg.stitle_error, 
+		      		breadtext: exports.bread.super_viewprjs_text,
+		      		breadhref: exports.bread.super_viewprjs_href,
+		      		newpage: '/super_viewprjs', 
+		      		timeout:comutil.redirect_timeout
+		  	    });
+		}
+		else
+		{
+			if(data)
+			{
+				//set Expired flag and filepath
+				data.prjExpired = false;
+				data.prjFilePath = "";
+				data.save();
+
+				//get student numbers
+				var prjName = data.prjName;
+				console.log('prjName=' + prjName);
+
+				mgdb.FindAllbyOption(mgdb.ModelSysRecord, {prjName:prjName}, function(err, docs){
+					if(err)
+					{
+						console.log(err);
+						res.render('super_redirect_delay', 
+				  	    {
+				  	    	act: comutil.sidebaract.super.viewprjs,
+				      		msg: comutil.msg.msg_error_abnormal + err,
+				      		title: comutil.msg.title_error, 
+				      		smalltitle: comutil.msg.stitle_error, 
+				      		breadtext: exports.bread.super_viewprjs_text,
+				      		breadhref: exports.bread.super_viewprjs_href,
+				      		newpage: '/super_viewprjs', 
+				      		timeout:comutil.redirect_timeout
+				  	    });
+					}
+					else
+					{
+						if(!docs)
+						{
+							console.log(err);
+							res.render('super_redirect_delay', 
+					  	    {
+					  	    	act: comutil.sidebaract.super.viewprjs,
+					      		msg: comutil.msg.msg_error_abnormal + ' ' + prjName + ' not found!',
+					      		title: comutil.msg.title_error, 
+					      		smalltitle: comutil.msg.stitle_error, 
+					      		breadtext: exports.bread.super_viewprjs_text,
+					      		breadhref: exports.bread.super_viewprjs_href,
+					      		newpage: '/super_viewprjs', 
+					      		timeout:comutil.redirect_timeout
+					  	    });
+						}
+						else
+						{
+							var len = docs.length;
+							console.log('len=' + len);
+							for(var i=0; i<len; i++)
+							{
+								docs[i].prjExpired = false;
+								docs[i].stuWeixinBind = docs[i].stuWeixinBind_backup;
+								docs[i].stuWeixin_id = docs[i].stuWeixin_id_backup;
+								docs[i].save();
+							}
+
+							res.render('super_redirect_delay', 
+							  	{
+							  		act: comutil.sidebaract.super.viewprjs,
+							  	    msg: comutil.msg.msg_ok, 
+							  	    title: comutil.msg.title_ok, 
+							  	    smalltitle: comutil.msg.stitle_ok, 
+							  	    breadtext: comutil.bread.super_viewprjs_text,
+							        breadhref: comutil.bread.super_viewprjs_href,
+							  	    newpage: '/super_viewprjs', 
+							  	    timeout: comutil.redirect_timeout
+							  	});
+
+						}
+					}
+					
+				});
+            }
+		
+		}
+	});
+
+};
+
 exports.SyslogExport = function(req, res) {
 	exportlogs.SysWorklogExport(req, res, comutil.userrole.super);
 };
@@ -844,6 +960,50 @@ var XlsxFileToDb = function (req, res) {
 
 };
 
+exports.MakeArchive = function(req, res) {
+	
+	var prjName = req.params.id.substr(1, req.params.id.length-1);
+	console.log('MakeArchive prjName= ' + prjName);
+
+	var prjSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + prjName;
+	var prjArchiveFile = prjSrcDir + '.tar.gz';
+
+	console.log('prjSrcDir=' + prjSrcDir + ' prjArchiveFile=' + prjArchiveFile);
+
+	try
+	{
+		comutil.DirToZip('./public/download/prj1', './public/download/prj1.tar.gz');
+	}
+	catch(err)
+	{
+		res.render('super_redirect_delay', 
+	      	{
+	      		act: comutil.sidebaract.super.viewprjs,
+	      	    msg: comutil.msg.msg_error + ': ' + err, 
+	      	    title: comutil.msg.title_error, 
+	      	    smalltitle: comutil.msg.stitle_viewprjs, 
+	      	    breadtext: comutil.bread.super_viewprjs_text,
+                breadhref: comutil.bread.super_viewprjs_href,
+	      	    newpage: '/super_viewprjs', 
+	      	    timeout: (comutil.redirect_timeout*2)
+	      	});
+
+		return;
+	}
+
+	res.render('super_redirect_delay', 
+	  	{
+	  		act: comutil.sidebaract.super.viewprjs,
+	  	    msg: comutil.msg.msg_ok, 
+	  	    title: comutil.msg.title_ok, 
+	  	    smalltitle: comutil.msg.stitle_ok, 
+	  	    breadtext: comutil.bread.super_viewprjs_text,
+	        breadhref: comutil.bread.super_viewprjs_href,
+	  	    newpage: '/super_viewprjs', 
+	  	    timeout: comutil.redirect_timeout
+	  	});
+
+};
 
 var RescursiveFind = function (prj_names) {
 
@@ -1096,8 +1256,10 @@ exports.AddMember = function(req, res){
 	var codedPassword = comutil.CodedPassword(req.body.stucellphone);
 	newSysRec.stuPassword = codedPassword;
 
-	newSysRec.stuWeixin_id = 'default_weixin_id';
+	newSysRec.stuWeixin_id = comutil.default_weixinid;
+	newSysRec.stuWeixin_id_backup = comutil.default_weixinid;
 	newSysRec.stuWeixinBind = false;
+	newSysRec.stuWeixinBind_backup = false;
 	newSysRec.stuLoginFlag = true;
 	newSysRec.prjName = req.body.prjname;
 	//newSysRec.prjDesc = rec[1];
@@ -1629,65 +1791,86 @@ exports.DoModifyPrjById = function(req, res) {
 
 };
 
-exports.DbDump = function(req, res) {
-	var timeString = comutil.GetTimeString(1);
-	console.log('GetTimeString=' + timeString);
-	//dump database
-	//var cmdStr =  comutil.dump_dumpbin + ' -d ' + comutil.dump_dbname + ' -o ' + comutil.dump_dir + '/' + comutil.dump_dbname + '_' + timeString;
-	//dump collection
-	var cmdStr =  comutil.dump_dumpbin + ' -d ' + comutil.dump_dbname + ' -c ' + comutil.sysrecord_collection_name + ' -o ' + comutil.dump_dir + '/' + comutil.dump_dbname + '_' + timeString;
-	console.log('cmdStr' + cmdStr);
+// var DatabaseBackup = function (req, res, bNeedWebResponse) {
 
-	comutil.ExecCmd(cmdStr, function(err, stdout, stderr){
-		if(err)
-		{
-			console.log('DbDump error: ' + err);
-			res.render('super_redirect_delay', 
-			  	{
-			  		act: comutil.sidebaract.super.sysdatabackup,
-			      		msg: comutil.msg.msg_error_abnormal + ' ' + err,
-			      		title: comutil.msg.title_sysdump, 
-			      		smalltitle: comutil.msg.stitle_sysdump,
-			      		breadtext: comutil.bread.super_sysdatabackup_text,
-                                                                	breadhref: comutil.bread.super_sysdatabackup_href, 
-			      		newpage:'/super_sysdatarestore', 
-			      		timeout:comutil.redirect_timeout
-			  	});
-		}			
-		else
-		{
-			if(stderr)
-			{
-				console.log('DbDump stderr: ' + stderr);
-				res.render('super_redirect_delay', 
-			  	{
-			  		act: comutil.sidebaract.super.sysdatabackup,
-			      		msg: comutil.msg.msg_error_abnormal + ' ' + err,
-			      		title: comutil.msg.title_sysdump, 
-			      		smalltitle: comutil.msg.stitle_sysdump, 
-			      		breadtext: comutil.bread.super_sysdatabackup_text,
-                                                                	breadhref: comutil.bread.super_sysdatabackup_href, 
-			      		newpage:'/super_sysdatarestore', 
-			      		timeout:comutil.redirect_timeout
-			  	});
-			}				
-			else
-			{
-				console.log('DbDump ok! ' + stdout);
-				res.render('super_redirect_delay', 
-			  	{
-			  		act: comutil.sidebaract.super.sysdatabackup,
-			      		msg: comutil.msg.msg_ok,
-			      		title: comutil.msg.title_sysdump, 
-			      		smalltitle: comutil.msg.stitle_sysdump, 
-			      		breadtext: comutil.bread.super_sysdatabackup_text,
-                                                                	breadhref: comutil.bread.super_sysdatabackup_href, 
-			      		newpage:'/super_sysdatarestore', 
-			      		timeout:comutil.redirect_timeout
-			  	});
-			}
-		}
-	});
+// 	var timeString = comutil.GetTimeString(1);
+// 	console.log('GetTimeString=' + timeString);
+	
+// 	//dump database
+// 	//var cmdStr =  comutil.dump_dumpbin + ' -d ' + comutil.dump_dbname + ' -o ' + comutil.dump_dir + '/' + comutil.dump_dbname + '_' + timeString;
+	
+// 	//now, dump collection
+// 	var cmdStr =  comutil.dump_dumpbin + ' -d ' + comutil.dump_dbname + ' -c ' + comutil.sysrecord_collection_name + ' -o ' + comutil.dump_dir + '/' + comutil.dump_dbname + '_' + timeString;
+// 	console.log('cmdStr' + cmdStr);
+
+// 	comutil.ExecCmd(cmdStr, function(err, stdout, stderr){
+// 		if(err)
+// 		{
+// 			console.log('DbDump error: ' + err);
+
+// 			if(bNeedWebResponse)
+// 			{
+// 				res.render('super_redirect_delay', 
+// 			  	{
+// 			  		act: comutil.sidebaract.super.sysdatabackup,
+// 			      		msg: comutil.msg.msg_error_abnormal + ' ' + err,
+// 			      		title: comutil.msg.title_sysdump, 
+// 			      		smalltitle: comutil.msg.stitle_sysdump,
+// 			      		breadtext: comutil.bread.super_sysdatabackup_text,
+//                         breadhref: comutil.bread.super_sysdatabackup_href, 
+// 			      		newpage:'/super_sysdatarestore', 
+// 			      		timeout:comutil.redirect_timeout
+// 			  	});
+// 			}			
+// 		}			
+// 		else
+// 		{
+// 			if(stderr)
+// 			{
+// 				console.log('DbDump stderr: ' + stderr);
+// 				if(bNeedWebResponse)
+// 				{
+// 					res.render('super_redirect_delay', 
+// 				  	{
+// 				  		act: comutil.sidebaract.super.sysdatabackup,
+// 				      		msg: comutil.msg.msg_error_abnormal + ' ' + err,
+// 				      		title: comutil.msg.title_sysdump, 
+// 				      		smalltitle: comutil.msg.stitle_sysdump, 
+// 				      		breadtext: comutil.bread.super_sysdatabackup_text,
+// 	                        breadhref: comutil.bread.super_sysdatabackup_href, 
+// 				      		newpage:'/super_sysdatarestore', 
+// 				      		timeout:comutil.redirect_timeout
+// 				  	});
+// 				}	
+// 			}
+// 			else
+// 			{
+// 				console.log('DbDump ok! ' + stdout);
+// 				if(bNeedWebResponse)
+// 				{
+// 					res.render('super_redirect_delay', 
+// 				  	{
+// 				  		act: comutil.sidebaract.super.sysdatabackup,
+// 				      		msg: comutil.msg.msg_ok,
+// 				      		title: comutil.msg.title_sysdump, 
+// 				      		smalltitle: comutil.msg.stitle_sysdump, 
+// 				      		breadtext: comutil.bread.super_sysdatabackup_text,
+// 	                        breadhref: comutil.bread.super_sysdatabackup_href, 
+// 				      		newpage:'/super_sysdatarestore', 
+// 				      		timeout:comutil.redirect_timeout
+// 				  	});
+
+// 				}
+				
+// 			}
+// 		}
+// 	});
+
+// };
+
+exports.DbDump = function(req, res) {
+	
+	mgdb.DatabaseBackup(req, res, true);
 };
 
 exports.ShowDbRestore = function(req, res) {

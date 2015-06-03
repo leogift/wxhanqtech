@@ -14,12 +14,24 @@ block PAGECONTENT
         .modal-header
           p 请确认操作
         .modal-body
-          p 确定要删除该记录吗？
+          p 确定要对该项目归档吗？
           input(type="hidden", id="memberId", value="")
         .modal-footer
           button(type="button", data-dismiss="modal", class="btn blue") 
             | 取消
-          button(id="mbtnSuperDeleteMember", type="button", data-dismiss="modal", class="btn red")
+          button(id="mbtnSuperPrjArchive", type="button", data-dismiss="modal", class="btn red")
+            | 确定
+      // modal2
+      #static2.modal.hide.fade(tabindex="-1", data-backdrop="static", data-keyboard="false")
+        .modal-header
+          p 请确认操作
+        .modal-body
+          p 确定要对该项目解除归档吗？
+          input(type="hidden", id="memberId", value="")
+        .modal-footer
+          button(type="button", data-dismiss="modal", class="btn blue") 
+            | 取消
+          button(id="mbtnSuperPrjUnArchive", type="button", data-dismiss="modal", class="btn red")
             | 确定
 
       // BEGIN SAMPLE TABLE PORTLET
@@ -31,7 +43,7 @@ block PAGECONTENT
           .tools
             a.collapse(href="javascript:;")
             //- a.config(data-toggle="modal", href="#portlet-config")
-            //- a.reload(href="javascript:;")
+            //- a.reload(href="refresh_prjinfo")
             //- a.remove(href="javascript:;")
         .portlet-body(style="display: block;")
           table.table.table-striped.table-bordered.table-advance.table-hover
@@ -53,8 +65,14 @@ block PAGECONTENT
                   i.icon-user
                   | 归档情况
                 th
+                  i.icon-user
+                  | 归档文件
+                th
                   i.icon-warning-sign
                   | 归档
+                th
+                  i.icon-warning-sign
+                  | 解除归档
 
             tbody
               each prj, i in prjs
@@ -72,7 +90,15 @@ block PAGECONTENT
                   td
                     | #{prj.prjExpired}
                   td
+                    if(prj.prjFilePath)
+                      a(href='#{prj.prjFilePath}')
+                        | 下载
+                    else
+                      | none
+                  td
                     a.btn.mini.red-stripe.tryDelete(data-toggle="modal", data-id=prj.id, href="#static") 归档
+                  td
+                    a.btn.mini.green-stripe.tryDelete(data-toggle="modal", data-id=prj.id, href="#static2") 解除归档
 
 
           a.btn.purple(type='button', href='refresh_prjinfo') 刷新

@@ -13,7 +13,7 @@ var crypto = require('crypto');
 var fs = require('fs');
 var http = require('http');
 //var path = require('path');
-var mgdb = require('./mgdb');
+//var mgdb = require('./mgdb');
 var xlsx = require('./xlsx');
 var schedule = require('node-schedule');
 var path = require('path');
@@ -64,7 +64,7 @@ exports.prjinfo_collection_name = 'prjinfos';
 exports.subhtml_templatehtmlname = 'reg.html';
 exports.subhtml_errorhtmlname = 'suberror.html';
 //exports.subhtml_absolutewebroot = '/home/johnny/js/test/wis/public';   //709
-//exports.subhtml_absolutewebroot = '/home/johnny/test/web/wis/public';  //hq
+//exports.subhtml_absolutewebroot = '/home/johnny/test/web/wis_v2/wis/public';  //hq
 //exports.subhtml_absolutewebroot = '/home/web/wis/public';              //qingcloud
 exports.subhtml_absolutewebroot = '/home/web/wis_v2/wisv2/public';       //qingcloud
 
@@ -1060,3 +1060,80 @@ exports.LoadObjArray = function (file, obj_array) {
 
 	//return objArray;
 }
+
+var RmDir = function (dir_path, callback) {
+
+	var exec = require('child_process').exec;
+	var cmd = 'rm -rf ' + dir_path;
+	var child = exec(cmd,function(err,out) { 
+		if(err)
+		{
+			console.log('rm error: ' + err);
+			callback(err);
+		}			
+		else
+		{
+			console.log('rm ok: ' + out); 
+			callback(null);
+		}			
+	});
+};
+
+var GetDirectories = function (root) {
+	
+	var result = [];
+	var dirs = fs.readdirSync(root);
+
+	dirs.forEach( function(dir){
+		//if root end with '/', if not
+		//...
+		var pathName = root +'/' + dir;
+		var stat = fs.lstatSync(pathName);
+
+		if(stat===undefined)
+			return;
+
+		if(stat.isDirectory())
+		{
+			result.push(pathName);
+		}
+	});
+
+	return result;
+};
+
+var RecursiveRmdir = function (dirs, remain_len) {
+
+	if(dirs.length<=remain_len)
+	{
+		console.log('RecursiveRmdir end!');
+		return;
+	}
+
+	var dir = dirs.pop();
+	RmDir(dir, function(err){
+		if(err)
+		{
+			return;
+		}
+		else
+		{
+			console.log('rm ok: ' + dir);
+			RecursiveRmdir(dirs, remain_len);
+		}
+	});
+};
+
+exports.CheckAndRmBackupDir = function (backup_rootpath) {
+
+	var dirs = GetDirectories(backup_rootpath);
+
+	console.log('CheckAndRmBackupDir:');
+	console.log(dirs);
+	console.log('reverse:');
+	console.log(dirs.reverse());
+
+	RecursiveRmdir(dirs, 4);
+};
+
+

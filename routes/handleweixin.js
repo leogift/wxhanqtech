@@ -34,7 +34,7 @@ exports.WeixinRegister = function(req, res) {
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('WeiXinRegister id= ' + idStr);
 
-	mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, function(prjs){
+	mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, {prjExpired:false}, function(prjs){
 
 		console.log('prjNames=');
 		console.log(prjs);
@@ -101,7 +101,9 @@ exports.StuSubscribe = function(req, res){
 			{'stuNumber':stuNumber, 'prjName':req.body.selectedPrjName}, 
 			{
 			    stuWeixinBind: true,
+			    stuWeixinBind_backup: true,
 			    stuWeixin_id: req.body.weixinid,
+			    stuWeixin_id_backup: req.body.weixinid,
 			    subDate: Date.now()
 		    },
 			function(err, docs){
