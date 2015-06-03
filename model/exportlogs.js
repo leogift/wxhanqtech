@@ -241,7 +241,15 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		if(docs.workRecords[i].logLocation!=undefined)
 	 			logLocation = path.basename(docs.workRecords[i].logLocation);
 
-	 		data[k+j].push(logLocation);
+	 		if(logLocation=="")
+	 		{
+	 			console.log('logLocation is empty!!');
+	 		}
+	 		else
+	 		{
+	 			console.log('logLocation is ' + logLocation);
+	 			data[k+j].push(logLocation);
+	 		}	 			
 			
 			var strTime = ''
 			if(docs.workRecords[i].startTime!=undefined)
@@ -799,7 +807,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 		      		breadtext: comutil.bread.super_viewprjs_text,
 		      		breadhref: comutil.bread.super_viewprjs_href,
 		      		newpage: '/super_viewprjs', 
-		      		timeout:comutil.redirect_timeoutnewPage
+		      		timeout:comutil.redirect_timeout
 		  	    });
 		}
 		else
