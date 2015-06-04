@@ -333,43 +333,55 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 
 		for(var i=1; i<data.length; i++)
 		{
-			//console.log('logText:' + data[i][8]);
-			console.log('logLocation:' + data[i][6]);
-			console.log('logPic:' + data[i][9]);
+			// //console.log('logText:' + data[i][8]);
+			// console.log('logLocation:' + data[i][6]);
+			// console.log('logPic:' + data[i][9]);
 
-			var logLocation = data[i][6];
-			var logPic = data[i][9];
-			var locationRaw = {value:data[i][6], hyperlink:'./'+data[i][6]};
-			var picRaw = {value:data[i][9], hyperlink:'./'+data[i][9]};
+			// var logLocation = data[i][6];
+			// var logPic = data[i][9];
+			// var locationRaw = {value:data[i][6], hyperlink:'./'+data[i][6]};
+			// var picRaw = {value:data[i][9], hyperlink:'./'+data[i][9]};
 
-			if(logLocation=="")
-			{
-				console.log('logLocation not_found');
-				logLocation = 'not_found';
-				locationRaw = 'not_found';
-			}
+			// if(logLocation=="")
+			// {
+			// 	console.log('logLocation not_found');
+			// 	logLocation = 'not_found';
+			// 	locationRaw = 'not_found';
+			// }
 			
 
-			if(logPic=="")
-			{
-				console.log('logPic not_found');
-				logPic = 'not_found';
-				picRaw = 'not_found';
-			}
+			// if(logPic=="")
+			// {
+			// 	console.log('logPic not_found');
+			// 	logPic = 'not_found';
+			// 	picRaw = 'not_found';
+			// }
 				
 
 			//add rows
+			// writer.addRow({
+			//     "提交序号": 'data[i][0]',
+			//     "学生姓名": 'data[i][1]',
+			//     "学号": 'data[i][2]',
+			//     "项目名称": 'data[i][3]',
+			//     "教师姓名": 'data[i][4]',
+			//     "序号": 'data[i][5]',
+			//     "提交地点": 'locationRaw',
+			//     "时间": 'data[i][7]',
+			//     "文本日志": 'xxxxx',
+			//     "图片日志": 'picRaw'
+			// });
 			writer.addRow({
-			    "提交序号": 'data[i][0]',
-			    "学生姓名": 'data[i][1]',
-			    "学号": 'data[i][2]',
-			    "项目名称": 'data[i][3]',
-			    "教师姓名": 'data[i][4]',
-			    "序号": 'data[i][5]',
-			    "提交地点": 'locationRaw',
-			    "时间": 'data[i][7]',
-			    "文本日志": 'xxxxx',
-			    "图片日志": 'picRaw'
+			    "提交序号": "dsfasfas",
+			    "学生姓名": "dsfasfas",
+			    "学号": "dsfasfas",
+			    "项目名称": "dsfasfas",
+			    "教师姓名": "dsfasfas",
+			    "序号": "dsfasfas",
+			    "提交地点": "dsfasfas",
+			    "时间": "dsfasfas",
+			    "文本日志": "dsfasfas",
+			    "图片日志": "dsfasfas"
 			});
 			// writer.addRow({
 			//     index: data[i][0],
