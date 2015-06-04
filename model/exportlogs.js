@@ -241,10 +241,10 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		if(docs.workRecords[i].logLocation!=undefined)
 	 			logLocation = path.basename(docs.workRecords[i].logLocation);
 
-	 		if(logLocation==null || logLocation=="")
+	 		if(logLocation==null || logLocation=="" || logLocation.trim()=="")
 	 		{
 	 			console.log('logLocation is empty!!');
-	 			data[k+j].push('not_found');
+	 			data[k+j].push('empty');
 	 		}
 	 		else
 	 		{
@@ -271,7 +271,17 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 			if(docs.workRecords[i].logText[j]!=undefined)
 				logText = path.basename(docs.workRecords[i].logText[j]);
 			
-			data[k+j].push(logText);
+			//data[k+j].push(logText);
+			if(logText==null || logText=="" || logText.trim()=='')
+			{
+	 			console.log('logText is empty!!');
+	 			data[k+j].push('empty');
+	 		}
+	 		else
+	 		{
+	 			console.log('logText not empty and is ' + logText);
+	 			data[k+j].push(logText);
+	 		}	 
 
 			var logPic = ' ';
 			if(docs.workRecords[i].logPicPath[j]!=undefined)
@@ -281,7 +291,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 			if(logPic==null || logPic=="" || logPic.trim()=='')
 	 		{
 	 			console.log('logPic is empty!!');
-	 			data[k+j].push('not_found');
+	 			data[k+j].push('empty');
 	 		}
 	 		else
 	 		{
