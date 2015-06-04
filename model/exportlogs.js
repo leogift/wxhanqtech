@@ -241,14 +241,14 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		if(docs.workRecords[i].logLocation!=undefined)
 	 			logLocation = path.basename(docs.workRecords[i].logLocation);
 
-	 		if(logLocation=="")
+	 		if(logLocation==null || logLocation=="")
 	 		{
 	 			console.log('logLocation is empty!!');
 	 			data[k+j].push('not_found');
 	 		}
 	 		else
 	 		{
-	 			console.log('logLocation is ' + logLocation);
+	 			console.log('logLocation not empty and is ' + logLocation);
 	 			data[k+j].push(logLocation);
 	 		}	 			
 			
@@ -278,14 +278,14 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 				logPic = path.basename(docs.workRecords[i].logPicPath[j]);
 
 			//data[k+j].push(logPic);
-			if(logPic=="")
+			if(logPic==null || logPic=="")
 	 		{
 	 			console.log('logPic is empty!!');
 	 			data[k+j].push('not_found');
 	 		}
 	 		else
 	 		{
-	 			console.log('logPic is ' + logPic);
+	 			console.log('logPic not empty and is ' + logPic);
 	 			data[k+j].push(logPic);
 	 		}	 
 	 	}
