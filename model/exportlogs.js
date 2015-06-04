@@ -278,7 +278,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 				logPic = path.basename(docs.workRecords[i].logPicPath[j]);
 
 			//data[k+j].push(logPic);
-			if(logPic==null || logPic=="")
+			if(logPic==null || logPic=="" || logPic.trim()=='')
 	 		{
 	 			console.log('logPic is empty!!');
 	 			data[k+j].push('not_found');
