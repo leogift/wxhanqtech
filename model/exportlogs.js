@@ -362,13 +362,10 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 			    "项目名称": data[i][3],
 			    "教师姓名": data[i][4],
 			    "序号": data[i][5],
-			    //交地点": {value:data[i][6], hyperlink:'./'+data[i][6]},
-			    //"提交地点": {value:logLocation, hyperlink:logLocation},
 			    "提交地点": 'locationRaw',
 			    "时间": data[i][7],
-			    "文本日志": '' + data[i][8],
-			    //"图片日志": {value:logPic, hyperlink:logPic},
-			    "图片日志": 'picRaw',
+			    "文本日志": 'xxxxx',
+			    "图片日志": 'picRaw'
 			});
 			// writer.addRow({
 			//     index: data[i][0],
