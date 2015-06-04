@@ -297,6 +297,10 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 //data[0] is collumn name, and the number of collumns must be fixed
 var SaveToFile = function(file_name, sheet_name, data, callback) {
 
+	console.log('SaveToFile: file_name=' + file_name + ' sheet_name=' + sheet_name);
+	console.log(data);
+
+
 	try
 	{
 		var writer = new xlsxwriter(file_name, {} /* options */);
@@ -356,14 +360,14 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 
 			//add rows
 			writer.addRow({
-			    "提交序号": data[i][0],
-			    "学生姓名": data[i][1],
-			    "学号": data[i][2],
-			    "项目名称": data[i][3],
-			    "教师姓名": data[i][4],
-			    "序号": data[i][5],
+			    "提交序号": 'data[i][0]',
+			    "学生姓名": 'data[i][1]',
+			    "学号": 'data[i][2]',
+			    "项目名称": 'data[i][3]',
+			    "教师姓名": 'data[i][4]',
+			    "序号": 'data[i][5]',
 			    "提交地点": 'locationRaw',
-			    "时间": data[i][7],
+			    "时间": 'data[i][7]',
 			    "文本日志": 'xxxxx',
 			    "图片日志": 'picRaw'
 			});
