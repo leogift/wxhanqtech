@@ -726,9 +726,9 @@ exports.CopyFile = function (src_file, dest_file) {
 		console.log('src_file or dest_file is null');
 		return;
 	}
-	else if(!IsFile(src_file) || !IsFile(dest_file))
+	else if(!IsFile(src_file))
 	{
-		console.log('src_file or dest_file is not file!');
+		console.log('src_file is not file!');
 		return;
 	}
 
