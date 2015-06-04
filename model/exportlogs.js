@@ -216,7 +216,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 		data[i] = new Array();
 
 	k = 1;
-	var flag = 0;
+	//var flag = 0;
 
 	for(i=0; i<docs.workRecords.length; i++)
 	{
@@ -227,11 +227,11 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		number = docs.workRecords[i].logPicPath.length;
 
 	 	console.log('i=' + i + ' number=' + number + 'k=' + k);
-	 	if(number==0) 
-	 	{
-	 		flag = 1;
-	 		number = 1;//abnormal!!
-	 	}
+	 	// if(number==0) 
+	 	// {
+	 	// 	flag = 1;
+	 	// 	number = 1;//abnormal!!
+	 	// }
 
 	 	for(j=0; j<number; j++)
 	 	{
@@ -308,8 +308,10 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		}	 
 	 	}
 
-	 	if(flag==0)
-	 		k += number;
+	 	//if(flag==0)
+	 	//	k += number;
+
+	 	k += number;
 	}
 
 	console.log(data);
