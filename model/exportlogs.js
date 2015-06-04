@@ -224,6 +224,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		number = docs.workRecords[i].logPicPath.length;
 
 	 	console.log('i=' + i + ' number=' + number + 'k=' + k);
+	 	if(number==0) number = 1;//abnormal!!
 
 	 	for(j=0; j<number; j++)
 	 	{
