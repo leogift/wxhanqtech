@@ -897,3 +897,208 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 
 	
 };
+
+
+exports.AutoPrjArchive = function () {
+
+	//find all stop date
+	mgdb.FindAllbyOption(mgdb.ModelPrjInfo, {}, function(err, docs){
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			if(!docs || docs.length<=0)
+			{
+				console.log('docs==null or docs.length=' + docs.length);
+			}
+			else
+			{
+				//var expiredPrj = [];
+				var expiredPrj;
+				var len = docs.length;
+				console.log('docs found! len=' + len);
+				for(var i=0; i<len; i++)
+				{
+					//stopTime[i] = docs[i].prjStopDate;
+					//console.log('stopTime[' + i +']=' + docs[i].prjStopDate);
+					//console.log(stopTime[i]);
+
+					var stopDate = new Date(docs[i].prjStopDate);
+					var now = Date.now();
+					var date = new Date(now);
+					//var year = date.getFullYear();
+					//console.log('year=' + year);
+					var nowDate = comutil.DateToString(date);
+					var currentDate = new Date(nowDate);
+
+					//console.log('stopDate=' + stopDate);
+					//console.log('currentDate=' + currentDate);
+
+					if(stopDate.getTime()<currentDate.getTime() && docs[i].prjExpired==false)
+					{
+						console.log('expired:' + docs[i].prjName);
+						//expiredPrj.push(docs[i].prjName);
+						expiredPrj = docs[i].prjName;
+					}
+				}
+
+				console.log('expiredPrj=');
+				console.log(expiredPrj);
+				var prjsLen = expiredPrj.length;
+				console.log('prjsLen=' + prjsLen);
+
+				// for(var i=0; i<prjsLen; i++)
+				// {
+				// 	mgdb.FindAllbyOption(mgdb.ModelSysRecord, {prjName:expiredPrj[i]}, function(err, records){
+				// 		if(err)
+				// 		{
+				// 			console.log(err);
+				// 		}
+				// 		else
+				// 		{
+				// 			if(!records)
+				// 			{
+				// 				console.log(err);
+				// 			}
+				// 			else
+				// 			{
+				// 				//console.log('expired stuNumber=' + records[i].stuNumber);
+				// 				AutoMakePrjArchive(expiredPrj[i], records);
+				// 			}
+				// 		}
+						
+				// 	});
+				// }
+
+				mgdb.FindAllbyOption(mgdb.ModelSysRecord, {prjName:expiredPrj}, function(err, records){
+					if(err)
+					{
+						console.log(err);
+					}
+					else
+					{
+						if(!records)
+						{
+							console.log(err);
+						}
+						else
+						{
+							AutoMakePrjArchive(expiredPrj, records);
+						}
+					}
+					
+				});
+
+			}
+		}
+		
+	});
+
+};
+
+//recursive do exports
+var AutoMakePrjArchive = function(prj_name, sys_records){
+
+	var len = sys_records.length;
+
+	if(len==0)
+	{
+		console.log('recursive AutoMakePrjArchive end!');
+		
+		//comutil.DirToZip() can't be called in recursive function, it is suck!!
+
+		//testtest(prj_name);
+
+		//send msg to router
+		setTimeout(function(){
+			//res.redirect('/super_makearchive/:' + prj_name);
+			var prjSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + prj_name;
+			var prjArchiveFile = prjSrcDir + '.tar.gz';
+
+			console.log('prjSrcDir=' + prjSrcDir);
+			console.log('prjArchiveFile=' + prjArchiveFile);
+
+			try
+			{
+				comutil.DirToZip(prjSrcDir, prjArchiveFile);
+			}
+			catch(err)
+			{
+				console.log(err);
+				return;
+			}
+
+			try
+			{
+				//set db Expired flag
+				mgdb.ModelPrjInfo.findOneAndUpdate(
+					{prjName:prj_name}, 
+					{prjExpired: true, prjFilePath: comutil.export_dir + '/' + prj_name + '.tar.gz'}, 
+					function(err, doc){
+						if(err)
+						{
+							console.log(err);
+						}
+						else
+						{
+							// batch modify expired in sysrecords
+							console.log('batch modify');
+
+							//归档后，设置归档标志，解除微信绑定
+							mgdb.ModelSysRecord.update(
+						    	{prjName:prj_name}, 
+						    	{prjExpired: true, stuWeixinBind: false, stuWeixin_id: comutil.default_weixinid},
+						    	{multi: true},
+						    	function(err, numberAffected, raw){
+						    		if(err)
+						    			console.log(err);
+						    		else
+						    			console.log('numberAffected=' + numberAffected);
+					    	});
+						}
+				});
+			}
+			catch(error)
+			{
+				console.log(error);
+				return;
+			}
+
+			console.log('AutoMakePrjArchive OK!');
+
+		}, 10000);
+
+		return;
+	}
+
+	var docs = sys_records.pop();
+	console.log('len=' + len + ' data.stuNumber=' + docs.stuNumber);
+
+	//make dir
+	var dir = MakeDownloadDir(docs, true);
+	if(dir==null)
+	{
+		console.log('MakeDownloadDir null!');
+		return;
+	}
+
+	//save xlsx
+	var xlsxFile = dir + '/' + comutil.export_xlsx_filename;
+	console.log('xlsxFile=' + xlsxFile);
+	ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, function(err){
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			console.log('SaveToFile ok!');
+            AutoMakePrjArchive(prj_name, sys_records);
+		}
+	});
+
+	
+};
+

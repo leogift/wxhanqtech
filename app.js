@@ -21,6 +21,7 @@ var mgdb = require('./model/mgdb');
 // self-defined const and functions
 var comutil = require('./model/commonutils');
 var schedule = require('node-schedule');
+var exportlogs = require('./model/exportlogs');
 
 var express = require('express')
   , handlesupervisor = require('./routes/handlesupervisor')
@@ -225,3 +226,40 @@ var RunBackupSchedule = function () {
 RunBackupSchedule();
 
 
+var RunAutoArchiveSchedule = function () {
+
+  console.log('RunAutoArchiveSchedule');
+
+  //run schedule job
+  var rule = new schedule.RecurrenceRule();
+
+  var trigTime = [];
+  trigTime.push(1);
+  trigTime.push(2);
+  trigTime.push(3);
+  trigTime.push(4);
+  trigTime.push(5);
+  trigTime.push(6);
+  rule.hour = trigTime;
+
+  // rule.dayOfWeek = [0]; //sunday
+  // rule.hour = 4;        // am 4:00
+  // rule.minute = 0;
+
+  var job = schedule.scheduleJob(rule, function(){
+
+    console.log('doing Automatic Project Archive...');
+
+    exportlogs.AutoPrjArchive();    
+
+    console.log('RunAutoArchiveSchedule over!');
+
+
+  });
+
+};
+
+RunAutoArchiveSchedule();
+
+
+//exportlogs.AutoPrjArchive();
