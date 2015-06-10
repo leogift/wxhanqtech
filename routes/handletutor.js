@@ -800,7 +800,8 @@ exports.ViewSysWorklogDetails = function(req, res) {
 				res.render('tutor_query_worklog_detail_result',
 				  	{
 				  		act: comutil.sidebaract.tutor.viewworklog,
-				  		worklogs: docs.workRecords, 
+				  		worklogs: docs.workRecords,
+				  		weixin_id: docs.stuWeixin_id, 
 				  		stuname: docs.stuName,
 				  		stunumber: docs.stuNumber,
 				  		prjname: docs.prjName,
