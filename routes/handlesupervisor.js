@@ -522,6 +522,7 @@ exports.ViewSysWorklogDetails = function(req, res) {
 				  	{
 				  		act: comutil.sidebaract.super.viewsyslog,
 				  		worklogs: docs.workRecords, 
+				  		weixin_id: docs.stuWeixin_id,
 				  		stuname: docs.stuName,
 				  		stunumber: docs.stuNumber,
 				  		prjname: docs.prjName,

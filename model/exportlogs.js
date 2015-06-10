@@ -944,10 +944,10 @@ exports.AutoPrjArchive = function () {
 					}
 				}
 
-				console.log('expiredPrj=');
-				console.log(expiredPrj);
-				var prjsLen = expiredPrj.length;
-				console.log('prjsLen=' + prjsLen);
+				// console.log('expiredPrj=');
+				// console.log(expiredPrj);
+				// var prjsLen = expiredPrj.length;
+				// console.log('prjsLen=' + prjsLen);
 
 				// for(var i=0; i<prjsLen; i++)
 				// {
