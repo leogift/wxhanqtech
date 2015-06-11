@@ -241,7 +241,7 @@ var RunAutoArchiveSchedule = function () {
   trigTime.push(5);
   trigTime.push(6);
   rule.hour = trigTime;
-  rule.minute = 1;
+  rule.minute = 26;
 
   // rule.dayOfWeek = [0]; //sunday
   // rule.hour = 4;        // am 4:00

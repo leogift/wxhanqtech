@@ -901,6 +901,8 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 
 exports.AutoPrjArchive = function () {
 
+	console.log('AutoPrjArchive!');
+
 	//find all stop date
 	mgdb.FindAllbyOption(mgdb.ModelPrjInfo, {}, function(err, docs){
 		if(err)
@@ -925,6 +927,8 @@ exports.AutoPrjArchive = function () {
 					//console.log('stopTime[' + i +']=' + docs[i].prjStopDate);
 					//console.log(stopTime[i]);
 
+					var id = docs[i]._id;
+					var expired = docs[i].prjExpired;
 					var stopDate = new Date(docs[i].prjStopDate);
 					var now = Date.now();
 					var date = new Date(now);
@@ -935,9 +939,10 @@ exports.AutoPrjArchive = function () {
 
 					console.log('stopDate=' + stopDate);
 					console.log('currentDate=' + currentDate);
-					console.log('prj=' + docs[i].prjName);
+					console.log('id=' + id);
+					console.log('expired=' + expired);
 
-					if(stopDate.getTime()<currentDate.getTime() && docs[i].prjExpired==false)
+					if(stopDate.getTime()<currentDate.getTime() && expired==false)
 					{
 						console.log('expired:' + docs[i].prjName);
 						//expiredPrj.push(docs[i].prjName);
