@@ -935,6 +935,7 @@ exports.AutoPrjArchive = function () {
 
 					console.log('stopDate=' + stopDate);
 					console.log('currentDate=' + currentDate);
+					console.log('prj=' + docs[i].prjName);
 
 					if(stopDate.getTime()<currentDate.getTime() && docs[i].prjExpired==false)
 					{
