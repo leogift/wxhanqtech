@@ -916,7 +916,7 @@ exports.AutoPrjArchive = function () {
 			else
 			{
 				//var expiredPrj = [];
-				var expiredPrj;
+				var expiredPrj = undefined;
 				var len = docs.length;
 				console.log('docs found! len=' + len);
 				for(var i=0; i<len; i++)
@@ -941,10 +941,17 @@ exports.AutoPrjArchive = function () {
 						console.log('expired:' + docs[i].prjName);
 						//expiredPrj.push(docs[i].prjName);
 						expiredPrj = docs[i].prjName;
+						//break;
 					}
 				}
 
-				// console.log('expiredPrj=');
+				// console.log('expiredPrj=' + expiredPrj);
+				// if(expiredPrj==undefined)
+				// {
+				// 	console.log('no expiredPrj, return!');
+				// 	return;
+				// }
+
 				// console.log(expiredPrj);
 				// var prjsLen = expiredPrj.length;
 				// console.log('prjsLen=' + prjsLen);

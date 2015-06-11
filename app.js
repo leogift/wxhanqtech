@@ -234,13 +234,14 @@ var RunAutoArchiveSchedule = function () {
   var rule = new schedule.RecurrenceRule();
 
   var trigTime = [];
-  trigTime.push(1);
+  trigTime.push(19);
   trigTime.push(2);
   trigTime.push(3);
   trigTime.push(4);
   trigTime.push(5);
   trigTime.push(6);
   rule.hour = trigTime;
+  rule.minute = 40;
 
   // rule.dayOfWeek = [0]; //sunday
   // rule.hour = 4;        // am 4:00
