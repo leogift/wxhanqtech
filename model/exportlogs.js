@@ -574,6 +574,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									    /* safari等其他非主流浏览器只能自求多福了 */
 									    res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
 									}
+									res.download(zipFile);
 								}
 								else
 								{
