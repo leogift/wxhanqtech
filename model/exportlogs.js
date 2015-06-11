@@ -563,7 +563,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									console.log('start to download!');
 									//res.download(zipFile);
 
-									var filename = 'Nodejs中文指南.pdf'; 
+									var filename = zipFile; 
 									var userAgent = (req.headers['user-agent']||'').toLowerCase();
 									 
 									if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
@@ -574,7 +574,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									    /* safari等其他非主流浏览器只能自求多福了 */
 									    res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
 									}
-									res.download(zipFile);
+									//res.download(zipFile);
 								}
 								else
 								{
