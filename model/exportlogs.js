@@ -561,20 +561,20 @@ exports.SysWorklogExport = function (req, res, role) {
 								if(exists)
 								{
 									console.log('start to download!');
-									//res.download(zipFile);
-
-									var filename = zipFile; 
-									var userAgent = (req.headers['user-agent']||'').toLowerCase();
-									 
-									if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
-									    res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(filename));
-									} else if(userAgent.indexOf('firefox') >= 0) {
-									    res.setHeader('Content-Disposition', 'attachment; filename*="utf8\'\'' + encodeURIComponent(filename)+'"');
-									} else {
-									    /* safari等其他非主流浏览器只能自求多福了 */
-									    res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
-									}
 									res.download(zipFile);
+
+									// var filename = zipFile; 
+									// var userAgent = (req.headers['user-agent']||'').toLowerCase();
+									 
+									// if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
+									//     res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(filename));
+									// } else if(userAgent.indexOf('firefox') >= 0) {
+									//     res.setHeader('Content-Disposition', 'attachment; filename*="utf8\'\'' + encodeURIComponent(filename)+'"');
+									// } else {
+									//     /* safari等其他非主流浏览器只能自求多福了 */
+									//     res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
+									// }
+									// res.download(zipFile);
 								}
 								else
 								{
