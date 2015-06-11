@@ -941,16 +941,16 @@ exports.AutoPrjArchive = function () {
 						console.log('expired:' + docs[i].prjName);
 						//expiredPrj.push(docs[i].prjName);
 						expiredPrj = docs[i].prjName;
-						//break;
+						break;
 					}
 				}
 
-				// console.log('expiredPrj=' + expiredPrj);
-				// if(expiredPrj==undefined)
-				// {
-				// 	console.log('no expiredPrj, return!');
-				// 	return;
-				// }
+				console.log('expiredPrj=' + expiredPrj);
+				if(expiredPrj==undefined)
+				{
+					console.log('no expiredPrj, return!');
+					return;
+				}
 
 				// console.log(expiredPrj);
 				// var prjsLen = expiredPrj.length;
