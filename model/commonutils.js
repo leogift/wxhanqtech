@@ -24,8 +24,8 @@ var path = require('path');
 //
 
 exports.redirect_timeout = 3000;
-exports.webserver_port = 3000;
-//exports.webserver_port = 80;
+//exports.webserver_port = 3000;
+exports.webserver_port = 80;
 // in file: johnnyMsgHandler.js : getMedia.GetAccessToken();
 
 
