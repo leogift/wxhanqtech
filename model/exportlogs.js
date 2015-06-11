@@ -933,8 +933,8 @@ exports.AutoPrjArchive = function () {
 					var nowDate = comutil.DateToString(date);
 					var currentDate = new Date(nowDate);
 
-					//console.log('stopDate=' + stopDate);
-					//console.log('currentDate=' + currentDate);
+					console.log('stopDate=' + stopDate);
+					console.log('currentDate=' + currentDate);
 
 					if(stopDate.getTime()<currentDate.getTime() && docs[i].prjExpired==false)
 					{
