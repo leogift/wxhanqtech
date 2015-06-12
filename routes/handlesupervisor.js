@@ -1281,6 +1281,11 @@ exports.AddMember = function(req, res){
 	newSysRec.stuWeixinBind_backup = false;
 	newSysRec.stuLoginFlag = true;
 	newSysRec.prjName = req.body.prjname;
+
+	newSysRec.prjExpired = false;
+	newSysRec.prjStartDate = req.body.prjstartdate;
+	newSysRec.prjStopDate = req.body.prjstopdate;
+	
 	//newSysRec.prjDesc = rec[1];
 	//newSysRec.prjLocation = rec[1];
 	newSysRec.tutorNumber = req.body.tutornumber;
