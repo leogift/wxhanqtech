@@ -215,10 +215,17 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 			number += p;
 	}
 
-	for(i=0; i<=number; i++)
+	if(number==0) 
+ 	{
+ 		number = 1;
+ 	}
+
+	for(i=0; i<number; i++)
 		data[i] = new Array();
 
-	console.log('number=' + number + 'docs.workRecords.length=' + docs.workRecords.length + 'data.length=' + data.length);
+	console.log(' number=' + number + 
+		        ' docs.workRecords.length=' + docs.workRecords.length + 
+		        ' data.length=' + data.length);
 
 	k = 0;
 	//var flag = 0;
