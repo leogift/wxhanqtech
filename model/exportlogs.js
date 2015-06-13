@@ -578,7 +578,11 @@ exports.SysWorklogExport = function (req, res, role) {
 									    res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
 									}
 									console.log('start download');
-									res.download('./public/download', filename);
+									
+									res.download('./public/download/', filename, function(err){
+										console.log(err);
+									});
+
 									console.log('download end!');
 								}
 								else
