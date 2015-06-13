@@ -663,14 +663,14 @@ exports.PrjArchive = function (req, res) {
 						}
 						else
 						{
-							var stuNumbers = [];
-							var len = docs.length;
+							// var stuNumbers = [];
+							// var len = docs.length;
 							console.log('docs found! len=' + len);
-							for(i=0; i<len; i++)
-							{
-								stuNumbers[i] = docs[i].stuNumber;
-							}
-							console.log(stuNumbers);
+							// for(i=0; i<len; i++)
+							// {
+							// 	stuNumbers[i] = docs[i].stuNumber;
+							// }
+							// console.log(stuNumbers);
 
 							MakePrjArchive(req, res, prjName, docs, 'xxxxyyyy');
 
