@@ -809,7 +809,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 			  	    msg: comutil.msg.msg_ok, 
 			  	    title: comutil.msg.title_ok, 
 			  	    smalltitle: comutil.msg.stitle_ok, 
-			  	    breadtext: comutil.bread.super_viewprjs_text,MakeDownloadDir
+			  	    breadtext: comutil.bread.super_viewprjs_text,
 			        breadhref: comutil.bread.super_viewprjs_href,
 			  	    newpage: '/super_viewprjs', 
 			  	    timeout: comutil.redirect_timeout
