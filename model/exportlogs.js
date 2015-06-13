@@ -564,7 +564,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									//res.download(zipFile);
 
 									//var filename = "Nodejs中文指南.pdf"; 
-									var filename = "12203063302_项目一.tar.gz"; 
+									var filename = "12203063302项目一.tar.gz"; 
 									//var filename = zipFilename;
 									var userAgent = (req.headers['user-agent']||'').toLowerCase();
 									 
@@ -581,7 +581,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									}
 									console.log('start download');
 									
-									res.download('./public/download/12203063302_项目一.tar.gz', function(err){
+									res.download('./public/download/12203063302项目一.tar.gz', function(err){
 										console.log('download error: ' + err);
 									});
 
