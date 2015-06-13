@@ -17,7 +17,7 @@ var xlsx = require('./xlsx');
 var comutil = require('./commonutils');
 
 
-var MakeDownloadDir = function (docs, bArchive) {
+var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 
 	var submitCount = docs.workRecords.length;
 	var downDir  = "";
@@ -25,7 +25,8 @@ var MakeDownloadDir = function (docs, bArchive) {
 	//mkdir prjName
 	if(bArchive)
 	{
-		var fsPrjDir =  comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + docs.prjName;
+		//var fsPrjDir =  comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + docs.prjName;
+		var fsPrjDir =  comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + tmp_dir;
 		if(!fs.existsSync(fsPrjDir))
 		{
 			console.log('mkdir ' + fsPrjDir);
@@ -42,7 +43,8 @@ var MakeDownloadDir = function (docs, bArchive) {
 	if(!bArchive)
 		downDir = docs.stuNumber;
 	else
-		downDir = docs.prjName + '/' + docs.stuNumber;
+		//downDir = docs.prjName + '/' + docs.stuNumber;
+	    downDir = tmp_dir + '/' + docs.stuNumber;
 
 	//mkdir
 	//var path = require('path');
@@ -670,7 +672,7 @@ exports.PrjArchive = function (req, res) {
 							}
 							console.log(stuNumbers);
 
-							MakePrjArchive(req, res, prjName, docs);
+							MakePrjArchive(req, res, prjName, docs, 'xxxxyyyy');
 
 						}
 					}
@@ -701,30 +703,29 @@ var testtest = function(prj_name) {
 };
 
 //recursive do exports
-var MakePrjArchive = function(req, res, prj_name, sys_records){
+var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 
 	var len = sys_records.length;
 
 	if(len==0)
 	{
 		console.log('recursive MakePrjArchive end!');
-		
-		//comutil.DirToZip() can't be called in recursive function, it is suck!!
-
-		//testtest(prj_name);
 
 		//send msg to router
 		setTimeout(function(){
-			//res.redirect('/super_makearchive/:' + prj_name);
+
 			var prjSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + prj_name;
+			var tmpSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + tmp_dir;
 			var prjArchiveFile = prjSrcDir + '.tar.gz';
 
 			console.log('prjSrcDir=' + prjSrcDir);
+			console.log('tmpSrcDir=' + tmpSrcDir);
 			console.log('prjArchiveFile=' + prjArchiveFile);
 
 			try
 			{
-				comutil.DirToZip(prjSrcDir, prjArchiveFile);
+				//comutil.DirToZip(prjSrcDir, prjArchiveFile);
+				comutil.DirToZip(tmpSrcDir, prjArchiveFile);
 			}
 			catch(err)
 			{
@@ -808,7 +809,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 			  	    msg: comutil.msg.msg_ok, 
 			  	    title: comutil.msg.title_ok, 
 			  	    smalltitle: comutil.msg.stitle_ok, 
-			  	    breadtext: comutil.bread.super_viewprjs_text,
+			  	    breadtext: comutil.bread.super_viewprjs_text,MakeDownloadDir
 			        breadhref: comutil.bread.super_viewprjs_href,
 			  	    newpage: '/super_viewprjs', 
 			  	    timeout: comutil.redirect_timeout
@@ -825,7 +826,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 	console.log('len=' + len + ' data.stuNumber=' + docs.stuNumber);
 
 	//make dir
-	var dir = MakeDownloadDir(docs, true);
+	var dir = MakeDownloadDir(docs, true, tmp_dir);
 	if(dir==null)
 	{
 		console.log('MakeDownloadDir null!');
@@ -866,7 +867,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 		else
 		{
 			console.log('SaveToFile ok!');
-            MakePrjArchive(req, res, prj_name, sys_records);
+            MakePrjArchive(req, res, prj_name, sys_records, tmp_dir);
 
 		}
 	});

@@ -34,20 +34,27 @@ var MakeDownloadDir = function (docs, bArchive) {
 	}
 
 
+	// if(!bArchive)
+	// 	downDir = docs.stuNumber + '_' + docs.prjName;
+	// else
+	// 	downDir = docs.prjName + '/' + docs.stuNumber + '_' + docs.prjName;
+
 	if(!bArchive)
-		downDir = docs.stuNumber + '_' + docs.prjName;
+		downDir = docs.stuNumber;
 	else
-		downDir = docs.prjName + '/' + docs.stuNumber + '_' + docs.prjName;
+		downDir = docs.prjName + '/' + docs.stuNumber;
 
 	//mkdir
 	//var path = require('path');
 	var fsDir = comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + downDir;
 	console.log('fsDir=' + fsDir);
+	
 	if(!fs.existsSync(fsDir))
 	{
 		console.log('mkdir');
 		fs.mkdirSync(fsDir, 0755);
-	}		
+	}
+	
 
 	//copy
 	for(var i=0; i<submitCount; i++)
@@ -186,54 +193,47 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	var j = 0;
 	var k = 0;
 
-	data[0] = new Array();
-	data[0].push(comutil.exceltitle.index);
-	data[0].push(comutil.exceltitle.stuName);
-	data[0].push(comutil.exceltitle.stuNumber);
-	data[0].push(comutil.exceltitle.prjName);
-	data[0].push(comutil.exceltitle.tutorName);
 
-	data[0].push(comutil.exceltitle.seq);
-	data[0].push(comutil.exceltitle.location);
-	data[0].push(comutil.exceltitle.time);
-	data[0].push(comutil.exceltitle.logText);
-	data[0].push(comutil.exceltitle.logPic);
-
-	var number = 0;
+	var dataCount = 0;
 	for(var m=0; m<docs.workRecords.length; m++)
 	{
 		var n = docs.workRecords[m].logText.length;
 		var p = docs.workRecords[m].logPicPath.length;
 		if(n>p)
-			number += n;
+			dataCount += n;
 		else
-			number += p;
+			dataCount += p;
+
+		if(n==0 && p==0) //既没有提交文字，也没有提交图片，也是一次提交，data数组也要留一个给他
+			dataCount++;
 	}
 
-	console.log('number=' + number);
-
-	for(i=1; i<=number; i++)
+	for(i=0; i<dataCount; i++)
 		data[i] = new Array();
 
-	k = 1;
-	//var flag = 0;
+	console.log(' dataCount=' + dataCount + 
+		        ' docs.workRecords.length=' + docs.workRecords.length + 
+		        ' data.length=' + data.length);
+
+	k = 0;
+	var subCount = 0;
 
 	for(i=0; i<docs.workRecords.length; i++)
 	{
 		flag = 0;
 
-		number = docs.workRecords[i].logText.length;
-		if(number<docs.workRecords[i].logPicPath.length)
-	 		number = docs.workRecords[i].logPicPath.length;
+		subCount = docs.workRecords[i].logText.length;
+		if(subCount<docs.workRecords[i].logPicPath.length)
+	 		subCount = docs.workRecords[i].logPicPath.length;
 
-	 	console.log('i=' + i + ' number=' + number + 'k=' + k);
-	 	// if(number==0) 
-	 	// {
-	 	// 	flag = 1;
-	 	// 	number = 1;//abnormal!!
-	 	// }
+	 	if(subCount==0) 
+	 	{
+	 		subCount = 1;
+	 	}
 
-	 	for(j=0; j<number; j++)
+	 	console.log('i=' + i + ' subCount=' + subCount + ' k=' + k);
+
+	 	for(j=0; j<subCount; j++)
 	 	{
 	 		console.log('j=' + j);
 
@@ -308,10 +308,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		}	 
 	 	}
 
-	 	//if(flag==0)
-	 	//	k += number;
-
-	 	k += number;
+	 	k += subCount;
 	}
 
 	console.log(data);
@@ -351,43 +348,11 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 		    { width: 50 }
 		]);
 
-		// var index = comutil.exceltitle.index; 
-		// var stuName = comutil.exceltitle.stuName;
-		// var stuNumber = comutil.exceltitle.stuNumber;
-		// var prjName = comutil.exceltitle.prjName;
-		// var tutorName = comutil.exceltitle.tutorName;
-		// var seq = comutil.exceltitle.seq;
-		// var location = comutil.exceltitle.location;
-		// var time = comutil.exceltitle.time;
-		// var logText = comutil.exceltitle.logText;
-		// var logPic = comutil.exceltitle.logPic;
-
-		for(var i=1; i<data.length; i++)
+		for(var i=0; i<data.length; i++)
 		{
 			//console.log('logText:' + data[i][8]);
 			console.log('logLocation:' + data[i][6]);
 			console.log('logPic:' + data[i][9]);
-
-			// var logLocation = data[i][6];
-			// var logPic = data[i][9];
-			// var locationRaw = {value:data[i][6], hyperlink:'./'+data[i][6]};
-			// var picRaw = {value:data[i][9], hyperlink:'./'+data[i][9]};
-
-			// if(logLocation=="")
-			// {
-			// 	console.log('logLocation not_found');
-			// 	logLocation = 'not_found';
-			// 	locationRaw = 'not_found';
-			// }
-			
-
-			// if(logPic=="")
-			// {
-			// 	console.log('logPic not_found');
-			// 	logPic = 'not_found';
-			// 	picRaw = 'not_found';
-			// }
-				
 
 			//add rows
 			writer.addRow({
@@ -402,19 +367,6 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 			    "文本日志": data[i][8],
 			    "图片日志": {value:data[i][9], hyperlink:'./'+data[i][9]}
 			});
-			
-			// writer.addRow({
-			//     index: data[i][0],
-			//     stuName: data[i][1],
-			//     stuNumber: data[i][2],
-			//     prjName: data[i][3],
-			//     tutorName: data[i][4],
-			//     seq: data[i][5],
-			//     location: {value:data[i][6], hyperlink:'./'+data[i][6]},
-			//     time: data[i][7],
-			//     logText: data[i][8],
-			//     logPic: {value:data[i][9], hyperlink:'./'+data[i][9]},
-			// });
 		}
 
 		// Finalize the spreadsheet. If you don't do this, the readstream will not end.
@@ -502,7 +454,7 @@ exports.SysWorklogExport = function (req, res, role) {
 			if(docs)
 			{
 				//make dir
-				var dir = MakeDownloadDir(docs);
+				var dir = MakeDownloadDir(docs, false);
 				if(dir==null)
 				{
 					console.log('MakeDownloadDir null!');
@@ -546,7 +498,8 @@ exports.SysWorklogExport = function (req, res, role) {
 
 						//do zip
 						var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
-						var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
+						//var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
+						var zipSrcDir = zipDir + '/' + docs.stuNumber;
 						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
 						//var zipFile = zipDir + '/' + zipFilename;
 						var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
@@ -583,38 +536,25 @@ exports.SysWorklogExport = function (req, res, role) {
 							      		downloadfile: zipFileForDownload
 							  	    });
 
-									// var filename = "Nodejs中文指南.pdf"; 
-									// //var filename = "node项目一.tar.gz"; 
-									// //var filename = "Node项目一.pdf"; 
-									// //var filename = "m初步测试.pdf"; 
-									// //var filename = zipFilename;
-									// var userAgent = (req.headers['user-agent']||'').toLowerCase();
-									 
-									// if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
-									// 	console.log('msie || chrome');
-									//     res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(filename));
-									// } else if(userAgent.indexOf('firefox') >= 0) {
-									// 	console.log('firefox');
-									//     res.setHeader('Content-Disposition', 'attachment; filename*="utf8\'\'' + encodeURIComponent(filename)+'"');
-									// } else {
-									//     /* safari等其他非主流浏览器只能自求多福了 */
-									//     console.log('others');
-									//     res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
-									// }
-									// console.log('start download');
-									
-									// //res.download('./public/download/m初步测试.pdf', function(err){
-									// //res.download('./public/download/Nodejs中文指南.pdf', function(err){
-									// //res.download('./public/download/node项目一.tar.gz', function(err){
+							  	    setTimeout(function(){
 
-									// //res.download('./public/download/Nodejs中文指南.pdf', function(err){
-									// // 	console.log('download error: ');
-									// // 	console.log(err);
-									// // });
+							  	    	//delete dir
+								  	    if(fs.existsSync(dir))
+										{
+											comutil.RmDir(dir, function(err){
+												if(err)
+												{
+													console.log(err);
+												}				
+												else
+												{
+													console.log('rm dir ' + dir + ' ok!');
+												}
+											});
+										}
 
-									// console.log('download end!');
+							  	    }, 30000);							  	    	
 
-									// res.redirect('test_filename.html');
 								}
 								else
 								{
@@ -768,10 +708,6 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 	if(len==0)
 	{
 		console.log('recursive MakePrjArchive end!');
-		
-		//comutil.DirToZip() can't be called in recursive function, it is suck!!
-
-		//testtest(prj_name);
 
 		//send msg to router
 		setTimeout(function(){
@@ -926,23 +862,6 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 		else
 		{
 			console.log('SaveToFile ok!');
-
-			//do zip
-			// var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
-			// var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
-			// var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
-			// //var zipFile = zipDir + '/' + zipFilename;
-			// var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
-
-			// console.log('zipDir=' + zipDir);
-			// console.log('zipSrcDir=' + zipSrcDir);
-			// console.log('zipFilename=' + zipFilename);
-			// console.log('zipFile=' + zipFile);
-
-			//comutil.DirToZip(zipSrcDir, zipFile, res);
-			//comutil.DirToZip(zipSrcDir, zipFile);
-			//comutil.DirToZip('/home/johnny/test/web/wis_v2/wis/public/download/prj1', '/home/johnny/test/web/wis_v2/wis/public/download/prj1.tar.gz');
-
             MakePrjArchive(req, res, prj_name, sys_records);
 
 		}
