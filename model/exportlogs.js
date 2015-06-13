@@ -563,38 +563,54 @@ exports.SysWorklogExport = function (req, res, role) {
 									console.log('start to download!');
 									//res.download(zipFile);
 
-									var filename = "Nodejs中文指南.pdf"; 
-									//var filename = "node项目一.tar.gz"; 
-									//var filename = "Node项目一.pdf"; 
-									//var filename = "m初步测试.pdf"; 
-									//var filename = zipFilename;
-									var userAgent = (req.headers['user-agent']||'').toLowerCase();
+									res.render(redirectRender, 
+							  	    {
+							  	    	act: comutil.sidebaract.super.viewsyslog,
+							      		SysRecords: null,
+							      		mbtn: comutil.mbtn_id_superdeletelog,
+							      		title: comutil.msg.title_viewsysworklog, 
+							      		smalltitle: ('   ' + comutil.msg.stitle_viewsysworklog), 
+							      		breadtext: comutil.bread.super_viewsyslog_text,
+								        breadhref: comutil.bread.super_viewsyslog_href,
+								        action: comutil.link.super_queryworklog,
+							      		LinkDelete: comutil.link.super_queryresult_delete,
+							      		LinkDetail: comutil.link.super_queryresult_detail,
+							      		LinkExport: comutil.link.super_queryresult_export,
+							      		downloadfile: zipFile
+							  	    });
+
+									// var filename = "Nodejs中文指南.pdf"; 
+									// //var filename = "node项目一.tar.gz"; 
+									// //var filename = "Node项目一.pdf"; 
+									// //var filename = "m初步测试.pdf"; 
+									// //var filename = zipFilename;
+									// var userAgent = (req.headers['user-agent']||'').toLowerCase();
 									 
-									if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
-										console.log('msie || chrome');
-									    res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(filename));
-									} else if(userAgent.indexOf('firefox') >= 0) {
-										console.log('firefox');
-									    res.setHeader('Content-Disposition', 'attachment; filename*="utf8\'\'' + encodeURIComponent(filename)+'"');
-									} else {
-									    /* safari等其他非主流浏览器只能自求多福了 */
-									    console.log('others');
-									    res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
-									}
-									console.log('start download');
+									// if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
+									// 	console.log('msie || chrome');
+									//     res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(filename));
+									// } else if(userAgent.indexOf('firefox') >= 0) {
+									// 	console.log('firefox');
+									//     res.setHeader('Content-Disposition', 'attachment; filename*="utf8\'\'' + encodeURIComponent(filename)+'"');
+									// } else {
+									//     /* safari等其他非主流浏览器只能自求多福了 */
+									//     console.log('others');
+									//     res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
+									// }
+									// console.log('start download');
 									
-									//res.download('./public/download/m初步测试.pdf', function(err){
-									//res.download('./public/download/Nodejs中文指南.pdf', function(err){
-									//res.download('./public/download/node项目一.tar.gz', function(err){
-										
-									//res.download('./public/download/Nodejs中文指南.pdf', function(err){
-									// 	console.log('download error: ');
-									// 	console.log(err);
-									// });
+									// //res.download('./public/download/m初步测试.pdf', function(err){
+									// //res.download('./public/download/Nodejs中文指南.pdf', function(err){
+									// //res.download('./public/download/node项目一.tar.gz', function(err){
 
-									console.log('download end!');
+									// //res.download('./public/download/Nodejs中文指南.pdf', function(err){
+									// // 	console.log('download error: ');
+									// // 	console.log(err);
+									// // });
 
-									res.redirect('test_filename.html');
+									// console.log('download end!');
+
+									// res.redirect('test_filename.html');
 								}
 								else
 								{

@@ -1,0 +1,13 @@
+extends layout
+
+
+extends super_page_sidebarheader
+
+
+block PAGECONTENT
+
+	if(downloadfile)
+		a(href="#{downloadfile}") 日志文件下载
+	else
+		a(href="#{downloadfile}") 日志文件下载
+
