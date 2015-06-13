@@ -443,6 +443,7 @@ exports.SysWorklogExport = function (req, res, role) {
 		breadHref = comutil.bread.super_viewsyslog_href;
 		newPage = '/super_viewsyslog';
 		redirectRender = 'super_redirect_delay';
+		downloadPage = 'super_expert_worklog';
 	}
 	else if(role==comutil.userrole.tutor)
 	{
@@ -563,7 +564,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									console.log('start to download!');
 									//res.download(zipFile);
 
-									res.render(redirectRender, 
+									res.render(downloadPage, 
 							  	    {
 							  	    	act: comutil.sidebaract.super.viewsyslog,
 							      		SysRecords: null,
