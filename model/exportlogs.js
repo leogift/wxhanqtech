@@ -49,28 +49,7 @@ var MakeDownloadDir = function (docs, bArchive) {
 	var fsDir = comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + downDir;
 	console.log('fsDir=' + fsDir);
 	
-	// if(!fs.existsSync(fsDir))
-	// {
-	// 	console.log('mkdir');
-	// 	fs.mkdirSync(fsDir, 0755);
-	// }
-
-	if(fs.existsSync(fsDir))
-	{
-		comutil.RmDir(fsDir, function(err){
-			if(err)
-			{
-				console.log(err);
-				return null;
-			}				
-			else
-			{
-				console.log('mkdir');
-				fs.mkdirSync(fsDir, 0755);	
-			}
-		});
-	}	
-	else
+	if(!fs.existsSync(fsDir))
 	{
 		console.log('mkdir');
 		fs.mkdirSync(fsDir, 0755);
@@ -557,38 +536,21 @@ exports.SysWorklogExport = function (req, res, role) {
 							      		downloadfile: zipFileForDownload
 							  	    });
 
-									// var filename = "Nodejs中文指南.pdf"; 
-									// //var filename = "node项目一.tar.gz"; 
-									// //var filename = "Node项目一.pdf"; 
-									// //var filename = "m初步测试.pdf"; 
-									// //var filename = zipFilename;
-									// var userAgent = (req.headers['user-agent']||'').toLowerCase();
-									 
-									// if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
-									// 	console.log('msie || chrome');
-									//     res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(filename));
-									// } else if(userAgent.indexOf('firefox') >= 0) {
-									// 	console.log('firefox');
-									//     res.setHeader('Content-Disposition', 'attachment; filename*="utf8\'\'' + encodeURIComponent(filename)+'"');
-									// } else {
-									//     /* safari等其他非主流浏览器只能自求多福了 */
-									//     console.log('others');
-									//     res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
-									// }
-									// console.log('start download');
-									
-									// //res.download('./public/download/m初步测试.pdf', function(err){
-									// //res.download('./public/download/Nodejs中文指南.pdf', function(err){
-									// //res.download('./public/download/node项目一.tar.gz', function(err){
+							  	    //delete dir
+							  	    if(fs.existsSync(dir))
+									{
+										comutil.RmDir(dir, function(err){
+											if(err)
+											{
+												console.log(err);
+											}				
+											else
+											{
+												console.log('rm dir ' + dir + ' ok!');
+											}
+										});
+									}	
 
-									// //res.download('./public/download/Nodejs中文指南.pdf', function(err){
-									// // 	console.log('download error: ');
-									// // 	console.log(err);
-									// // });
-
-									// console.log('download end!');
-
-									// res.redirect('test_filename.html');
 								}
 								else
 								{
