@@ -822,35 +822,24 @@ var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 			setTimeout(function(){
 
 	  	    	//delete dir
-	  	    	console.log('tmpdir=' + tmp_dir);
-		  // 	    if(fs.existsSync(tmp_dir))
-				// {
-				// 	comutil.RmDir(tmp_dir, function(err){
-				// 		if(err)
-				// 		{
-				// 			console.log(err);
-				// 		}				
-				// 		else
-				// 		{
-				// 			console.log('rm dir ' + tmp_dir + ' ok!');
-				// 		}
-				// 	});
-				// }
-				// else
-				// {
-				// 	console.log('not existed? ' + tmp_dir);
-				// }
-
-				comutil.RmDir(tmp_dir, function(err){
-					if(err)
-					{
-						console.log(err);
-					}				
-					else
-					{
-						console.log('rm dir ' + tmp_dir + ' ok!');
-					}
-				});
+	  	    	console.log('tmpdir=' + tmp_dir + ' tmpSrcDir=' + tmpSrcDir);
+		  	    if(fs.existsSync(tmpSrcDir))
+				{
+					comutil.RmDir(tmpSrcDir, function(err){
+						if(err)
+						{
+							console.log(err);
+						}				
+						else
+						{
+							console.log('rm dir ' + tmpSrcDir + ' ok!');
+						}
+					});
+				}
+				else
+				{
+					console.log('not existed? ' + tmpSrcDir);
+				}
 
 	  	    }, 30000);
 
