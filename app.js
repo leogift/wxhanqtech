@@ -294,5 +294,5 @@ process.on('uncaughtException', function (err) {
 //test random string
 var crypto = require('crypto');
 var sss = crypto.randomBytes(10);
-console.log('random: ');
-console.log(sss);
+console.log('random: ' + sss);
+
