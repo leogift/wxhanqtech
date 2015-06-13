@@ -586,10 +586,11 @@ exports.SysWorklogExport = function (req, res, role) {
 									//res.download('./public/download/m初步测试.pdf', function(err){
 									//res.download('./public/download/Nodejs中文指南.pdf', function(err){
 									//res.download('./public/download/node项目一.tar.gz', function(err){
+										
 									//res.download('./public/download/Nodejs中文指南.pdf', function(err){
-										console.log('download error: ');
-										console.log(err);
-									});
+									// 	console.log('download error: ');
+									// 	console.log(err);
+									// });
 
 									console.log('download end!');
 
