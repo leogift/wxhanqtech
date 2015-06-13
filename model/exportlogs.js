@@ -548,6 +548,7 @@ exports.SysWorklogExport = function (req, res, role) {
 						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
 						//var zipFile = zipDir + '/' + zipFilename;
 						var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
+						var zipFileForDownload = '/public/' + comutil.export_dir + '/' + zipFilename;
 
 						console.log('zipDir=' + zipDir);
 						console.log('zipSrcDir=' + zipSrcDir);
@@ -577,7 +578,7 @@ exports.SysWorklogExport = function (req, res, role) {
 							      		LinkDelete: comutil.link.super_queryresult_delete,
 							      		LinkDetail: comutil.link.super_queryresult_detail,
 							      		LinkExport: comutil.link.super_queryresult_export,
-							      		downloadfile: zipFile
+							      		downloadfile: zipFileForDownload
 							  	    });
 
 									// var filename = "Nodejs中文指南.pdf"; 
