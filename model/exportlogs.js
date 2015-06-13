@@ -558,7 +558,7 @@ exports.SysWorklogExport = function (req, res, role) {
 						console.log('zipFile=' + zipFile);
 
 						//comutil.DirToZip(zipSrcDir, zipFile, res);
-						comutil.DirToZip(zipSrcDir, zipFile);
+						//comutil.DirToZip(zipSrcDir, zipFile);
 
 						setTimeout(function(){
 							fs.exists(zipFile, function(exists){
