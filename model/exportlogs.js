@@ -1003,7 +1003,11 @@ exports.AutoPrjArchive = function () {
 						}
 						else
 						{
-							AutoMakePrjArchive(expiredPrj, records);
+							//generate random tmp dir
+							var tmpDir = Math.random().toString(36).substr(2);
+							console.log('random tmp dir: ' + tmpDir);
+
+							AutoMakePrjArchive(expiredPrj, records, tmpDir);
 						}
 					}
 					
@@ -1017,30 +1021,29 @@ exports.AutoPrjArchive = function () {
 };
 
 //recursive do exports
-var AutoMakePrjArchive = function(prj_name, sys_records){
+var AutoMakePrjArchive = function(prj_name, sys_records, tmp_dir){
 
 	var len = sys_records.length;
 
 	if(len==0)
 	{
 		console.log('recursive AutoMakePrjArchive end!');
-		
-		//comutil.DirToZip() can't be called in recursive function, it is suck!!
-
-		//testtest(prj_name);
 
 		//send msg to router
 		setTimeout(function(){
 			//res.redirect('/super_makearchive/:' + prj_name);
 			var prjSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + prj_name;
+			var tmpSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + tmp_dir;
 			var prjArchiveFile = prjSrcDir + '.tar.gz';
 
 			console.log('prjSrcDir=' + prjSrcDir);
+			console.log('tmpSrcDir=' + tmpSrcDir);
 			console.log('prjArchiveFile=' + prjArchiveFile);
 
 			try
 			{
-				comutil.DirToZip(prjSrcDir, prjArchiveFile);
+				//comutil.DirToZip(prjSrcDir, prjArchiveFile);
+				comutil.DirToZip(tmpSrcDir, prjArchiveFile);
 			}
 			catch(err)
 			{
@@ -1086,6 +1089,32 @@ var AutoMakePrjArchive = function(prj_name, sys_records){
 
 			console.log('AutoMakePrjArchive OK!');
 
+			setTimeout(function(){
+
+		  	    	//delete dir
+		  	    	console.log('tmpdir=' + tmp_dir + ' tmpSrcDir=' + tmpSrcDir);
+			  	    if(fs.existsSync(tmpSrcDir))
+					{
+						comutil.RmDir(tmpSrcDir, function(err){
+							if(err)
+							{
+								console.log(err);
+							}				
+							else
+							{
+								console.log('rm dir ' + tmpSrcDir + ' ok!');
+							}
+						});
+					}
+					else
+					{
+						console.log('not existed? ' + tmpSrcDir);
+					}
+
+		  	    }, 30000);
+
+			}, 10000);
+
 		}, 10000);
 
 		return;
@@ -1095,7 +1124,7 @@ var AutoMakePrjArchive = function(prj_name, sys_records){
 	console.log('len=' + len + ' data.stuNumber=' + docs.stuNumber);
 
 	//make dir
-	var dir = MakeDownloadDir(docs, true);
+	var dir = MakeDownloadDir(docs, true, tmp_dir);
 	if(dir==null)
 	{
 		console.log('MakeDownloadDir null!');
@@ -1113,7 +1142,7 @@ var AutoMakePrjArchive = function(prj_name, sys_records){
 		else
 		{
 			console.log('SaveToFile ok!');
-            AutoMakePrjArchive(prj_name, sys_records);
+            AutoMakePrjArchive(prj_name, sys_records, tmp_dir);
 		}
 	});
 
