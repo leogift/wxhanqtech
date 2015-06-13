@@ -1103,7 +1103,7 @@ exports.LoadObjArray = function (file, obj_array) {
 	//return objArray;
 }
 
-exports.RmDir = function (dir_path, callback) {
+var removeDir = function(dir_path, callback) {
 
 	var exec = require('child_process').exec;
 	var cmd = 'rm -rf ' + dir_path;
@@ -1119,6 +1119,12 @@ exports.RmDir = function (dir_path, callback) {
 			callback(null);
 		}			
 	});
+
+};
+
+exports.RmDir = function (dir_path, callback) {
+
+	removeDir(dir_path, callback);
 };
 
 var GetDirectories = function (root) {
@@ -1153,7 +1159,7 @@ var RecursiveRmdir = function (dirs, remain_len) {
 	}
 
 	var dir = dirs.pop();
-	this.RmDir(dir, function(err){
+	removeDir(dir, function(err){
 		if(err)
 		{
 			return;
