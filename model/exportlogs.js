@@ -584,7 +584,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									console.log('start download');
 									
 									//res.download('./public/download/m初步测试.pdf', function(err){
-									res.download('./public/download/Nodejs中文指南.pdf', function(err){
+									//res.download('./public/download/Nodejs中文指南.pdf', function(err){
 									//res.download('./public/download/node项目一.tar.gz', function(err){
 									//res.download('./public/download/Nodejs中文指南.pdf', function(err){
 										console.log('download error: ');
@@ -592,6 +592,8 @@ exports.SysWorklogExport = function (req, res, role) {
 									});
 
 									console.log('download end!');
+
+									res.redirect('test_filename.html');
 								}
 								else
 								{
