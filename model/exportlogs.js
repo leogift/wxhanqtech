@@ -579,7 +579,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									}
 									console.log('start download');
 									
-									res.download('./public/download/', filename, function(err){
+									res.download('./public/download/Nodejs中文指南.pdf', function(err){
 										console.log(err);
 									});
 
