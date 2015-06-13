@@ -669,7 +669,7 @@ exports.HttpGetFile = function (file_url, file_local, callback) {
 exports.DirToZip = function (dir_path, zip_file) {
 
 	//check dir existed
-	if(!path.existsSync(dir_path))
+	if(!fs.existsSync(dir_path))
 	{
 		console.log('path not existed: ' + dir_path);
 		return;
@@ -686,7 +686,7 @@ exports.DirToZip = function (dir_path, zip_file) {
 		fstream.Reader({'path': dir_path, 'type':'Directory'})
 		.pipe(tar.Pack())
 		.pipe(zlib.Gzip())
-		.pipe(fstream.Writer({'path': zip_file}));
+		.pipe(fstream.Writer({'path': zip_file}), function(err){console.log(err);});
 	}
 	catch(err)
 	{
