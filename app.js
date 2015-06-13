@@ -288,6 +288,6 @@ RunAutoArchiveSchedule();
 
 
 process.on('uncaughtException', function (err) {
-  logger.error(err);
+  console.log(err);
 });
 
