@@ -672,7 +672,11 @@ exports.PrjArchive = function (req, res) {
 							// }
 							// console.log(stuNumbers);
 
-							MakePrjArchive(req, res, prjName, docs, 'xxxxyyyy');
+							//generate random tmp dir
+							var tmpDir = Math.random().toString(36).substr(2);
+							console.log('random tmp dir: ' + tmpDir);
+
+							MakePrjArchive(req, res, prjName, docs, tmpDir);
 
 						}
 					}
@@ -814,6 +818,25 @@ var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 			  	    newpage: '/super_viewprjs', 
 			  	    timeout: comutil.redirect_timeout
 			  	});
+
+			setTimeout(function(){
+
+	  	    	//delete dir
+		  	    if(fs.existsSync(tmp_dir))
+				{
+					comutil.RmDir(tmp_dir, function(err){
+						if(err)
+						{
+							console.log(err);
+						}				
+						else
+						{
+							console.log('rm dir ' + tmp_dir + ' ok!');
+						}
+					});
+				}
+
+	  	    }, 30000);
 
 		}, 10000);
 		
