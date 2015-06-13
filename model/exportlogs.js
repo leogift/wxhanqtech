@@ -563,10 +563,10 @@ exports.SysWorklogExport = function (req, res, role) {
 									console.log('start to download!');
 									//res.download(zipFile);
 
-									//var filename = "Nodejs中文指南.pdf"; 
+									var filename = "Nodejs中文指南.pdf"; 
 									//var filename = "node项目一.tar.gz"; 
 									//var filename = "Node项目一.pdf"; 
-									var filename = "m初步测试.pdf"; 
+									//var filename = "m初步测试.pdf"; 
 									//var filename = zipFilename;
 									var userAgent = (req.headers['user-agent']||'').toLowerCase();
 									 
@@ -583,7 +583,8 @@ exports.SysWorklogExport = function (req, res, role) {
 									}
 									console.log('start download');
 									
-									res.download('./public/download/m初步测试.pdf', function(err){
+									//res.download('./public/download/m初步测试.pdf', function(err){
+									res.download('./public/download/Nodejs中文指南.pdf', function(err){
 									//res.download('./public/download/Nodejs中文指南.pdf', function(err){
 										console.log('download error: ');
 										console.log(err);
