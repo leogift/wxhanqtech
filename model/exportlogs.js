@@ -452,7 +452,7 @@ exports.SysWorklogExport = function (req, res, role) {
 			if(docs)
 			{
 				//make dir
-				var dir = MakeDownloadDir(docs);
+				var dir = MakeDownloadDir(docs, false);
 				if(dir==null)
 				{
 					console.log('MakeDownloadDir null!');
