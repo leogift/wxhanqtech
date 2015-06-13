@@ -146,6 +146,8 @@ exports.DoModifyStudentById = function(req, res) {
 		        ' stunumber= ' + req.body.stunumber + 
 		        ' stucellphone= ' + req.body.stucellphone + 
 		        ' prjname=' + req.body.prjname +
+		        ' prjstartdate=' + req.body.prjstartdate +
+		        ' prjstopdate=' + req.body.prjstopdate +
 		        ' tutorname=' + req.body.tutorname +
 		        ' tutornumber=' + req.body.tutornumber +
 		        ' tutorcellphone=' + req.body.tutorcellphone 
@@ -162,6 +164,8 @@ exports.DoModifyStudentById = function(req, res) {
 			stuNumber:req.body.stunumber,
 			stuPhone:req.body.stucellphone, 
 			prjName:req.body.prjname,
+			prjStartDate:req.body.prjstartdate,
+			prjStopDate:req.body.prjstopdate,
 			tutorNumber:req.body.tutornumber,
 			tutorName:req.body.tutorname,
 			tutorPhone:req.body.tutorcellphone
