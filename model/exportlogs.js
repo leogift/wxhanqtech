@@ -48,11 +48,34 @@ var MakeDownloadDir = function (docs, bArchive) {
 	//var path = require('path');
 	var fsDir = comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + downDir;
 	console.log('fsDir=' + fsDir);
-	if(!fs.existsSync(fsDir))
+	
+	// if(!fs.existsSync(fsDir))
+	// {
+	// 	console.log('mkdir');
+	// 	fs.mkdirSync(fsDir, 0755);
+	// }
+
+	if(fs.existsSync(fsDir))
+	{
+		comutil.RmDir(fsDir, function(err){
+			if(err)
+			{
+				console.log(err);
+				return null;
+			}				
+			else
+			{
+				console.log('mkdir');
+				fs.mkdirSync(fsDir, 0755);	
+			}
+		});
+	}	
+	else
 	{
 		console.log('mkdir');
 		fs.mkdirSync(fsDir, 0755);
-	}		
+	}
+	
 
 	//copy
 	for(var i=0; i<submitCount; i++)
@@ -877,23 +900,6 @@ var MakePrjArchive = function(req, res, prj_name, sys_records){
 		else
 		{
 			console.log('SaveToFile ok!');
-
-			//do zip
-			// var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
-			// var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
-			// var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
-			// //var zipFile = zipDir + '/' + zipFilename;
-			// var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
-
-			// console.log('zipDir=' + zipDir);
-			// console.log('zipSrcDir=' + zipSrcDir);
-			// console.log('zipFilename=' + zipFilename);
-			// console.log('zipFile=' + zipFile);
-
-			//comutil.DirToZip(zipSrcDir, zipFile, res);
-			//comutil.DirToZip(zipSrcDir, zipFile);
-			//comutil.DirToZip('/home/johnny/test/web/wis_v2/wis/public/download/prj1', '/home/johnny/test/web/wis_v2/wis/public/download/prj1.tar.gz');
-
             MakePrjArchive(req, res, prj_name, sys_records);
 
 		}

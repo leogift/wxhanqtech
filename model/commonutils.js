@@ -1103,7 +1103,7 @@ exports.LoadObjArray = function (file, obj_array) {
 	//return objArray;
 }
 
-var RmDir = function (dir_path, callback) {
+exports.RmDir = function (dir_path, callback) {
 
 	var exec = require('child_process').exec;
 	var cmd = 'rm -rf ' + dir_path;
