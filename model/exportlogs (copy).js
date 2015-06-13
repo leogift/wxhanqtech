@@ -186,23 +186,18 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	var j = 0;
 	var k = 0;
 
-	//data[0] = new Array();
-	// data[0].push(comutil.exceltitle.index);
-	// data[0].push(comutil.exceltitle.stuName);
-	// data[0].push(comutil.exceltitle.stuNumber);
-	// data[0].push(comutil.exceltitle.prjName);
-	// data[0].push(comutil.exceltitle.tutorName);
+	data[0] = new Array();
+	data[0].push(comutil.exceltitle.index);
+	data[0].push(comutil.exceltitle.stuName);
+	data[0].push(comutil.exceltitle.stuNumber);
+	data[0].push(comutil.exceltitle.prjName);
+	data[0].push(comutil.exceltitle.tutorName);
 
-	// data[0].push(comutil.exceltitle.seq);
-	// data[0].push(comutil.exceltitle.location);
-	// data[0].push(comutil.exceltitle.time);
-	// data[0].push(comutil.exceltitle.logText);
-	// data[0].push(comutil.exceltitle.logPic);
-
-	// for(i=0; i<10; i++)
-	// {
-	// 	data[0].push('empty');
-	// }
+	data[0].push(comutil.exceltitle.seq);
+	data[0].push(comutil.exceltitle.location);
+	data[0].push(comutil.exceltitle.time);
+	data[0].push(comutil.exceltitle.logText);
+	data[0].push(comutil.exceltitle.logPic);
 
 	var number = 0;
 	for(var m=0; m<docs.workRecords.length; m++)
@@ -215,12 +210,12 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 			number += p;
 	}
 
-	for(i=0; i<=number; i++)
+	console.log('number=' + number);
+
+	for(i=1; i<=number; i++)
 		data[i] = new Array();
 
-	console.log('number=' + number + 'docs.workRecords.length=' + docs.workRecords.length + 'data.length=' + data.length);
-
-	k = 0;
+	k = 1;
 	//var flag = 0;
 
 	for(i=0; i<docs.workRecords.length; i++)
@@ -232,11 +227,11 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		number = docs.workRecords[i].logPicPath.length;
 
 	 	console.log('i=' + i + ' number=' + number + 'k=' + k);
-	 	if(number==0) 
-	 	{
+	 	// if(number==0) 
+	 	// {
 	 	// 	flag = 1;
-	 		number = 1;//abnormal!!
-	 	}
+	 	// 	number = 1;//abnormal!!
+	 	// }
 
 	 	for(j=0; j<number; j++)
 	 	{
@@ -367,7 +362,7 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 		// var logText = comutil.exceltitle.logText;
 		// var logPic = comutil.exceltitle.logPic;
 
-		for(var i=0; i<data.length; i++)
+		for(var i=1; i<data.length; i++)
 		{
 			//console.log('logText:' + data[i][8]);
 			console.log('logLocation:' + data[i][6]);
