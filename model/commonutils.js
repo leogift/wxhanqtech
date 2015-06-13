@@ -1153,7 +1153,7 @@ var RecursiveRmdir = function (dirs, remain_len) {
 	}
 
 	var dir = dirs.pop();
-	RmDir(dir, function(err){
+	this.RmDir(dir, function(err){
 		if(err)
 		{
 			return;
