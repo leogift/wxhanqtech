@@ -497,6 +497,10 @@ exports.GetDirectories = function (root) {
 
 		if(stat.isDirectory())
 		{
+			//check stat
+			// if not the right format worklogrecord_20150606111111
+			//...
+			
 			var timeStr = pathName.split('_');
 			result.push(timeStr[1]);
 		}
