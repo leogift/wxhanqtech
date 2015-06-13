@@ -578,7 +578,7 @@ exports.SysWorklogExport = function (req, res, role) {
 							      		LinkDelete: comutil.link.super_queryresult_delete,
 							      		LinkDetail: comutil.link.super_queryresult_detail,
 							      		LinkExport: comutil.link.super_queryresult_export,
-							      		downloadfile: zipFileForDownload
+							      		//downloadfile: zipFileForDownload
 							  	    });
 
 									// var filename = "Nodejs中文指南.pdf"; 
