@@ -544,7 +544,8 @@ exports.SysWorklogExport = function (req, res, role) {
 						//do zip
 						var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
 						var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
-						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
+						//var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
+						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.pdf';
 						//var zipFile = zipDir + '/' + zipFilename;
 						var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
 
@@ -581,7 +582,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									console.log('start download');
 									
 									res.download(zipFile, function(err){
-										console.log(err);
+										console.log('download error: ' + err);
 									});
 
 									console.log('download end!');
