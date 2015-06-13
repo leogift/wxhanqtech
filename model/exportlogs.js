@@ -544,8 +544,7 @@ exports.SysWorklogExport = function (req, res, role) {
 						//do zip
 						var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
 						var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
-						//var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
-						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.pdf';
+						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
 						//var zipFile = zipDir + '/' + zipFilename;
 						var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
 
@@ -565,7 +564,8 @@ exports.SysWorklogExport = function (req, res, role) {
 									//res.download(zipFile);
 
 									//var filename = "Nodejs中文指南.pdf"; 
-									var filename = zipFilename;
+									var filename = "12203063302_项目一.tar.gz"; 
+									//var filename = zipFilename;
 									var userAgent = (req.headers['user-agent']||'').toLowerCase();
 									 
 									if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
@@ -581,7 +581,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									}
 									console.log('start download');
 									
-									res.download(zipFile, function(err){
+									res.download('./public/download/12203063302_项目一.tar.gz', function(err){
 										console.log('download error: ' + err);
 									});
 
