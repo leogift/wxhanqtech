@@ -664,7 +664,7 @@ exports.PrjArchive = function (req, res) {
 						else
 						{
 							// var stuNumbers = [];
-							// var len = docs.length;
+							var len = docs.length;
 							console.log('docs found! len=' + len);
 							// for(i=0; i<len; i++)
 							// {
