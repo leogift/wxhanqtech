@@ -225,6 +225,9 @@ var RunBackupSchedule = function () {
 
 RunBackupSchedule();
 
+//test
+comutil.CheckAndRmBackupDir(comutil.dump_dir);
+
 
 var RunAutoArchiveSchedule = function () {
 
@@ -235,13 +238,13 @@ var RunAutoArchiveSchedule = function () {
 
   var trigTime = [];
   trigTime.push(1);
-  trigTime.push(23);
+  trigTime.push(2);
   trigTime.push(3);
   trigTime.push(4);
   trigTime.push(5);
   trigTime.push(6);
   rule.hour = trigTime;
-  rule.minute = 33;
+  rule.minute = 0;
 
 
   // rule.dayOfWeek = [0]; //sunday
