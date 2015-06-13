@@ -204,48 +204,46 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	// 	data[0].push('empty');
 	// }
 
-	var number = 0;
+	var dataCount = 0;
 	for(var m=0; m<docs.workRecords.length; m++)
 	{
 		var n = docs.workRecords[m].logText.length;
 		var p = docs.workRecords[m].logPicPath.length;
 		if(n>p)
-			number += n;
+			dataCount += n;
 		else
-			number += p;
+			dataCount += p;
+
+		if(n==0 && p==0) //既没有提交文字，也没有提交图片，也是一次提交，data数组也要留一个给他
+			dataCount++;
 	}
 
-	if(number==0) 
- 	{
- 		number = 1;
- 	}
-
-	for(i=0; i<number; i++)
+	for(i=0; i<dataCount; i++)
 		data[i] = new Array();
 
-	console.log(' number=' + number + 
+	console.log(' dataCount=' + dataCount + 
 		        ' docs.workRecords.length=' + docs.workRecords.length + 
 		        ' data.length=' + data.length);
 
 	k = 0;
-	//var flag = 0;
+	var subCount = 0;
 
 	for(i=0; i<docs.workRecords.length; i++)
 	{
 		flag = 0;
 
-		number = docs.workRecords[i].logText.length;
-		if(number<docs.workRecords[i].logPicPath.length)
-	 		number = docs.workRecords[i].logPicPath.length;
+		subCount = docs.workRecords[i].logText.length;
+		if(subCount<docs.workRecords[i].logPicPath.length)
+	 		subCount = docs.workRecords[i].logPicPath.length;
 
-	 	console.log('i=' + i + ' number=' + number + 'k=' + k);
-	 	if(number==0) 
+	 	if(subCount==0) 
 	 	{
-	 	// 	flag = 1;
-	 		number = 1;//abnormal!!
+	 		subCount = 1;
 	 	}
 
-	 	for(j=0; j<number; j++)
+	 	console.log('i=' + i + ' subCount=' + subCount + ' k=' + k);
+
+	 	for(j=0; j<subCount; j++)
 	 	{
 	 		console.log('j=' + j);
 
@@ -320,10 +318,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		}	 
 	 	}
 
-	 	//if(flag==0)
-	 	//	k += number;
-
-	 	k += number;
+	 	k += subCount;
 	}
 
 	console.log(data);
