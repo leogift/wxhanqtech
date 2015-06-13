@@ -34,10 +34,15 @@ var MakeDownloadDir = function (docs, bArchive) {
 	}
 
 
+	// if(!bArchive)
+	// 	downDir = docs.stuNumber + '_' + docs.prjName;
+	// else
+	// 	downDir = docs.prjName + '/' + docs.stuNumber + '_' + docs.prjName;
+
 	if(!bArchive)
-		downDir = docs.stuNumber + '_' + docs.prjName;
+		downDir = docs.stuNumber;
 	else
-		downDir = docs.prjName + '/' + docs.stuNumber + '_' + docs.prjName;
+		downDir = docs.prjName + '/' + docs.stuNumber;
 
 	//mkdir
 	//var path = require('path');
@@ -186,23 +191,6 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	var j = 0;
 	var k = 0;
 
-	//data[0] = new Array();
-	// data[0].push(comutil.exceltitle.index);
-	// data[0].push(comutil.exceltitle.stuName);
-	// data[0].push(comutil.exceltitle.stuNumber);
-	// data[0].push(comutil.exceltitle.prjName);
-	// data[0].push(comutil.exceltitle.tutorName);
-
-	// data[0].push(comutil.exceltitle.seq);
-	// data[0].push(comutil.exceltitle.location);
-	// data[0].push(comutil.exceltitle.time);
-	// data[0].push(comutil.exceltitle.logText);
-	// data[0].push(comutil.exceltitle.logPic);
-
-	// for(i=0; i<10; i++)
-	// {
-	// 	data[0].push('empty');
-	// }
 
 	var dataCount = 0;
 	for(var m=0; m<docs.workRecords.length; m++)
@@ -358,43 +346,11 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 		    { width: 50 }
 		]);
 
-		// var index = comutil.exceltitle.index; 
-		// var stuName = comutil.exceltitle.stuName;
-		// var stuNumber = comutil.exceltitle.stuNumber;
-		// var prjName = comutil.exceltitle.prjName;
-		// var tutorName = comutil.exceltitle.tutorName;
-		// var seq = comutil.exceltitle.seq;
-		// var location = comutil.exceltitle.location;
-		// var time = comutil.exceltitle.time;
-		// var logText = comutil.exceltitle.logText;
-		// var logPic = comutil.exceltitle.logPic;
-
 		for(var i=0; i<data.length; i++)
 		{
 			//console.log('logText:' + data[i][8]);
 			console.log('logLocation:' + data[i][6]);
 			console.log('logPic:' + data[i][9]);
-
-			// var logLocation = data[i][6];
-			// var logPic = data[i][9];
-			// var locationRaw = {value:data[i][6], hyperlink:'./'+data[i][6]};
-			// var picRaw = {value:data[i][9], hyperlink:'./'+data[i][9]};
-
-			// if(logLocation=="")
-			// {
-			// 	console.log('logLocation not_found');
-			// 	logLocation = 'not_found';
-			// 	locationRaw = 'not_found';
-			// }
-			
-
-			// if(logPic=="")
-			// {
-			// 	console.log('logPic not_found');
-			// 	logPic = 'not_found';
-			// 	picRaw = 'not_found';
-			// }
-				
 
 			//add rows
 			writer.addRow({
@@ -409,19 +365,6 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 			    "文本日志": data[i][8],
 			    "图片日志": {value:data[i][9], hyperlink:'./'+data[i][9]}
 			});
-			
-			// writer.addRow({
-			//     index: data[i][0],
-			//     stuName: data[i][1],
-			//     stuNumber: data[i][2],
-			//     prjName: data[i][3],
-			//     tutorName: data[i][4],
-			//     seq: data[i][5],
-			//     location: {value:data[i][6], hyperlink:'./'+data[i][6]},
-			//     time: data[i][7],
-			//     logText: data[i][8],
-			//     logPic: {value:data[i][9], hyperlink:'./'+data[i][9]},
-			// });
 		}
 
 		// Finalize the spreadsheet. If you don't do this, the readstream will not end.
@@ -553,7 +496,8 @@ exports.SysWorklogExport = function (req, res, role) {
 
 						//do zip
 						var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
-						var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
+						//var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
+						var zipSrcDir = zipDir + '/' + docs.stuNumber;
 						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
 						//var zipFile = zipDir + '/' + zipFilename;
 						var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
