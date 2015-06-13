@@ -563,7 +563,8 @@ exports.SysWorklogExport = function (req, res, role) {
 									console.log('start to download!');
 									//res.download(zipFile);
 
-									var filename = "Nodejs中文指南.pdf"; 
+									//var filename = "Nodejs中文指南.pdf"; 
+									var filename = zipFilename;
 									var userAgent = (req.headers['user-agent']||'').toLowerCase();
 									 
 									if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
@@ -579,7 +580,7 @@ exports.SysWorklogExport = function (req, res, role) {
 									}
 									console.log('start download');
 									
-									res.download('./public/download/Nodejs中文指南.pdf', function(err){
+									res.download(zipFile, function(err){
 										console.log(err);
 									});
 
