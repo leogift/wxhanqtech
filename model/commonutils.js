@@ -681,6 +681,7 @@ exports.DirToZip = function (dir_path, zip_file) {
 	var tar = require('tar');
 	var zlib = require('zlib');
 
+	//try-catch is not useful here
 	try
 	{
 		fstream.Reader({'path': dir_path, 'type':'Directory'})
