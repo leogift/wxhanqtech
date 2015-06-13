@@ -452,6 +452,7 @@ exports.SysWorklogExport = function (req, res, role) {
 		breadHref = comutil.bread.tutor_viewworklog_href;
 		newPage = '/tutor_viewworklog';
 		redirectRender = 'tutor_redirect_delay';
+		downloadPage = 'tutor_expert_worklog';
 	}
 	else if(role==comutil.userrole.student)
 	{
@@ -460,6 +461,7 @@ exports.SysWorklogExport = function (req, res, role) {
 		breadHref = comutil.bread.student_viewworklog_href;
 		newPage = '/student_viewworklog';
 		redirectRender = 'student_redirect_delay';
+		downloadPage = 'student_expert_worklog';
 	}
 	else
 	{
@@ -578,7 +580,7 @@ exports.SysWorklogExport = function (req, res, role) {
 							      		LinkDelete: comutil.link.super_queryresult_delete,
 							      		LinkDetail: comutil.link.super_queryresult_detail,
 							      		LinkExport: comutil.link.super_queryresult_export,
-							      		//downloadfile: zipFileForDownload
+							      		downloadfile: zipFileForDownload
 							  	    });
 
 									// var filename = "Nodejs中文指南.pdf"; 
