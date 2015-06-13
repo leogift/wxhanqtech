@@ -536,20 +536,24 @@ exports.SysWorklogExport = function (req, res, role) {
 							      		downloadfile: zipFileForDownload
 							  	    });
 
-							  	    //delete dir
-							  	    if(fs.existsSync(dir))
-									{
-										comutil.RmDir(dir, function(err){
-											if(err)
-											{
-												console.log(err);
-											}				
-											else
-											{
-												console.log('rm dir ' + dir + ' ok!');
-											}
-										});
-									}	
+							  	    setTimeout(function(){
+
+							  	    	//delete dir
+								  	    if(fs.existsSync(dir))
+										{
+											comutil.RmDir(dir, function(err){
+												if(err)
+												{
+													console.log(err);
+												}				
+												else
+												{
+													console.log('rm dir ' + dir + ' ok!');
+												}
+											});
+										}
+
+							  	    }, 30000);							  	    	
 
 								}
 								else
