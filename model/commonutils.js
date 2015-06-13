@@ -669,7 +669,11 @@ exports.HttpGetFile = function (file_url, file_local, callback) {
 exports.DirToZip = function (dir_path, zip_file) {
 
 	//check dir existed
-	//...
+	if(!path.existsSync(dir_path))
+	{
+		console.log('path not existed: ' + dir_path);
+		return;
+	}
 
 	//var next = _.after(2, callback);
 
@@ -677,10 +681,19 @@ exports.DirToZip = function (dir_path, zip_file) {
 	var tar = require('tar');
 	var zlib = require('zlib');
 
-	fstream.Reader({'path': dir_path, 'type':'Directory'})
-	.pipe(tar.Pack())
-	.pipe(zlib.Gzip())
-	.pipe(fstream.Writer({'path': zip_file}));
+	try
+	{
+		fstream.Reader({'path': dir_path, 'type':'Directory'})
+		.pipe(tar.Pack())
+		.pipe(zlib.Gzip())
+		.pipe(fstream.Writer({'path': zip_file}));
+	}
+	catch(err)
+	{
+		console('DirToZip exception: ' + err);
+	}
+
+	
 
 	// w.on('end', function(){
 	// 	console.log('w end!');
