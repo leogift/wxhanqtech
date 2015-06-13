@@ -1091,29 +1091,29 @@ var AutoMakePrjArchive = function(prj_name, sys_records, tmp_dir){
 
 			setTimeout(function(){
 
-		  	    	//delete dir
-		  	    	console.log('tmpdir=' + tmp_dir + ' tmpSrcDir=' + tmpSrcDir);
-			  	    if(fs.existsSync(tmpSrcDir))
-					{
-						comutil.RmDir(tmpSrcDir, function(err){
-							if(err)
-							{
-								console.log(err);
-							}				
-							else
-							{
-								console.log('rm dir ' + tmpSrcDir + ' ok!');
-							}
-						});
-					}
-					else
-					{
-						console.log('not existed? ' + tmpSrcDir);
-					}
+	  	    	//delete dir
+	  	    	console.log('tmpdir=' + tmp_dir + ' tmpSrcDir=' + tmpSrcDir);
+		  	    if(fs.existsSync(tmpSrcDir))
+				{
+					comutil.RmDir(tmpSrcDir, function(err){
+						if(err)
+						{
+							console.log(err);
+						}				
+						else
+						{
+							console.log('rm dir ' + tmpSrcDir + ' ok!');
+						}
+					});
+				}
+				else
+				{
+					console.log('not existed? ' + tmpSrcDir);
+				}
 
-		  	    }, 30000);
+	  	    }, 30000);
 
-			}, 10000);
+
 
 		}, 10000);
 
