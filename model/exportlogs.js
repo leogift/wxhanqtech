@@ -548,7 +548,7 @@ exports.SysWorklogExport = function (req, res, role) {
 						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
 						//var zipFile = zipDir + '/' + zipFilename;
 						var zipFile = './public/' + comutil.export_dir + '/' + zipFilename;
-						var zipFileForDownload = '/public/' + comutil.export_dir + '/' + zipFilename;
+						var zipFileForDownload = comutil.export_dir + '/' + zipFilename;
 
 						console.log('zipDir=' + zipDir);
 						console.log('zipSrcDir=' + zipSrcDir);
