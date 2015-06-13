@@ -567,14 +567,19 @@ exports.SysWorklogExport = function (req, res, role) {
 									var userAgent = (req.headers['user-agent']||'').toLowerCase();
 									 
 									if(userAgent.indexOf('msie') >= 0 || userAgent.indexOf('chrome') >= 0) {
+										console.log('msie || chrome');
 									    res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(filename));
 									} else if(userAgent.indexOf('firefox') >= 0) {
+										console.log('firefox');
 									    res.setHeader('Content-Disposition', 'attachment; filename*="utf8\'\'' + encodeURIComponent(filename)+'"');
 									} else {
 									    /* safari等其他非主流浏览器只能自求多福了 */
+									    console.log('others');
 									    res.setHeader('Content-Disposition', 'attachment; filename=' + new Buffer(filename).toString('binary'));
 									}
-									res.download(filename);
+									console.log('start download');
+									res.download('./public/download', filename);
+									console.log('download end!');
 								}
 								else
 								{
