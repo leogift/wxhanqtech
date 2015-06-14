@@ -188,7 +188,7 @@ var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 // 	});
 // };
 
-var ExportXlsx = function (docs, file_name, sheet_name, callback) {
+var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 
 	var data = [];
 	var i = 0;
@@ -242,7 +242,8 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	 		data[k+j].push(i+1);
 	 		data[k+j].push(docs.stuName);
 	 		data[k+j].push(docs.stuNumber);
-	 		data[k+j].push(docs.stuWeixin_id);
+	 		if(role!=comutil.userrole.student)
+	 			data[k+j].push(docs.stuWeixin_id);
 	 		data[k+j].push(docs.prjName);
 	 		data[k+j].push(docs.tutorName);
 
@@ -320,13 +321,13 @@ var ExportXlsx = function (docs, file_name, sheet_name, callback) {
 	// 	callback(err);		
 	// });
 
-	SaveToFile(file_name, sheet_name, data, function(err){
+	SaveToFile(file_name, sheet_name, data, role, function(err){
 		callback(err);		
 	});
 };
 
 //data[0] is collumn name, and the number of collumns must be fixed
-var SaveToFile = function(file_name, sheet_name, data, callback) {
+var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 
 	console.log('SaveToFile: file_name=' + file_name + ' sheet_name=' + sheet_name);
 	console.log(data);
@@ -338,39 +339,81 @@ var SaveToFile = function(file_name, sheet_name, data, callback) {
 
 		writer.getReadStream().pipe(fs.createWriteStream(file_name));
 
-		writer.defineColumns([
-		    { width: 10 }, // width is in 'characters'
-		    { width: 12 },
-		    { width: 20 },
-		    { width: 25 },
-		    { width: 25 },
-		    { width: 12 },
-		    { width: 10 },
-		    { width: 60 },
-		    { width: 45 },
-		    { width: 50 },
-		    { width: 50 }
-		]);
+		if(role==comutil.userrole.student)
+		{
+			writer.defineColumns([
+			    { width: 10 }, // width is in 'characters'
+			    { width: 12 },
+			    { width: 20 },
+			    { width: 25 },
+			    { width: 12 },
+			    { width: 10 },
+			    { width: 60 },
+			    { width: 45 },
+			    { width: 50 },
+			    { width: 50 }
+			]);
+		}
+		else
+		{
+			writer.defineColumns([
+			    { width: 10 }, // width is in 'characters'
+			    { width: 12 },
+			    { width: 20 },
+			    { width: 30 },
+			    { width: 25 },
+			    { width: 12 },
+			    { width: 10 },
+			    { width: 60 },
+			    { width: 45 },
+			    { width: 50 },
+			    { width: 50 }
+			]);
+		}
 
 		for(var i=0; i<data.length; i++)
 		{
-			console.log('logLocation:' + data[i][7]);
-			console.log('logPic:' + data[i][10]);
+			if(role==comutil.userrole.student)
+			{
+				console.log('logLocation:' + data[i][6]);
+				console.log('logPic:' + data[i][9]);
 
-			//add rows
-			writer.addRow({
-			    "提交序号": data[i][0],
-			    "学生姓名": data[i][1],
-			    "学号": data[i][2],
-			    "微信号": data[i][3],
-			    "项目名称": data[i][4],
-			    "教师姓名": data[i][5],
-			    "序号": data[i][6],
-			    "提交地点": {value:data[i][7], hyperlink:'./'+data[i][7]},
-			    "时间": data[i][8],
-			    "文本日志": data[i][9],
-			    "图片日志": {value:data[i][10], hyperlink:'./'+data[i][10]}
-			});
+				//add rows
+				writer.addRow({
+				    "提交序号": data[i][0],
+				    "学生姓名": data[i][1],
+				    "学号": data[i][2],
+				    "项目名称": data[i][3],
+				    "教师姓名": data[i][4],
+				    "序号": data[i][5],
+				    "提交地点": {value:data[i][6], hyperlink:'./'+data[i][6]},
+				    "时间": data[i][7],
+				    "文本日志": data[i][8],
+				    "图片日志": {value:data[i][9], hyperlink:'./'+data[i][9]}
+				});
+
+			}
+			else
+			{
+				console.log('logLocation:' + data[i][7]);
+				console.log('logPic:' + data[i][10]);
+
+				//add rows
+				writer.addRow({
+				    "提交序号": data[i][0],
+				    "学生姓名": data[i][1],
+				    "学号": data[i][2],
+				    "微信号": data[i][3],
+				    "项目名称": data[i][4],
+				    "教师姓名": data[i][5],
+				    "序号": data[i][6],
+				    "提交地点": {value:data[i][7], hyperlink:'./'+data[i][7]},
+				    "时间": data[i][8],
+				    "文本日志": data[i][9],
+				    "图片日志": {value:data[i][10], hyperlink:'./'+data[i][10]}
+				});
+			}
+			
 		}
 
 		// Finalize the spreadsheet. If you don't do this, the readstream will not end.
@@ -479,7 +522,7 @@ exports.SysWorklogExport = function (req, res, role) {
 				//save xlsx
 				var xlsxFile = dir + '/' + comutil.export_xlsx_filename;
 				console.log('xlsxFile=' + xlsxFile);
-				ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, function(err){
+				ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, role, function(err){
 					if(err)
 					{
 						console.log(err);
@@ -877,7 +920,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 	//save xlsx
 	var xlsxFile = dir + '/' + comutil.export_xlsx_filename;
 	console.log('xlsxFile=' + xlsxFile);
-	ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, function(err){
+	ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, comutil.userrole.super, function(err){
 		if(err)
 		{
 			console.log(err);
@@ -1136,7 +1179,7 @@ var AutoMakePrjArchive = function(prj_name, sys_records, tmp_dir){
 	//save xlsx
 	var xlsxFile = dir + '/' + comutil.export_xlsx_filename;
 	console.log('xlsxFile=' + xlsxFile);
-	ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, function(err){
+	ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, comutil.userrole.super, function(err){
 		if(err)
 		{
 			console.log(err);
