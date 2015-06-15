@@ -8,6 +8,8 @@ Author      :Johnny.
 Update History:
 001  2015-02-07   Johnny     Create new 
 ********************************************************************************************/
+
+
 var xlsxwriter = require('xlsx-writestream');
 var fs = require('fs');
 var path = require('path');
@@ -17,6 +19,19 @@ var xlsx = require('./xlsx');
 var comutil = require('./commonutils');
 
 
+//////////////////////////////////////////////////////////////////
+//function: 创建供下载的文件夹以及拷贝文件进去
+//parameters:  
+//    @docs: 主表集合
+//    @bArchive: 是否是归档的标志
+//    @tmp_dir: 归档时，为避免中文文件夹名，产生的随机英文数字名称
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 
 	var submitCount = docs.workRecords.length;
@@ -25,7 +40,6 @@ var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 	//mkdir prjName
 	if(bArchive)
 	{
-		//var fsPrjDir =  comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + docs.prjName;
 		var fsPrjDir =  comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + tmp_dir;
 		if(!fs.existsSync(fsPrjDir))
 		{
@@ -34,20 +48,12 @@ var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 		}	
 	}
 
-
-	// if(!bArchive)
-	// 	downDir = docs.stuNumber + '_' + docs.prjName;
-	// else
-	// 	downDir = docs.prjName + '/' + docs.stuNumber + '_' + docs.prjName;
-
 	if(!bArchive)
 		downDir = docs.stuNumber;
 	else
-		//downDir = docs.prjName + '/' + docs.stuNumber;
 	    downDir = tmp_dir + '/' + docs.stuNumber;
 
 	//mkdir
-	//var path = require('path');
 	var fsDir = comutil.subhtml_absolutewebroot + '/' +comutil.export_dir + '/' + downDir;
 	console.log('fsDir=' + fsDir);
 	
@@ -57,7 +63,6 @@ var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 		fs.mkdirSync(fsDir, 0755);
 	}
 	
-
 	//copy
 	for(var i=0; i<submitCount; i++)
 	{
@@ -86,107 +91,6 @@ var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 	return fsDir;
 };
 
-// var ExportXlsx = function (docs, file_name, sheet_name, callback) {
-
-// 	var data = [];
-// 	var i = 0;
-// 	var j = 0;
-// 	var k = 0;
-
-// 	data[0] = new Array();
-// 	data[0].push(comutil.exceltitle.index);
-// 	data[0].push(comutil.exceltitle.stuName);
-// 	data[0].push(comutil.exceltitle.stuNumber);
-// 	data[0].push(comutil.exceltitle.prjName);
-// 	data[0].push(comutil.exceltitle.tutorName);
-
-// 	data[0].push(comutil.exceltitle.seq);
-// 	data[0].push(comutil.exceltitle.location);
-// 	data[0].push(comutil.exceltitle.time);
-// 	data[0].push(comutil.exceltitle.logText);
-// 	data[0].push(comutil.exceltitle.logPic);
-
-// 	var number = 0;
-// 	for(var m=0; m<docs.workRecords.length; m++)
-// 	{
-// 		var n = docs.workRecords[m].logText.length;
-// 		var p = docs.workRecords[m].logPicPath.length;
-// 		if(n>p)
-// 			number += n;
-// 		else
-// 			number += p;
-// 	}
-
-// 	console.log('number=' + number);
-
-// 	for(i=1; i<=number; i++)
-// 		data[i] = new Array();
-
-// 	k = 1;
-
-// 	for(i=0; i<docs.workRecords.length; i++)
-// 	{
-// 		number = docs.workRecords[i].logText.length;
-// 		if(number<docs.workRecords[i].logPicPath.length)
-// 	 		number = docs.workRecords[i].logPicPath.length;
-
-// 	 	console.log('i=' + i + ' number=' + number + 'k=' + k);
-
-// 	 	for(j=0; j<number; j++)
-// 	 	{
-// 	 		console.log('j=' + j);
-
-// 	 		data[k+j].push(i+1);
-// 	 		data[k+j].push(docs.stuName);
-// 	 		data[k+j].push(docs.stuNumber);
-// 	 		data[k+j].push(docs.prjName);
-// 	 		data[k+j].push(docs.tutorName);
-
-// 	 		data[k+j].push(j+1);
-
-// 	 		var logLocation = ' ';
-// 	 		if(docs.workRecords[i].logLocation!=undefined)
-// 	 			logLocation = path.basename(docs.workRecords[i].logLocation);
-
-// 	 		data[k+j].push(logLocation);
-			
-// 			var strTime = ''
-// 			if(docs.workRecords[i].startTime!=undefined)
-// 				strTime += docs.workRecords[i].startTime;
-// 			else
-// 				strTime += ' ';
-
-// 			strTime += '  --  ';
-
-// 			if(docs.workRecords[i].stopTime!=undefined)
-// 				strTime += docs.workRecords[i].stopTime;
-// 			else
-// 				strTime += ' ';
-
-// 			data[k+j].push(strTime);
-
-// 			var logText = ' ';
-// 			if(docs.workRecords[i].logText[j]!=undefined)
-// 				logText = path.basename(docs.workRecords[i].logText[j]);
-			
-// 			data[k+j].push(logText);
-
-// 			var logPic = ' ';
-// 			if(docs.workRecords[i].logPicPath[j]!=undefined)
-// 				logPic = path.basename(docs.workRecords[i].logPicPath[j]);
-
-// 			data[k+j].push(logPic);
-// 	 	}
-
-// 	 	k += number;
-// 	}
-
-// 	console.log(data);
-
-// 	xlsx.SaveToFile(file_name, sheet_name, data, function(err){
-// 		callback(err);		
-// 	});
-// };
 
 var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 
@@ -211,8 +115,8 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 	}
 
 	// when autoPrjArchieve, no submition excel file will be opened wrong
-	if(dataCount==0)
-		dataCount = 1;
+	//if(dataCount==0)
+	//	dataCount = 1;
 
 	for(i=0; i<dataCount; i++)
 		data[i] = new Array();
