@@ -91,7 +91,21 @@ var MakeDownloadDir = function (docs, bArchive, tmp_dir) {
 	return fsDir;
 };
 
-
+//////////////////////////////////////////////////////////////////
+//function: 导出数据到excel文件
+//parameters:  
+//    @docs: 主表集合
+//    @file_name: 导出的excel文件名
+//    @sheet_name: excel文件中的数据表名，没有什么重要作用
+//    @role: 角色，学生还是管理员或教师
+//    @callback: callback function
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 管理员和教师导出的文件中能看到微信号，学生的看不到
+//////////////////////////////////////////////////////////////////
 var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 
 	var data = [];
@@ -99,8 +113,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 	var j = 0;
 	var k = 0;
 
-
-	var dataCount = 0;
+	var dataCount = 0; //整个数据表的行数
 	for(var m=0; m<docs.workRecords.length; m++)
 	{
 		var n = docs.workRecords[m].logText.length;
@@ -110,13 +123,10 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 		else
 			dataCount += p;
 
-		if(n==0 && p==0) //既没有提交文字，也没有提交图片，也是一次提交，data数组也要留一个给他
+		//既没有提交文字，也没有提交图片，也是一次提交，data数组也要留一个给他
+		if(n==0 && p==0) 
 			dataCount++;
 	}
-
-	// when autoPrjArchieve, no submition excel file will be opened wrong
-	//if(dataCount==0)
-	//	dataCount = 1;
 
 	for(i=0; i<dataCount; i++)
 		data[i] = new Array();
@@ -126,7 +136,7 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 		        ' data.length=' + data.length);
 
 	k = 0;
-	var subCount = 0;
+	var subCount = 0; //每次提交的行数
 
 	for(i=0; i<docs.workRecords.length; i++)
 	{
@@ -225,21 +235,30 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 
 	console.log(data);
 
-	// xlsx.SaveToFile(file_name, sheet_name, data, function(err){
-	// 	callback(err);		
-	// });
-
 	SaveToFile(file_name, sheet_name, data, role, function(err){
 		callback(err);		
 	});
 };
 
-//data[0] is collumn name, and the number of collumns must be fixed
+//////////////////////////////////////////////////////////////////
+//function: 导出数据到excel文件
+//parameters:  
+//    @file_name: 导出的excel文件名
+//    @sheet_name: excel文件中的数据表名，没有什么重要作用
+//    @data: 放置好的二维数组
+//    @role: 角色，学生还是管理员或教师
+//    @callback: callback function
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 管理员和教师导出的文件中能看到微信号，学生的看不到
+//////////////////////////////////////////////////////////////////
 var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 
 	console.log('SaveToFile: file_name=' + file_name + ' sheet_name=' + sheet_name);
 	console.log(data);
-
 
 	try
 	{
@@ -345,7 +364,18 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 
 };
 
-
+//////////////////////////////////////////////////////////////////
+//function: 响应导出请求
+//parameters:  
+//    @req:
+//    @res:
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 为了共用函数，判别用户角色，进行不同的显示，核心函数可共用
+//////////////////////////////////////////////////////////////////
 exports.SysWorklogExport = function (req, res, role) {
 
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
@@ -473,7 +503,7 @@ exports.SysWorklogExport = function (req, res, role) {
 						console.log('zipFilename=' + zipFilename);
 						console.log('zipFile=' + zipFile);
 
-						//comutil.DirToZip(zipSrcDir, zipFile, res);
+						// zip!
 						comutil.DirToZip(zipSrcDir, zipFile);
 
 						setTimeout(function(){
@@ -559,6 +589,18 @@ exports.SysWorklogExport = function (req, res, role) {
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 响应项目归档请求
+//parameters:  
+//    @req:
+//    @res:
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 获取项目名称，然后递归归档
+//////////////////////////////////////////////////////////////////
 exports.PrjArchive = function (req, res) {
 
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
@@ -624,21 +666,14 @@ exports.PrjArchive = function (req, res) {
 						}
 						else
 						{
-							// var stuNumbers = [];
 							var len = docs.length;
 							console.log('docs found! len=' + len);
-							// for(i=0; i<len; i++)
-							// {
-							// 	stuNumbers[i] = docs[i].stuNumber;
-							// }
-							// console.log(stuNumbers);
 
 							//generate random tmp dir
 							var tmpDir = Math.random().toString(36).substr(2);
 							console.log('random tmp dir: ' + tmpDir);
 
 							MakePrjArchive(req, res, prjName, docs, tmpDir);
-
 						}
 					}
 					
@@ -649,25 +684,22 @@ exports.PrjArchive = function (req, res) {
 	});
 }
 
-var testtest = function(prj_name) {
-	console.log('testtest prj_name = ' + prj_name);
 
-	//send msg to router
-	setTimeout(function(){
-		//res.redirect('/super_makearchive/:' + prj_name);
-		console.log('setTimeout prj_name = ' + prj_name);
-		var prjSrcDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir + '/' + prj_name;
-		var prjArchiveFile = prjSrcDir + '.tar.gz';
-
-		console.log('prjSrcDir=' + prjSrcDir);
-		console.log('prjArchiveFile=' + prjArchiveFile);
-
-		comutil.DirToZip(prjSrcDir, prjArchiveFile);
-
-	}, 5000);
-};
-
-//recursive do exports
+//////////////////////////////////////////////////////////////////
+//function: 递归归档
+//parameters:  
+//    @req:
+//    @res:
+//    @prj_name: prj name
+//    @sys_records: 含该项目名称的主表集合
+//    @tmp_dir: temporary dir
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 压缩每个学生的日志，设置主表标志，项目表标志，最后打包整个文件夹，压缩后删除项目文件夹
+//////////////////////////////////////////////////////////////////
 var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 
 	var len = sys_records.length;
@@ -864,7 +896,19 @@ var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 	
 };
 
-
+//////////////////////////////////////////////////////////////////
+//function: 自动归档
+//parameters:  
+//    @null:
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 发现超期的项目，找到其项目名称，根据项目名称，找到主表集合，然后递归归档
+//         有一个问题是，这里一次只能归档一个项目，因为本身就是递归函数，如果超期项目数组再传进来，
+//         就太复杂了，搞不定，所以业务上是每晚1-6点检查6次，每次检查一个项目
+//////////////////////////////////////////////////////////////////
 exports.AutoPrjArchive = function () {
 
 	console.log('AutoPrjArchive!');
@@ -924,33 +968,6 @@ exports.AutoPrjArchive = function () {
 					return;
 				}
 
-				// console.log(expiredPrj);
-				// var prjsLen = expiredPrj.length;
-				// console.log('prjsLen=' + prjsLen);
-
-				// for(var i=0; i<prjsLen; i++)
-				// {
-				// 	mgdb.FindAllbyOption(mgdb.ModelSysRecord, {prjName:expiredPrj[i]}, function(err, records){
-				// 		if(err)
-				// 		{
-				// 			console.log(err);
-				// 		}
-				// 		else
-				// 		{
-				// 			if(!records)
-				// 			{
-				// 				console.log(err);
-				// 			}
-				// 			else
-				// 			{
-				// 				//console.log('expired stuNumber=' + records[i].stuNumber);
-				// 				AutoMakePrjArchive(expiredPrj[i], records);
-				// 			}
-				// 		}
-						
-				// 	});
-				// }
-
 				mgdb.FindAllbyOption(mgdb.ModelSysRecord, {prjName:expiredPrj}, function(err, records){
 					if(err)
 					{
@@ -981,7 +998,19 @@ exports.AutoPrjArchive = function () {
 
 };
 
-//recursive do exports
+//////////////////////////////////////////////////////////////////
+//function: 自动递归归档
+//parameters:  
+//    @prj_name: prj name
+//    @sys_records: 含该项目名称的主表集合
+//    @tmp_dir: temporary dir
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 压缩每个学生的日志，设置主表标志，项目表标志，最后打包整个文件夹，压缩后删除项目文件夹
+//////////////////////////////////////////////////////////////////
 var AutoMakePrjArchive = function(prj_name, sys_records, tmp_dir){
 
 	var len = sys_records.length;
@@ -1106,7 +1135,6 @@ var AutoMakePrjArchive = function(prj_name, sys_records, tmp_dir){
             AutoMakePrjArchive(prj_name, sys_records, tmp_dir);
 		}
 	});
-
 	
 };
 
