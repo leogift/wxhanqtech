@@ -279,6 +279,14 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 			]);
 		}
 
+		//test
+		if(data.length==0)
+		{
+			data[0] = new Array();
+			for(var j=0; j<11; j++)
+				data[0].push('empty');
+		}
+
 		for(var i=0; i<data.length; i++)
 		{
 			if(role==comutil.userrole.student)
