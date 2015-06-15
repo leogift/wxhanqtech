@@ -295,5 +295,6 @@ process.on('uncaughtException', function (err) {
   console.log(err);
 });
 
-console.log = function(){};
+// disable console output
+//console.log = function(){};
 
