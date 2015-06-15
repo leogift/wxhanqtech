@@ -42,6 +42,7 @@ exports.ModifySelfPass = function(req, res) {
 //remarks: null
 //////////////////////////////////////////////////////////////////
 var StudentModifySelf = function(req, res, modify_flag) {
+
 	var stuNumber = req.session.user;
 	console.log('StudentModifySelf stuNumber=' + stuNumber);
 
@@ -52,6 +53,7 @@ var StudentModifySelf = function(req, res, modify_flag) {
 	var stitle;
 	var breadtext;
 	var breadhref;
+
 	if(modify_flag==comutil.modifytype.password)
 	{
 		renderPage = 'student_modify_selfpass';
@@ -126,10 +128,12 @@ var StudentModifySelf = function(req, res, modify_flag) {
 };
 
 exports.DoModifySelfInfo = function(req, res) {
+
 	StudentDoModifySelf(req, res, 'info');
 };
 
 exports.DoModifySelfPass = function(req, res) {
+
 	StudentDoModifySelf(req, res, 'password');
 };
 
@@ -151,6 +155,7 @@ var StudentDoModifySelf = function(req, res, modify_flag) {
 	var actFlag;
 	var breadtext;
 	var breadhref;
+
 	if(modify_flag==comutil.modifytype.info)
 	{
 		actFlag = comutil.sidebaract.tutor.modifyselfinfo;
@@ -179,7 +184,7 @@ var StudentDoModifySelf = function(req, res, modify_flag) {
 		  		act:actFlag,
 		  		msg: comutil.msg.msg_error_abnormal, 
 		  		title: comutil.msg.title_error,
-			                smalltitle: comutil.msg.stitle_error,
+			    smalltitle: comutil.msg.stitle_error,
 		  		newpage:'/student_logout', 
 		  		timeout: comutil.redirect_timeout
 		  	});
@@ -210,9 +215,9 @@ var StudentDoModifySelf = function(req, res, modify_flag) {
 				{
 					if(modify_flag=='info')
 					{						
-						docs[i].stuNumber = req.body.stunumber;
-						docs[i].stuName = req.body.stuname;
-						docs[i].stuPhone = req.body.stucellphone;
+						docs[i].stuNumber = req.body.stunumber.trim();
+						docs[i].stuName = req.body.stuname.trim();
+						docs[i].stuPhone = req.body.stucellphone.trim();
 					}
 					else if(modify_flag=='password')
 					{
@@ -232,7 +237,7 @@ var StudentDoModifySelf = function(req, res, modify_flag) {
 							  		title: comutil.msg.title_error,
 								    smalltitle: comutil.msg.stitle_error,
 								    breadtext: breadtext,
-					                                                    breadhref: breadhref,
+					                breadhref: breadhref,
 							  		newpage:'/student_logout', 
 							  		timeout: comutil.redirect_timeout
 							  	});
@@ -244,9 +249,7 @@ var StudentDoModifySelf = function(req, res, modify_flag) {
 							console.log('save ' + i + ' ok!');
 						}	
 					});
-					//console.log('1111111111111111111111111');
 				}
-				//console.log('222222222222222');
 
 				res.render('student_redirect_delay', 
 				  	{
@@ -255,7 +258,7 @@ var StudentDoModifySelf = function(req, res, modify_flag) {
 						title: comutil.msg.title_ok, 
 						smalltitle:  ' ' + req.session.user + ' ' + comutil.msg.stitle_ok,
 						breadtext: breadtext,
-					                breadhref: breadhref,
+					    breadhref: breadhref,
 						newpage:'/student_modifyselfinfo', 
 				  		timeout:comutil.redirect_timeout
 				  	});			
@@ -269,7 +272,7 @@ var StudentDoModifySelf = function(req, res, modify_flag) {
 						title: comutil.msg.title_error, 
 						smalltitle:  ' ' + req.session.user + ' ' + comutil.msg.stitle_error,
 						breadtext: breadtext,
-					                breadhref: breadhref,
+					    breadhref: breadhref,
 						newpage: '/student_logout', 
 				  		timeout: comutil.redirect_timeout
 				  	});
@@ -288,16 +291,16 @@ exports.ViewSysWorklog = function(req, res) {
 		if(err)
 		{
 			res.render('student_redirect_delay', 
-		      	{
-		      		act: comutil.sidebaract.student.viewworklog,
-				msg: comutil.msg.msg_error_abnormal, 
-				title: comutil.msg.title_error, 
-				smalltitle:  ' ' + req.session.user + ' ' + comutil.msg.stitle_error_abnormal,
-				breadtext: comutil.bread.student_viewworklog_text,
-			                breadhref: comutil.bread.student_viewworklog_href,
-				newpage:'/student_modifyselfinfo',
-				timeout:comutil.redirect_timeout
-		      	});
+	      	{
+	      		act: comutil.sidebaract.student.viewworklog,
+	      		msg: comutil.msg.msg_error_abnormal, 
+	      		title: comutil.msg.title_error, 
+	      		smalltitle:  ' ' + req.session.user + ' ' + comutil.msg.stitle_error_abnormal,
+	      		breadtext: comutil.bread.student_viewworklog_text,
+	      		breadhref: comutil.bread.student_viewworklog_href,
+	      		newpage:'/student_modifyselfinfo',
+	      		timeout:comutil.redirect_timeout
+	      	});
 		}
 		else
 		{
@@ -363,10 +366,12 @@ exports.ViewSysWorklogDetails = function(req, res) {
 };
 
 exports.SyslogExport = function(req, res) {
+
 	exportlogs.SysWorklogExport(req, res, comutil.userrole.student);
 };
 
 exports.ClearSysWorklog = function(req, res) {
+
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('student ClearSysWorklog id= ' + idStr);
 
@@ -433,32 +438,3 @@ exports.ClearSysWorklog = function(req, res) {
 		}
 	});
 };
-
-exports.showadmin = function(req, res){
-	res.render('student_admin', 
-		{act:'1', 
-		title:'Student Administor', 
-		smalltitle: req.body.username + ', you may admin here'});
-};
-
-exports.querystudent = function(req, res){
-	
-	mgdb.DoQueryAll(mgdb.ModelStudent, function(err, docs){
-		if(!err)
-		{
-			console.log(docs);
-			//for(stu, index in docs)
-			for(i=0; i<docs.length;i++)
-			{
-				console.log('name= ' + docs[i].name);
-			}
-			res.render('query_student_result', {students:docs, act:1, title:'Query Students', smalltitle:'supervisor may query tutors here'});
-		}
-		else
-		{
-			throw err;
-			res.render('tutor_redirect_delay', {msg:'query students error!', newpage:'/tutor_admin', timeout:3000});
-		}
-	})
-};
-

@@ -31,6 +31,7 @@ var comutil = require('../model/commonutils');
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.ShowLogin = function(req, res){
+
 	res.redirect(comutil.userLoginPage);
 }
 
@@ -47,6 +48,7 @@ exports.ShowLogin = function(req, res){
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.Check = function(req, res){
+
 	console.log('username= ' + req.body.username 
 		+ ' password= ' + req.body.password 
 		+ ' user role= ' + req.body.RoleRadios);
@@ -70,6 +72,7 @@ exports.Check = function(req, res){
 //remarks: null
 //////////////////////////////////////////////////////////////////
 var CheckLogin = function(req, res, flag, codedpass) {
+
 	console.log('in CheckLogin, flag=' + flag);
 
 	//check flag
@@ -183,6 +186,7 @@ var CheckLogin = function(req, res, flag, codedpass) {
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.Restrict = function (req, res, next){
+
 	if(req.session.user && (req.session.role==comutil.userrole.tutor || req.session.role==comutil.userrole.student) )
 	{
 		next();
@@ -214,6 +218,7 @@ exports.Restrict = function (req, res, next){
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.Logout = function (req, res){
+	
 	req.session.destroy(function(){
 		res.redirect(comutil.userLoginPage);
 	});

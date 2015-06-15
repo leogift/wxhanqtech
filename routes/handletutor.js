@@ -160,15 +160,15 @@ exports.DoModifyStudentById = function(req, res) {
 		mgdb.ModelSysRecord, 
 		req.body.modifyid, 
 		{
-			stuName:req.body.stuname, 
-			stuNumber:req.body.stunumber,
-			stuPhone:req.body.stucellphone, 
-			prjName:req.body.prjname,
+			stuName:req.body.stuname.trim(), 
+			stuNumber:req.body.stunumber.trim(),
+			stuPhone:req.body.stucellphone.trim(), 
+			prjName:req.body.prjname.trim(),
 			// prjStartDate:req.body.prjstartdate,
 			// prjStopDate:req.body.prjstopdate,
-			tutorNumber:req.body.tutornumber,
-			tutorName:req.body.tutorname,
-			tutorPhone:req.body.tutorcellphone
+			tutorNumber:req.body.tutornumber.trim(),
+			tutorName:req.body.tutorname.trim(),
+			tutorPhone:req.body.tutorcellphone.trim()
 	    },
 		function(err, stu){
 			if(err)
@@ -382,9 +382,9 @@ var TutorDoModifySelf = function(req, res, modify_flag) {
 				{
 					if(modify_flag=='info')
 					{						
-						docs[i].tutorNumber = req.body.tutornumber;
-						docs[i].tutorName = req.body.tutorname;
-						docs[i].tutorPhone = req.body.tutorcellphone;
+						docs[i].tutorNumber = req.body.tutornumber.trim();
+						docs[i].tutorName = req.body.tutorname.trim();
+						docs[i].tutorPhone = req.body.tutorcellphone.trim();
 					}
 					else if(modify_flag=='password')
 					{
@@ -404,7 +404,7 @@ var TutorDoModifySelf = function(req, res, modify_flag) {
 									title: comutil.msg.title_error, 
 									smalltitle:  ' ' + req.session.user + ' ',
 									breadtext: breadtext,
-					                                                                breadhref: breadhref,
+					                breadhref: breadhref,
 									newpage:'/tutor_viewstudents',
 									timeout:comutil.redirect_timeout
 							  	});
@@ -426,7 +426,7 @@ var TutorDoModifySelf = function(req, res, modify_flag) {
 						title: comutil.msg.title_ok, 
 						smalltitle:  ' ' + req.session.user + ' ' + comutil.msg.stitle_ok,
 						breadtext: breadtext,
-					                breadhref: breadhref,
+					    breadhref: breadhref,
 						newpage:'/tutor_viewstudents', 
 				  		timeout:comutil.redirect_timeout
 				  	});			
@@ -440,7 +440,7 @@ var TutorDoModifySelf = function(req, res, modify_flag) {
 						title: comutil.msg.title_error, 
 						smalltitle:  ' ' + req.session.user + ' ' + comutil.msg.stitle_error,
 						breadtext: breadtext,
-					                breadhref: breadhref,
+					    breadhref: breadhref,
 						newpage: '/tutor_viewstudents', 
 				  		timeout: comutil.redirect_timeout
 				  	});
@@ -892,349 +892,3 @@ exports.ClearSysWorklog = function(req, res) {
 		}
 	});
 };
-
-exports.addstudent = function(req, res){
-	var newStudent = new mgdb.ModelStudent();
-
-	//maybe need check again?
-	//...
-
-	var crypto = require('crypto');
-	var sh256 = crypto.createHash('sha256');
-	sh256.update(req.body.password);
-	var codedpass = sh256.digest('base64');
-	console.log(codedpass);
-
-	newStudent.username = req.body.username;
-	newStudent.name = req.body.name;
-	newStudent.password = codedpass;
-	newStudent.cellphone = req.body.cellphone;
-	newStudent.weixin = req.body.weixin;
-	newStudent.email = req.body.email;
-	newStudent.comment = req.body.comment;
-	newStudent.registered = true;
-	newStudent.created = Date.now();
-
-	mgdb.AddStudent(newStudent, function(msg){
-		if(msg.msg=='ok')
-		{
-			res.render('tutor_redirect_delay', 
-				{msg:'add student ok!', 
-				title:'The Result', 
-				smalltitle:'tutor may see operation result here', 
-				newpage:'/tutor_admin', timeout:3000});
-		}
-		else
-		{
-			res.render('tutor_redirect_delay', 
-				{msg:'add student error!', 
-				title:'The Result', 
-				smalltitle:'tutor may see operation result here',
-				newpage:'/tutor_admin', timeout:3000});
-		}
-	});
-};
-
-exports.showadmin = function(req, res){
-	res.render('tutor_admin', 
-		{act:'1', 
-		title:'Query Student', 
-		smalltitle: req.session.user + 'welcome and you may add new student here'});
-};
-
-
-exports.modifyselfpass = function(req, res){
-
-	if('user' in req.session && req.session.role=='tutor')
-	{
-		mgdb.FindOneByUsername(mgdb.ModelTutor, req.session.user, function(err, docs){
-			if(err)
-			{
-				res.render('tutor_redirect_delay', 
-					{msg:'error!', 
-					title:'The Result', 
-					smalltitle:'tutor may see operation result here',
-					newpage:'/tutor_admin', timeout:3000});
-			}
-			else
-			{
-				if(docs)
-				{
-					console.log('tutor username= ' + docs.username);
-					res.render('tutor_modify_selfpass', 
-						{act:'4', 
-						tutor:docs,
-						title:'Modify Tutor password', 
-						smalltitle: req.session.user + 'welcome and you may modify yourself information here'});
-				}
-				else
-				{
-					res.render('tutor_redirect_delay', 
-						{msg:'can not find your information!', 
-						title:'The Result', 
-						smalltitle:'tutor may see operation result here',
-						newpage:'/tutor_admin', timeout:5000});
-				}
-			}
-		});	
-
-	}
-	else
-	{
-		res.render('tutor_redirect_delay', 
-			{msg:'please login first!', 
-			title:'The Result', 
-			smalltitle:'tutor may see operation result here',
-			newpage:'/user_login.html', timeout:3000});
-	}
-};
-
-exports.showblank = function(req, res){
-	res.render('form_wizard2', {});
-};
-
-exports.queryalllog = function(req, res){
-	mgdb.DoQueryAll(mgdb.ModelWorklog, function(err, docs){
-		if(err) throw err;
-
-		if(docs)
-		{
-			res.render('query_log_result', 
-				{worklogs:docs, 
-				act:3, 
-				title:'Test Photo Logs', 
-				smalltitle:'supervisor may query tutors here'});
-			// for(j=0; j<docs.length; j++)
-			// {
-			// 	console.log('docs['+j+'].weixin_id=' + docs[j].weixin_id);
-			// 	console.log('docs['+j+'].logtext=' + docs[j].logtext);
-			// 	console.log('docs['+j+'].logpicpath=' + docs[j].logpicpath);				
-			// }
-		}
-		else
-		{
-			res.send('no worklogs!');
-		}
-	});
-};
-
-exports.querylog = function(req, res){
-	
-	var logtext = new Array();
-	var logpicpath = new Array();
-	var logResult = {
-		'name':'johnny',
-		'weixin_id':'',
-		'logtext':logtext,
-		'logpicpath':logpicpath
-	};
-	var logLists = new Array();
-
-/*	for(i=0; i<10; i++)
-	{
-		logtext[i] = ''+i;
-		logpicpath[i] = '/home/imag/' + i + '.jpg';
-	}
-
-	console.log('logResult.logtext.length=' + logResult.logtext.length);
-	console.log('logResult.logtext[2]=' + logResult.logtext[2]);
-	console.log('logResult.logpicpath[5]=' + logResult.logpicpath[5]);*/
-	
-	mgdb.DoQueryAll(mgdb.ModelSubScribeStudent, function(err, docs){
-		if(err) throw err;
-
-		if(docs)
-		{
-			for(i=0; i<docs.length; i++)
-			{
-				var weixin_id = docs[i].weixin_id;
-				console.log('substudent['+i+'].weixin_id=' + docs[i].weixin_id);
-
-				logResult.weixin_id = weixin_id;
-
-				logLists[i] = logResult;
-				logLists[i].weixin_id = weixin_id;
-				logLists[i].name = 'myname';				
-
-				mgdb.FindWorklogByWeixinId(mgdb.ModelWorklog, weixin_id, function(err, worklogs) {
-					if(err) throw err;
-
-					if(worklogs)
-					{
-						var t = 0;
-						var m = 0;
-						for(j=0; j<worklogs.length; j++)
-						{
-							//worklogs[j].name = docs[i].name;
-							//worklogs[j].cellphone = docs[i].cellphone;
-							console.log('worklogs['+j+'].weixin_id=' + worklogs[j].weixin_id);
-							console.log('worklogs['+j+'].logtext=' + worklogs[j].logtext);
-							console.log('worklogs['+j+'].logpicpath=' + worklogs[j].logpicpath);
-							//console.log('worklogs['+j+'].name=' + worklogs[j].name);
-							//console.log('worklogs['+j+'].cellphone=' + worklogs[j].cellphone);
-
-							/*
-							if(worklogs[j].logtext!='')
-							{
-								//logtext[t] = worklogs[j].logtext;
-								logLists[i].logtext[t] = worklogs[j].logtext;
-								t = t + 1;
-								console.log('t=' + t);
-							}
-							if(worklogs[j].logpicpath!='')
-							{
-								//logpicpath[m] = worklogs[j].logpicpath;
-								logLists[i].logpicpath[m] = worklogs[j].logpicpath;
-								m = m + 1;
-								console.log('m=' + m);
-							}*/
-						}
-/*						res.render('query_log_result', 
-							{worklogs:worklogs, 
-							act:3, 
-							title:'Test Photo Logs', 
-							smalltitle:'supervisor may query tutors here'});*/
-					}
-					else
-					{
-						res.send('no worklogs!');
-					}					
-				});
-
-				
-			}
-
-		}
-		else
-		{
-			res.send('no subscribed student!');
-		}
-
-		//show logLists
-		//ShowLoglists(logLists);
-	});
-};
-
-
-var ShowLoglists = function(logList){
-	console.log('ShowLoglists:');
-
-	for(k=0; k<logList.length; k++)
-	{
-		console.log('logList[' + k + '].weixin_id=' + logList[k].weixin_id);
-		console.log('logList[' + k + '].name=' + logList[k].name);
-
-		for(i=0; i<logList[k].logtext.length; i++)
-		{
-			console.log('logList[' + k + '].logtext[' + i + ']=' + logList[k].logtext[i]);
-		}
-		for(i=0; i<logList[k].logpicpath.length; i++)
-		{
-			console.log('logList[' + k + '].logpicpath[' + i + ']=' + logList[k].logpicpath[i]);
-		}
-	}
-};
-
-exports.querystudent = function(req, res){
-	
-	mgdb.DoQueryAll(mgdb.ModelSubScribeStudent, function(err, docs){
-		if(!err)
-		{
-			console.log(docs);
-			//for(stu, index in docs)
-			for(i=0; i<docs.length;i++)
-			{
-				console.log('name= ' + docs[i].name);
-			}
-			res.render('query_student_result', 
-				{students:docs, 
-				act:1, 
-				title:'Query Students', 
-				smalltitle:'supervisor may query tutors here'});
-		}
-		else
-		{
-			throw err;
-			res.render('tutor_redirect_delay', 
-				{msg:'query students error!', 
-				newpage:'/tutor_admin', 
-				timeout:3000});
-		}
-	})
-};
-
-exports.querycondstudent = function(req, res){
-
-	//res.send('querycondstudent');
-	console.log('name:' + req.body.name + ' cellphone:'+req.body.cellphone + ' weixin:'+req.body.weixin);
-
-	if(req.body.name=="" && req.body.cellphone=="" && req.body.weixin=="")
-	{
-		console.log('all empty!');
-
-		mgdb.DoQueryAll(mgdb.ModelSubScribeStudent, function(err, docs){
-			if(!err)
-			{
-				console.log(docs);
-				//for(stu, index in docs)
-				for(i=0; i<docs.length;i++)
-				{
-					console.log('name= ' + docs[i].name);
-				}
-				res.render('query_student_result', 
-					{students:docs, 
-					act:1, 
-					title:'Query Students', 
-					smalltitle:'supervisor may query tutors here'});
-			}
-			else
-			{
-				throw err;
-				res.render('tutor_redirect_delay', 
-					{msg:'query students error!', 
-					newpage:'/query_student_result', 
-					timeout:3000});
-			}
-		});
-	}
-	else
-	{
-		console.log('not empty!');
-		mgdb.ModelSubScribeStudent.find(
-		{
-			"$or":
-			[
-			    {'cellphone':req.body.cellphone},
-			    {'name':req.body.name},			    
-			    {'weixin':req.body.weixin}
-			],
-			
-		}, function(err, docs){
-			if(!err)
-			{
-				console.log(docs);
-				//for(stu, index in docs)
-				for(i=0; i<docs.length;i++)
-				{
-					console.log('name= ' + docs[i].name);
-				}
-				res.render('query_student_result', 
-					{students:docs, 
-					act:1, 
-					title:'Query Students', 
-					smalltitle:'supervisor may query tutors here'});
-			}
-			else
-			{
-				throw err;
-				res.render('tutor_redirect_delay', 
-					{msg:'query students error!', 
-					newpage:'/query_student_result', 
-					timeout:3000});
-			}
-		});
-
-	}
-
-};
-

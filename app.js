@@ -64,7 +64,7 @@ app.configure('development', function(){
 app.get('/wechat', handleweixin.handle);
 app.post('/wechat', handleweixin.handle);
 app.post('/studentsubscribe', handleweixin.StuSubscribe);
-app.post('/testuploadworklog', handleweixin.testuploadworklog);
+//app.post('/testuploadworklog', handleweixin.testuploadworklog);
 app.get('/weixinquery/:id', handleweixin.WeixinQuery);
 app.get('/wxreg/:id', handleweixin.WeixinRegister);
 //app.get('/wxreg/:id', handleweixin.WeixinQuery);
@@ -176,7 +176,7 @@ app.get('/student_syslogexport/:id', userlogin.Restrict, handlestudent.SyslogExp
 //app.get('/query_log', handletutor.queryalllog);
 //app.get('/worklogdelete/:id', handletutor.deletelogbyid);
 
-console.log('WIS by HanqTech version 2.0');
+console.log('WIS by HanqTech version 2.6');
 
 // start listening
 http.createServer(app).listen(app.get('port'), function(){

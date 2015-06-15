@@ -1,7 +1,13 @@
+/*******************************************************************************************
+Filename    : handleweixin.js
+Summary     : handle weixin msg
+Version     : 1.0
+Created     : 2015-02-07
+Author      : Johnny.
 
-/*
- * GET home page.
- */
+Update History:
+001  2015-02-07   Johnny     Create new 
+********************************************************************************************/
 
 var mgdb = require('../model/mgdb');
 var comutil = require('../model/commonutils');
@@ -135,13 +141,8 @@ exports.StuSubscribe = function(req, res){
 	}
 };
 
-//test
-// exports.testsubscriberesult = function(req, res) {
-// 	res.render('subscribe_result',
-// 		{resultMsg:'success!'});
-// };
-
 var SaveWorklog = function(weixin_id, create_time, info_tosave, callback) {
+
 	var newWorklog = new mgdb.ModelWorklog();
 	
 	newWorklog.weixin_id = weixin_id;
@@ -162,23 +163,6 @@ var SaveWorklog = function(weixin_id, create_time, info_tosave, callback) {
 	mgdb.AddWorklog(newWorklog, function(msg) {
 		callback(msg);
 	});
-};
-
-exports.testuploadworklog = function(req, res){
-	var infoToSave = [];
-	infoToSave[0] = 'text';
-	infoToSave[1] = req.body.logtext;
-	SaveWorklog(req.body.weixin_id, Date.now(), infoToSave, function(msg){
-		res.send(msg.msg);
-	});
-	console.log('save text:' + req.body.logtext);
-
-	infoToSave[0] = 'image';
-	infoToSave[1] = req.body.logpicpath;
-	SaveWorklog(req.body.weixin_id, Date.now(), infoToSave, function(msg){
-		res.send(msg.msg);
-	});
-	console.log('save image:' + req.body.logpicpath);
 };
 
 exports.WeixinQuery = function (req, res) {
@@ -219,62 +203,62 @@ exports.WeixinQuery = function (req, res) {
 	});
 };
 
-exports.weixinquerytext = function(req, res){
-	var weixin_id = req.params.id.substr(1, req.params.id.length-1);
-	console.log('weixinquerytext id= ' + weixin_id);
+// exports.weixinquerytext = function(req, res){
+// 	var weixin_id = req.params.id.substr(1, req.params.id.length-1);
+// 	console.log('weixinquerytext id= ' + weixin_id);
 
-	mgdb.FindDocsByWinxinId(
-		mgdb.ModelSysRecord, 
-		weixin_id,
-		function(err, docs){
-			if(err)
-			{
-				console.log('weixinquerytext abnormal err=' + err.message);
-				res.send('abnormal error!');
-			}
-			else
-			{
-				if(docs)
-				{
-					res.render('weixin_querytext_result', 
-						{
-							texts:docs, 
-						});
-				}
-				else
-				{
-					res.send('text empty!');
-				}
-			}
-		});
-};
+// 	mgdb.FindDocsByWinxinId(
+// 		mgdb.ModelSysRecord, 
+// 		weixin_id,
+// 		function(err, docs){
+// 			if(err)
+// 			{
+// 				console.log('weixinquerytext abnormal err=' + err.message);
+// 				res.send('abnormal error!');
+// 			}
+// 			else
+// 			{
+// 				if(docs)
+// 				{
+// 					res.render('weixin_querytext_result', 
+// 						{
+// 							texts:docs, 
+// 						});
+// 				}
+// 				else
+// 				{
+// 					res.send('text empty!');
+// 				}
+// 			}
+// 		});
+// };
 
-exports.weixinqueryimage = function(req, res){
-	var weixin_id = req.params.id.substr(1, req.params.id.length-1);
-	console.log('weixinqueryimage id= ' + weixin_id);
+// exports.weixinqueryimage = function(req, res){
+// 	var weixin_id = req.params.id.substr(1, req.params.id.length-1);
+// 	console.log('weixinqueryimage id= ' + weixin_id);
 
-	mgdb.FindDocsByWinxinId(
-		mgdb.ModelWorklog, 
-		weixin_id,
-		function(err, docs){
-			if(err)
-			{
-				console.log('weixinqueryimage abnormal err=' + err.message);
-				res.send('abnormal error!');
-			}
-			else
-			{
-				if(docs)
-				{
-					res.render('weixin_queryimage_result', 
-						{
-							worklogs:docs, 
-						});
-				}
-				else
-				{
-					res.send('image empty!');
-				}
-			}
-		});
-};
+// 	mgdb.FindDocsByWinxinId(
+// 		mgdb.ModelWorklog, 
+// 		weixin_id,
+// 		function(err, docs){
+// 			if(err)
+// 			{
+// 				console.log('weixinqueryimage abnormal err=' + err.message);
+// 				res.send('abnormal error!');
+// 			}
+// 			else
+// 			{
+// 				if(docs)
+// 				{
+// 					res.render('weixin_queryimage_result', 
+// 						{
+// 							worklogs:docs, 
+// 						});
+// 				}
+// 				else
+// 				{
+// 					res.send('image empty!');
+// 				}
+// 			}
+// 		});
+// };

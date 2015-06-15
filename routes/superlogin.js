@@ -29,8 +29,6 @@ var mgdb = require('../model/mgdb');
 //
 //remarks: supervisor password is hardcoded
 //////////////////////////////////////////////////////////////////
-
-//*
 exports.Check = function(req, res){
 
 	var username = req.body.username.trim();
@@ -124,7 +122,6 @@ exports.Check = function(req, res){
 	
 	
 };
-//*/
 
 //////////////////////////////////////////////////////////////////
 //function: check session info and decided to go ahead or go login
@@ -140,6 +137,7 @@ exports.Check = function(req, res){
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.Restrict = function (req, res, next){
+
 	//if(req.session.user==comutil.supUser 
 	//	&& req.session.role==comutil.supSessionRole)
 	if(req.session.role==comutil.supSessionRole)		
@@ -173,6 +171,7 @@ exports.Restrict = function (req, res, next){
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.SuperLogout = function (req, res){
+
 	req.session.destroy(function(){
 		res.redirect(comutil.supLoginPage);
 	});

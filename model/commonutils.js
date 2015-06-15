@@ -429,6 +429,18 @@ exports.msg.msg_modifystuselfpass = '请修改学生密码';
 // exports functions
 //
 
+
+//////////////////////////////////////////////////////////////////
+//function: 加密函数,明文-->密文
+//parameters:  
+//    @plainpass: plain text password
+//
+//return: coded password
+//
+//callback: null
+//
+//remarks: 没有输入检查
+//////////////////////////////////////////////////////////////////
 exports.CodedPassword = function (plainpass) {
 	var sh256 = crypto.createHash('sha256');
 	sh256.update(plainpass);
@@ -437,6 +449,18 @@ exports.CodedPassword = function (plainpass) {
 	return codedpass;
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 执行系统命令
+//parameters:  
+//    @cmd_str: command string
+//    @callback: callback function
+//
+//return: null
+//
+//callback: yes
+//
+//remarks: 没有输入检查
+//////////////////////////////////////////////////////////////////
 exports.ExecCmd = function (cmd_str,  callback) {
 	var exec = require('child_process').exec;
 	exec(cmd_str, function(err, stdout, stderr){
@@ -444,6 +468,17 @@ exports.ExecCmd = function (cmd_str,  callback) {
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 当前时间格式化输出
+//parameters:  
+//    @format_flag: 输出格式标识
+//
+//return: formatted now date string
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.GetTimeString = function (format_flag) {
 	var now = new Date();
 	
@@ -483,6 +518,17 @@ exports.GetTimeString = function (format_flag) {
     	return (y+'-'+m+'-'+d+' '+h+':'+n+':'+s);
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 获得指定目录下的所有文件夹名称，用于显示已备份的系统
+//parameters:  
+//    @root: 指定的目录
+//
+//return: 备份文件夹的时间信息, array
+//
+//callback: null
+//
+//remarks: 如果在该目录下，有别的格式的文件夹，则会报错，或导致调用者产生错误!!
+//////////////////////////////////////////////////////////////////
 exports.GetDirectories = function (root) {
 	var result = [];
 	var dirs = fs.readdirSync(root);
@@ -513,7 +559,17 @@ String.prototype.splice = function( idx, rem, s ) {
     return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
 };
 
-// 20150308170822 --> 2015-03-08 17:08:22
+//////////////////////////////////////////////////////////////////
+//function: 时间格式串转换: 20150308170822 --> 2015-03-08 17:08:22 
+//parameters:  
+//    @str_time: 时间格式串
+//
+//return: 转换后的时间格式串
+//
+//callback: null
+//
+//remarks: 没有输入检查!
+//////////////////////////////////////////////////////////////////
 exports.TimeStringToFormat = function (str_time) {
 	
 	//check input and output?
@@ -528,22 +584,27 @@ exports.TimeStringToFormat = function (str_time) {
 	return outStr;
 };
 
-// date --> yyyy-mm-dd
+//////////////////////////////////////////////////////////////////
+//function: 时间格式串转换: date --> yyyy-mm-dd
+//parameters:  
+//    @date_time: 时间格式串
+//
+//return: 转换后的时间格式串; or 'error'
+//
+//callback: null
+//
+//remarks: 没有输入检查!
+//////////////////////////////////////////////////////////////////
 exports.DateToString = function (date_time) {
 
     try
     {
     	var y = date_time.getFullYear();
-		//console.log('year=' + y);
-
 		var m = date_time.getMonth()+1;
-		//console.log('month=' + m);
 		if(m<10)
 			m = '0' + m;
-		//console.log('now month=' + m);
 
 		var d = date_time.getDate();
-		//console.log('day=' + d);
 		if(d<10)
 			d = '0' + d;
 
@@ -557,7 +618,70 @@ exports.DateToString = function (date_time) {
 	return y + '/' + m + '/' + d;
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 时间（距离1970，毫秒数）转化为日期格式输出
+//parameters:  
+//    @ms: 距离1970，毫秒数
+//
+//return: formatted string
+//
+//callback: null
+//
+//remarks: if linux timestamp, should be multipled by 1000
+//////////////////////////////////////////////////////////////////
+exports.Time2Date = function (ms) {
+
+	var date = new Date(ms);
+
+	var Y = date.getFullYear() + '-';
+	var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+	var D = date.getDate() + ' ';
+	var h = date.getHours() + ':';
+	var m = date.getMinutes() + ':';
+	var s = date.getSeconds(); 
+	
+	return (Y+M+D+h+m+s);
+};
+
+//////////////////////////////////////////////////////////////////
+//function: 时间（距离1970，毫秒数）转化为日期格式输出
+//parameters:  
+//    @ms: 距离1970，毫秒数
+//
+//return: formatted string
+//
+//callback: null
+//
+//remarks: if linux timestamp, should be multipled by 1000
+//////////////////////////////////////////////////////////////////
+exports.Time2DateString = function (ms) {
+
+	var date = new Date(ms);
+
+	var Y = date.getFullYear();
+	var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+	var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+	var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+	var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+	var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds(); 
+	
+	return (Y+M+D+h+m+s);
+};
+
 // not good!
+//////////////////////////////////////////////////////////////////
+//function: 利用http get获取文件
+//parameters:  
+//    @file_url: url which file need to be downloaded
+//    @file_local: local file to save
+//    @callback: callback function
+//
+//return: null
+//
+//callback: yes
+//
+//remarks: 没有输入/输出检查!
+//////////////////////////////////////////////////////////////////
 exports.HttpGetFile = function (file_url, file_local, callback) {
 	
 	//check input and output?
@@ -670,6 +794,18 @@ exports.HttpGetFile = function (file_url, file_local, callback) {
 // 	});
 // };
 
+//////////////////////////////////////////////////////////////////
+//function: 压缩文件夹到zip文件
+//parameters:  
+//    @dir_path: dir need to be zipped
+//    @zip_file: local file to save
+//
+//return: null
+//
+//callback: null
+//
+//remarks: stream error can't be catch! And can't get finished signle!
+//////////////////////////////////////////////////////////////////
 exports.DirToZip = function (dir_path, zip_file) {
 
 	//check dir existed
@@ -698,8 +834,6 @@ exports.DirToZip = function (dir_path, zip_file) {
 		console('DirToZip exception: ' + err);
 	}
 
-	
-
 	// w.on('end', function(){
 	// 	console.log('w end!');
 	// });
@@ -719,6 +853,17 @@ exports.DirToZip = function (dir_path, zip_file) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: check if it is file or dir
+//parameters:  
+//    @file: file need to be checked
+//
+//return: true or false
+//
+//callback: null
+//
+//remarks: sync function
+//////////////////////////////////////////////////////////////////
 var IsFile = function(file){
 
 	var stat = fs.lstatSync(file);
@@ -735,6 +880,18 @@ var IsFile = function(file){
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: copy file sync
+//parameters:  
+//    @src_file: src file
+//    @dest_file: dest file
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.CopyFile = function (src_file, dest_file) {
 
 	console.log('CopyFile:' + src_file + ' to:' + dest_file);
@@ -769,6 +926,10 @@ exports.CopyFile = function (src_file, dest_file) {
 // 	readable.pipe(writable);
 // };
 
+
+//
+// need not
+//
 var GetRegHtmls = function (reghtml_dir, reg_prefix) {
 
 	console.log('reghtml_dir=' + reghtml_dir);
@@ -807,6 +968,9 @@ var GetRegHtmls = function (reghtml_dir, reg_prefix) {
 
 };
 
+//
+// need not
+//
 var RemoveFiles = function (reg_htmls) {
 
 	try
@@ -824,11 +988,17 @@ var RemoveFiles = function (reg_htmls) {
 	
 };
 
+//
+// need not
+//
 CleanRegHtmls = function () {
 	var regHtmls = GetRegHtmls(this.subhtml_absolutewebroot + '/' + this.subhtml_subdir, this.subhtml_newprefix);
 	RemoveFiles(regHtmls);
 };
 
+//
+// need not
+//
 exports.RunCleanSchedule = function () {
 
     console.log('RunCleanSchedule');
@@ -854,21 +1024,20 @@ function getRad(d){
     return d*PI/180.0;
 }
 
-
-/**
-
- * approx distance between two points on earth ellipsoid  (return value is meter!)
-
- * @param {Object} lat1
-
- * @param {Object} lng1
-
- * @param {Object} lat2
-
- * @param {Object} lng2
-
- */
-
+//////////////////////////////////////////////////////////////////
+//function: 计算经纬度距离
+//parameters:  
+//    @lat1: latitude of point 1
+//    @lng1: longitude of point 1
+//    @lat2: latitude of point 2
+//    @lng2: longitude of point 2
+//
+//return: distance, meter
+//
+//callback: null
+//
+//remarks: 如果距离太短，计算不出来，就定为8.8
+//////////////////////////////////////////////////////////////////
 exports.CalcLatLonDistance = function (lat1,lng1,lat2,lng2) {
 
 	//otherwise return NaN
@@ -876,51 +1045,29 @@ exports.CalcLatLonDistance = function (lat1,lng1,lat2,lng2) {
 		return 0;
 
     var f = getRad((lat1 + lat2)/2);
-
     var g = getRad((lat1 - lat2)/2);
-
-    var l = getRad((lng1 - lng2)/2);
-
-    
+    var l = getRad((lng1 - lng2)/2);    
 
     var sg = Math.sin(g);
-
     var sl = Math.sin(l);
-
-    var sf = Math.sin(f);
-
-    
+    var sf = Math.sin(f);    
 
     var s,c,w,r,d,h1,h2;
-
     var a = EARTH_RADIUS;
-
-    var fl = 1/298.257;
-
-    
+    var fl = 1/298.257;   
 
     sg = sg*sg;
-
     sl = sl*sl;
-
-    sf = sf*sf;
-
-    
+    sf = sf*sf;    
 
     s = sg*(1-sl) + (1-sf)*sl;
-
-    c = (1-sg)*(1-sl) + sf*sl;
-
-    
+    c = (1-sg)*(1-sl) + sf*sl;    
 
     w = Math.atan(Math.sqrt(s/c));
-
     r = Math.sqrt(s*c)/w;
-
     d = 2*w*a;
 
     h1 = (3*r -1)/2/c;
-
     h2 = (3*r +1)/2/s;
 
     var dis = d*(1 + fl*(h1*sf*(1-sg) - h2*(1-sf)*sg));
@@ -931,41 +1078,15 @@ exports.CalcLatLonDistance = function (lat1,lng1,lat2,lng2) {
     	return 8.8; //not very good
     }    	
     else
+    {
     	return dis;
+    }
 };
 
 // far distance of two point, 50m
 exports.FarDistance = 50;
 
-// if linux timestamp, should be multipled by 1000
-exports.Time2Date = function (ms) {
 
-	var date = new Date(ms);
-
-	var Y = date.getFullYear() + '-';
-	var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-	var D = date.getDate() + ' ';
-	var h = date.getHours() + ':';
-	var m = date.getMinutes() + ':';
-	var s = date.getSeconds(); 
-	
-	return (Y+M+D+h+m+s);
-};
-
-// if linux timestamp, should be multipled by 1000
-exports.Time2DateString = function (ms) {
-
-	var date = new Date(ms);
-
-	var Y = date.getFullYear();
-	var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
-	var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-	var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
-	var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-	var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds(); 
-	
-	return (Y+M+D+h+m+s);
-};
 
 function ArrayTransO2S(obj_array, str_array){
 
@@ -1154,6 +1275,18 @@ var GetDirectories = function (root) {
 	return result;
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 递归删除
+//parameters:  
+//    @dirs: 备份文件夹数组
+//    @remain_len: 剩下的文件夹数目
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 var RecursiveRmdir = function (dirs, remain_len) {
 
 	if(dirs.length<=remain_len)
@@ -1176,6 +1309,17 @@ var RecursiveRmdir = function (dirs, remain_len) {
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 检查并删除备份文件夹
+//parameters:  
+//    @backup_rootpath: 备份根文件夹
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.CheckAndRmBackupDir = function (backup_rootpath) {
 
 	var dirs = GetDirectories(backup_rootpath);
