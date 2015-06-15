@@ -210,6 +210,10 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 			dataCount++;
 	}
 
+	// when autoPrjArchieve, no submition excel file will be opened wrong
+	if(dataCount==0)
+		dataCount = 1;
+
 	for(i=0; i<dataCount; i++)
 		data[i] = new Array();
 
