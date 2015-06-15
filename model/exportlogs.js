@@ -804,7 +804,7 @@ var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 
 	  	    }, 30000);
 
-		}, 10000);
+		}, 3000);
 		
 		//res.redirect('/super_makearchive/:' + prj_name);
 
