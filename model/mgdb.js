@@ -82,7 +82,11 @@ var ModelPrjInfo = mongoose.model('PrjInfo', PrjInfo);
 
 
 //! this sentense should be before the GridFs defines!
-mongoose.connect(comutil.dbname);
+var dbOpt = {
+	user:'hanqroot',
+	pass:'hanqdb13133'
+};
+mongoose.connect(comutil.dbname, dbOpt);
 
 var mgdbConnection = mongoose.connection;
 
