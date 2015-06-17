@@ -23,6 +23,21 @@ var path = require('path');
 var xlsx = require('../model/xlsx');
 var exportlogs = require('../model/exportlogs');
 
+
+
+
+//////////////////////////////////////////////////////////////////
+//function: show page for modification of the administratro password
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.ShowHiddenAdminResetPassword = function(req, res) {
 	res.render('hiddenadmin_resetpassword', 
       	{
@@ -35,6 +50,18 @@ exports.ShowHiddenAdminResetPassword = function(req, res) {
       	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: do the modification of the administratro password
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.DoHiddenAdminResetPassword = function(req, res) {
 	
 	var rootPass = req.body.rootpassword.trim();
@@ -50,7 +77,7 @@ exports.DoHiddenAdminResetPassword = function(req, res) {
 	//check root password
 	if(rootPass!='Hanqwebroot13133')
 	{
-		console.log('hehe?');
+		console.log('root password error:' + rootPass);
 
 		res.render('super_redirect_delay', 
 	      	{
@@ -124,7 +151,7 @@ exports.DoHiddenAdminResetPassword = function(req, res) {
 			}
 			else
 			{
-				//add new
+				//without administrator , then add new
 				var newAdminPass = new mgdb.ModelAdminPassword();
 				newAdminPass.adminUser = adminUser;
 				newAdminPass.adminPass = comutil.CodedPassword(adminPassword);
@@ -146,7 +173,7 @@ exports.DoHiddenAdminResetPassword = function(req, res) {
 					}
 					else
 					{
-						console.log('add ok!');
+						console.log('add administrator ok!');
 						res.render('super_redirect_delay', 
 					      	{
 					      		//act: comutil.sidebaract.super.addnewstudent,
@@ -168,6 +195,19 @@ exports.DoHiddenAdminResetPassword = function(req, res) {
 	
 };
 
+
+//////////////////////////////////////////////////////////////////
+//function: show page for password modification of the super own
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.ShowSuperModifyPassword = function(req, res) {
 
 	res.render('super_modify_selfpass', 
@@ -183,11 +223,26 @@ exports.ShowSuperModifyPassword = function(req, res) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: do password modification of the super own
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.DoSuperModifyPassword = function(req, res) {
 	
+	var oldPass = req.body.oldpassword.trim();
+	var newPass = req.body.password.trim();
+
 	console.log('username:' + req.session.user);
-	console.log('oldpassword:' + req.body.oldpassword);
-	console.log('newpassword:' + req.body.password);
+	console.log('oldpassword:' + oldPass);
+	console.log('newpassword:' + newPass);
 
 	//check old pass
 	mgdb.FindOneByOption(mgdb.ModelAdminPassword, {'adminUser':req.session.user}, function(err, docs){
@@ -209,10 +264,10 @@ exports.DoSuperModifyPassword = function(req, res) {
 		{
 			if(docs)
 			{
-				var codedPass = comutil.CodedPassword(req.body.oldpassword);
+				var codedPass = comutil.CodedPassword(oldPass);
 				if(codedPass==docs.adminPass)
 				{
-					var newCodedPass = comutil.CodedPassword(req.body.password);
+					var newCodedPass = comutil.CodedPassword(newPass);
 
 					//modify
 					docs.adminPass = newCodedPass;
@@ -286,7 +341,18 @@ exports.DoSuperModifyPassword = function(req, res) {
 
 };
 
-//test
+//////////////////////////////////////////////////////////////////
+//function: click the menu to view worklog
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.ViewSysWorklog = function(req, res) {
 
 	mgdb.GetPrjUniqueName(mgdb.ModelSysRecord, {}, function(prjs){
@@ -318,6 +384,18 @@ exports.ViewSysWorklog = function(req, res) {
 	
 };
 
+//////////////////////////////////////////////////////////////////
+//function: response for the query btn
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 有条件与无条件竟然不能合一
+//////////////////////////////////////////////////////////////////
 exports.ViewSysWorklogQueryResult = function(req, res) {
 
 	var stuNumber = req.body.stuNumber.trim();
@@ -493,6 +571,18 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 	}
 };
 
+//////////////////////////////////////////////////////////////////
+//function: response for the view worklog details
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.ViewSysWorklogDetails = function(req, res) {
 
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
@@ -552,107 +642,35 @@ exports.ViewSysWorklogDetails = function(req, res) {
 		}
 	});
 };
-/*
-exports.SyslogExport = function(req, res) {
 
-	var idStr = req.params.id.substr(1, req.params.id.length-1);
-	console.log('SyslogExport id= ' + idStr);
-
-	mgdb.FindOneById(mgdb.ModelSysRecord, idStr, function(err, docs){
-		if(err)
-		{
-			console.log('abnormal error!');
-			res.render('super_redirect_delay', 
-		  	    {
-		  	    	act: comutil.sidebaract.super.viewsyslog,
-		      		msg: comutil.msg.msg_error_abnormal,
-		      		title: comutil.msg.title_error, 
-		      		smalltitle: comutil.msg.stitle_error, 
-		      		breadtext: comutil.bread.super_viewsyslog_text,
-                    breadhref: comutil.bread.super_viewsyslog_href,
-		      		newpage:'/super_viewsyslog', 
-		      		timeout:comutil.redirect_timeout
-		  	    });
-		}
-		else
-		{
-			if(docs)
-			{
-				//make dir
-				var dir = comutil.MakeDownloadDir(docs);
-				if(dir==null)
-				{
-					console.log('MakeDownloadDir null!');
-					return;
-				}
-
-				//save xlsx
-				var xlsxFile = dir + '/' + comutil.export_xlsx_filename;
-				console.log('xlsxFile=' + xlsxFile);
-				comutil.ExportXlsx(docs, xlsxFile, comutil.export_xlsx_sheetname, function(err){
-					if(err)
-					{
-						console.log(err);
-
-						res.render('super_redirect_delay', 
-					  	    {
-					  	    	act: comutil.sidebaract.super.viewsyslog,
-					      		msg: comutil.msg.msg_error,
-					      		title: comutil.msg.title_error, 
-					      		smalltitle: comutil.msg.stitle_error, 
-					      		breadtext: comutil.bread.super_viewsyslog_text,
-				                breadhref: comutil.bread.super_viewsyslog_href,
-					      		newpage:'/super_viewsyslog', 
-					      		timeout:comutil.redirect_timeout
-					  	    });
-					}
-					else
-					{
-						console.log('SaveToFile ok!');
-
-						//do zip
-						var zipDir = comutil.subhtml_absolutewebroot + '/' + comutil.export_dir;
-						var zipSrcDir = zipDir + '/' + docs.stuNumber + '_' + docs.prjName;
-						var zipFilename = docs.stuNumber + '_' + docs.prjName + '.tar.gz';
-						var zipFile = zipDir + '/' + zipFilename;
-
-						console.log('zipDir=' + zipDir);
-						console.log('zipSrcDir=' + zipSrcDir);
-						console.log('zipFilename=' + zipFilename);
-						console.log('zipFile=' + zipFile);
-
-						//comutil.DirToZip(zipSrcDir, zipFile);
-
-						//push to downloading...
-						res.download(zipFile);
-					}
-
-				});
-			}
-			else
-			{
-				console.log('not found!');
-				res.render('super_redirect_delay', 
-			  	    {
-			  	    	act: comutil.sidebaract.super.viewsyslog,
-			      		msg: comutil.msg.msg_error_abnormal,
-			      		title: comutil.msg.title_error, 
-			      		smalltitle: comutil.msg.stitle_error, 
-			      		breadtext: comutil.bread.super_viewsyslog_text,
-	                    breadhref: comutil.bread.super_viewsyslog_href,
-			      		newpage:'/super_viewsyslog', 
-			      		timeout:comutil.redirect_timeout
-			  	    });
-			}			
-		}
-	});
-};
-*/
-
+//////////////////////////////////////////////////////////////////
+//function: 归档按钮响应
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.PrjArchive = function(req, res) {
 	exportlogs.PrjArchive(req, res);
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 解除归档按钮响应
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.PrjUnArchive = function(req, res) {
 	
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
@@ -756,10 +774,34 @@ exports.PrjUnArchive = function(req, res) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 工作日志导出
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.SyslogExport = function(req, res) {
 	exportlogs.SysWorklogExport(req, res, comutil.userrole.super);
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 工作日志清除
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 清除日志，而不删除该成员信息
+//////////////////////////////////////////////////////////////////
 exports.ClearSysWorklog = function(req, res) {
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('ClearSysWorklog id= ' + idStr);
@@ -829,7 +871,7 @@ exports.ClearSysWorklog = function(req, res) {
 };
 
 //////////////////////////////////////////////////////////////////
-//function: just show SysInit page
+//function: just show SysInit page (数据导入)
 //parameters:  
 //    @req
 //    @res
@@ -841,9 +883,6 @@ exports.ClearSysWorklog = function(req, res) {
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.SysInit = function(req, res) {
-
-	// res.download('./public/download/3_prj2.tar.gz');
-	// return;
 
 	res.render('super_sysinit', 
 		{
@@ -869,6 +908,10 @@ exports.SysInit = function(req, res) {
 //remarks: only one file can be uploaded once, limit it in front page
 //////////////////////////////////////////////////////////////////
 exports.OnUpload = function(req, res) {
+
+	// delete old data, now not delete but append
+	// ...
+
 	// mgdb.RemoveDatabase(function(err, result){
 	// 	if(err)
 	// 	{
@@ -897,7 +940,20 @@ exports.OnUpload = function(req, res) {
 	XlsxFileToDb(req, res);
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 数据导入
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 支持多个文件，但测试有问题，只在前端限制，一次一个文件
+//////////////////////////////////////////////////////////////////
 var XlsxFileToDb = function (req, res) {
+
 	for (var i in req.files) 
 	{
 		console.log('OnUpload: ' + i);
@@ -1024,6 +1080,17 @@ exports.MakeArchive = function(req, res) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 将数组中的prjName，入库
+//parameters:  
+//    @prj_names: array of prjNames
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 递归函数，这是保证同步的办法，用for循环的方式不行，传递给函数时，i早就变成最后一个了
+//////////////////////////////////////////////////////////////////
 var RescursiveFind = function (prj_names) {
 
 	var len = prj_names.length;
@@ -1063,6 +1130,17 @@ var RescursiveFind = function (prj_names) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 数据导入后，查询数据库，获取prjName信息，并加入到prjInfo数据表中
+//parameters:  
+//    @null
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 var AddPrjInfo = function(){
 
 	console.log('AddPrjInfo start!');
@@ -1090,6 +1168,19 @@ var AddPrjInfo = function(){
 	
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 项目信息入库
+//parameters:  
+//    @prjName: prj name
+//    @prjStartDate: prj start date
+//    @prjStopDate: prj stop date
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 var AddPrjInfoToDb = function(prjName, prjStartDate, prjStopDate){
 
 	var newPrjInfo = new mgdb.ModelPrjInfo();
@@ -1114,6 +1205,18 @@ var AddPrjInfoToDb = function(prjName, prjStartDate, prjStopDate){
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: view prj info
+//parameters:  
+//    @req: 
+//    @res: 
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 exports.ViewPrjs = function(req, res) {
 
 	//mgdb.ModelPrjInfo.find({}, null, {sort:[['prjName', 1]]}, function(err, docs){
@@ -1150,15 +1253,18 @@ exports.ViewPrjs = function(req, res) {
 	});
 };
 
-var RedirectFoo = function(req, res){
-
-	console.log('redirecting...');
-
-	res.redirect('/super_viewprjs');
-
-
-};
-
+//////////////////////////////////////////////////////////////////
+//function: response the click of refresh data in restore menu
+//parameters:  
+//    @req: 
+//    @res: 
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 exports.RefreshPrjInfo = function(req, res) {
 
 	RefreshPrjInfoCollection();
@@ -1269,10 +1375,10 @@ exports.AddMember = function(req, res){
 	//var newWorkRec = new mgdb.ModelWorkRecord();
 
 	var newSysRec = new mgdb.ModelSysRecord();
-	newSysRec.stuNumber = req.body.stunumber;
-	newSysRec.stuName = req.body.stuname;
-	newSysRec.stuPhone = req.body.stucellphone;
-	var codedPassword = comutil.CodedPassword(req.body.stucellphone);
+	newSysRec.stuNumber = req.body.stunumber.trim();
+	newSysRec.stuName = req.body.stuname.trim();
+	newSysRec.stuPhone = req.body.stucellphone.trim();
+	var codedPassword = comutil.CodedPassword(req.body.stucellphone.trim());
 	newSysRec.stuPassword = codedPassword;
 
 	newSysRec.stuWeixin_id = comutil.default_weixinid;
@@ -1288,10 +1394,10 @@ exports.AddMember = function(req, res){
 	
 	//newSysRec.prjDesc = rec[1];
 	//newSysRec.prjLocation = rec[1];
-	newSysRec.tutorNumber = req.body.tutornumber;
-	newSysRec.tutorName = req.body.tutorname;
-	newSysRec.tutorPhone = req.body.tutorcellphone;
-	codedPassword = comutil.CodedPassword(req.body.tutorcellphone);
+	newSysRec.tutorNumber = req.body.tutornumber.trim();
+	newSysRec.tutorName = req.body.tutorname.trim();
+	newSysRec.tutorPhone = req.body.tutorcellphone.trim();
+	codedPassword = comutil.CodedPassword(req.body.tutorcellphone.trim());
 	newSysRec.tutorPassword = codedPassword;
 	//newSysRec.workRecords = newWorkRec;
 	newSysRec.workRecords = [];
@@ -1342,6 +1448,7 @@ exports.AddMember = function(req, res){
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.ResetTutorPassword = function(req, res) {
+
 	ResetPassword(req, res, comutil.userrole.tutor);
 };
 
@@ -1358,6 +1465,7 @@ exports.ResetTutorPassword = function(req, res) {
 //remarks: null
 //////////////////////////////////////////////////////////////////
 exports.ResetStudentPassword = function(req, res) {
+
 	ResetPassword(req, res, comutil.userrole.student);
 };
 
@@ -1642,15 +1750,15 @@ exports.DoModifyMemberById = function(req, res) {
 		mgdb.ModelSysRecord, 
 		req.body.modifyid, 
 		{
-			stuName:req.body.stuname, 
-			stuNumber:req.body.stunumber,
-			stuPhone:req.body.stucellphone, 
-			prjName:req.body.prjname,
-			prjStartDate:req.body.prjstartdate,
-			prjStopDate:req.body.prjstopdate,
-			tutorNumber:req.body.tutornumber,
-			tutorName:req.body.tutorname,
-			tutorPhone:req.body.tutorcellphone
+			stuName:req.body.stuname.trim(), 
+			stuNumber:req.body.stunumber.trim(),
+			stuPhone:req.body.stucellphone.trim(), 
+			prjName:req.body.prjname.trim(),
+			prjStartDate:req.body.prjstartdate.trim(),
+			prjStopDate:req.body.prjstopdate.trim(),
+			tutorNumber:req.body.tutornumber.trim(),
+			tutorName:req.body.tutorname.trim(),
+			tutorPhone:req.body.tutorcellphone.trim()
 	    },
 		function(err, stu){
 			if(err)
@@ -1686,6 +1794,18 @@ exports.DoModifyMemberById = function(req, res) {
 	);
 };
 
+//////////////////////////////////////////////////////////////////
+//function: show modify prjinfo information
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.ModifyPrjById = function(req, res){
 
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
@@ -1742,6 +1862,18 @@ exports.ModifyPrjById = function(req, res){
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: do modify prj information
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.DoModifyPrjById = function(req, res) {
 
 	var newPrjName = req.body.prjnewname.trim();
@@ -1892,13 +2024,38 @@ exports.DoModifyPrjById = function(req, res) {
 
 // };
 
+//////////////////////////////////////////////////////////////////
+//function: backup data
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.DbDump = function(req, res) {
 	
 	mgdb.DatabaseBackup(req, res, true);
 };
 
+//////////////////////////////////////////////////////////////////
+//function: show data restore page
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.ShowDbRestore = function(req, res) {
 	
+	//it is bugs here! the dir in dump_dir must has strict format
 	var dirs = comutil.GetDirectories(comutil.dump_dir);
 	var times = [];
 
@@ -1922,6 +2079,18 @@ exports.ShowDbRestore = function(req, res) {
       	});
 }
 
+//////////////////////////////////////////////////////////////////
+//function: recover database
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: remove db and restore it
+//////////////////////////////////////////////////////////////////
 exports.DoDbRestore = function(req, res) {
 
 	//need drop database first
@@ -1949,6 +2118,18 @@ exports.DoDbRestore = function(req, res) {
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: recover data collection
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: remove collection and restore it
+//////////////////////////////////////////////////////////////////
 exports.DoDbCollectionRestore = function(req, res) {
 
 	//need drop database first
@@ -1976,7 +2157,20 @@ exports.DoDbCollectionRestore = function(req, res) {
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: recover database
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 var dbRestore = function(req, res){
+
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('DoDbRestore id= ' + idStr);
 
@@ -2035,7 +2229,20 @@ var dbRestore = function(req, res){
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: recover data collection
+//parameters:  
+//    @req
+//    @res
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 var dbCollectionRestore = function(req, res){
+
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
 	console.log('dbCollectionRestore id= ' + idStr);
 
@@ -2099,6 +2306,17 @@ var dbCollectionRestore = function(req, res){
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: refresh prjinfo collection
+//parameters:  
+//    @null:  
+//
+//return: null
+//
+//callback: null
+//
+//remarks: remove collection then fill it by sysworklogs collection
+//////////////////////////////////////////////////////////////////
 var RefreshPrjInfoCollection = function(){
 
 	//clear prjInfo collection
@@ -2114,6 +2332,18 @@ var RefreshPrjInfoCollection = function(){
   	});
 }; 
 
+//////////////////////////////////////////////////////////////////
+//function: remove database
+//parameters:  
+//    @req: 
+//    @res: 
+//
+//return: null
+//
+//callback: null
+//
+//remarks: remove database contains all collections
+//////////////////////////////////////////////////////////////////
 exports.RemoveDatabase = function(req, res) {
 
 	console.log('RemoveDatabase!');
@@ -2153,6 +2383,18 @@ exports.RemoveDatabase = function(req, res) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: remove collection
+//parameters:  
+//    @req: 
+//    @res: 
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 exports.RemoveCollection = function(req, res) {
 
 	console.log('RemoveCollection!');
@@ -2192,6 +2434,18 @@ exports.RemoveCollection = function(req, res) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: delete sysrecord
+//parameters:  
+//    @req: 
+//    @res: 
+//
+//return: null
+//
+//callback: null
+//
+//remarks: 
+//////////////////////////////////////////////////////////////////
 exports.DeleteSysRecord = function(req, res) {
 
 	var idStr = req.params.id.substr(1, req.params.id.length-1);
@@ -2220,146 +2474,3 @@ exports.DeleteSysRecord = function(req, res) {
 	});
 };
 
-exports.querytutor = function(req, res){
-	console.log('query all!');
-	
-	mgdb.DoQueryAll(mgdb.ModelTutor, function(err, docs){
-		if(!err)
-		{
-			console.log(docs);
-			//for(stu, index in docs)
-			for(i=0; i<docs.length;i++)
-			{
-				console.log('username= ' + docs[i].username);
-			}
-			res.render('super_querytutorresult', 
-				{tutors:docs, 
-				act:2, 
-				title:'Query Tutors', 
-				smalltitle:'supervisor may query tutors here'});
-		}
-		else
-		{
-			throw err;
-			res.render('super_redirect_delay', {msg:'query tutor error!', newpage:'/supervisor_admin', timeout:3000});
-		}
-	})
-};
-
-exports.doquery = function(req, res){
-	//var query = Student.findOne({'name':'p1'});
-	/*
-	var query = Student.find();
-	query.exec(function(err, stus){
-		if(err) 
-		    console.log('findOne error!');
-		else
-		{
-		    for (i=0; i<stus.length;i++)
-		    {
-		        console.log('name= ' + stus[i].name);	
-		    }		        
-		}
-	})
-	//*/
-	/*
-	Student.find(
-		{},
-		function(err, docs){
-			if(!err)
-			{
-				console.log(docs);
-				//for(stu, index in docs)
-				for(i=0; i<docs.length;i++)
-				{
-					console.log('name= ' + docs[i].name);
-				}
-				res.render('querystudentresult', {students:docs});
-			}
-			else
-			{
-				throw err;
-				res.send('not found!');
-			}
-		});
-	//*/
-
-    if(req.body.cellphone!="")
-    {
-    	console.log('cellphone not empty!');
-
-    	Student.find({'cellphone':req.body.cellphone})
-    	.where('name').equals(req.body.name)
-    	.exec(function(err, docs){
-    		if(!err)
-    		{
-    			console.log('not error docs.length=' + docs.length);
-
-    			if(docs.length==0)
-    			{
-    				res.send('not found!');
-    			}
-    			else
-    			{
-    				console.log('found!');
-    				console.log(docs);
-    				//for(stu, index in docs)
-					for(i=0; i<docs.length;i++)
-					{
-						console.log('name= ' + docs[i].name);
-					}
-					res.render('querystudentresult', {students:docs});
-
-    			}				
-    		}
-    		else
-			{
-				console.log('error! not found?');
-				res.send('not found!');
-				throw err;				
-			}
-    	})
-    }
-    else
-    {
-    	console.log('cellphone empty!');
-/*
-    	Student.find(
-		{},
-		function(err, docs){
-			if(!err)
-			{
-				console.log(docs);
-				//for(stu, index in docs)
-				for(i=0; i<docs.length;i++)
-				{
-					console.log('name= ' + docs[i].name);
-				}
-				res.render('querystudentresult', {students:docs});
-			}
-			else
-			{
-				throw err;
-				res.send('not found!');
-			}
-		});
-*/
-	mgdb.DoQueryAll(mgdb.ModelStudent, function(err, docs){
-		if(!err)
-		{
-			console.log(docs);
-			//for(stu, index in docs)
-			for(i=0; i<docs.length;i++)
-			{
-				console.log('name= ' + docs[i].name);
-			}
-			res.render('querystudentresult', {students:docs});
-		}
-		else
-		{
-			throw err;
-			res.send('not found!');
-		}
-	})
-    }
-};

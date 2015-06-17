@@ -25,8 +25,21 @@ exports.xlsx = xlsx;
 //
 // exports functions
 //
-// filename or buffer also ok!
+
+
+//////////////////////////////////////////////////////////////////
+//function: print excel file
+//parameters:  
+//    @fileName: xlsx file
+//
+//return: null
+//
+//callback: yes
+//
+//remarks: filename or buffer also ok!
+//////////////////////////////////////////////////////////////////
 exports.PrintTable = function (filename) {
+
 	console.log('filename=' + filename);
 
 	var xlsxObj;
@@ -63,7 +76,20 @@ exports.PrintTable = function (filename) {
 	}
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 数据导入
+//parameters:  
+//    @fileName: xlsx file name
+//    @callback:
+//
+//return: null
+//
+//callback: yes
+//
+//remarks: if one line error, callback
+//////////////////////////////////////////////////////////////////
 exports.XlsxToDb = function (fileName, callback) {
+
 	console.log('filename=' + fileName);
 
 	var xlsxObj;
@@ -113,6 +139,18 @@ exports.XlsxToDb = function (fileName, callback) {
 
 };
 
+//////////////////////////////////////////////////////////////////
+//function: 数据导入
+//parameters:  
+//    @rec_line: one line in xlsx file
+//    @callback:
+//
+//return: null
+//
+//callback: yes
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 var LineToDb = function(rec_line, callback) {
 
 	//var rec = rec_line.split('\t', 10);
@@ -121,8 +159,6 @@ var LineToDb = function(rec_line, callback) {
 	{
 		console.log(rec[i]);
 	}
-
-	//var newWorkRec = new mgdb.ModelWorkRecord();
 
 	var newSysRec = new mgdb.ModelSysRecord();
 	newSysRec.stuNumber = rec[2];
@@ -141,23 +177,16 @@ var LineToDb = function(rec_line, callback) {
 	//newSysRec.prjLocation = rec[1];
 	
 	newSysRec.prjExpired = false;
-	
-	//console.log('rec[6]=' + rec[6]);
-	//console.log('rec[6]=' + rec[6]);
 
-	//var date = new Date(rec[6]);
-	//console.log('date=' + date);
 	newSysRec.prjStartDate = rec[6];//comutil.DateToString(date);
-	//date = new Date(rec[7]);
 	newSysRec.prjStopDate = rec[7];//comutil.DateToString(date);
 
 	newSysRec.tutorNumber = rec[9];
 	newSysRec.tutorName = rec[8];
 	newSysRec.tutorPhone = rec[10];
-	//console.log('rec[10]='+ rec[10])
 	codedPassword = comutil.CodedPassword('' + rec[10]);
 	newSysRec.tutorPassword = codedPassword;
-	//newSysRec.workRecords = newWorkRec;
+
 	newSysRec.workRecords = [];
 	newSysRec.created = Date.now();
 
@@ -166,7 +195,22 @@ var LineToDb = function(rec_line, callback) {
 	});
 };
 
+//////////////////////////////////////////////////////////////////
+//function: save export data to excel file
+//parameters:  
+//    @fileName: one line in xlsx file
+//    @sheetName: sheet name
+//    @xlsxData: data want to save
+//    @callback:
+//
+//return: null
+//
+//callback: yes
+//
+//remarks: null
+//////////////////////////////////////////////////////////////////
 exports.SaveToFile = function (fileName, sheetName, xlsxData, callback) {
+
 	// var data = [[1,2,3],[true, false, null, 'sheetjs'],['foo','bar',new Date('2014-02-19T14:30Z'), '0.3'], ['baz', null, 'qux']];
 	// data = xlsxData || data; 
 
@@ -185,27 +229,3 @@ exports.SaveToFile = function (fileName, sheetName, xlsxData, callback) {
     });
 
 }
-
-//
-// test2 is error!
-//
-exports.test2 = function (filename) {
-	var obj = xlsx.parse(filename);
-
-	var data = obj.worksheets.data;
-	var maxCol = obj.worksheets.maxCol;
-	var maxRow = obj.worksheets.maxRow;
-
-	for(var i=0; i<maxRow; i++)
-	{
-		console.log('' + (i+1) + '\t');
-		for(var j=0; j<maxCol; j++)
-		{
-			console.log(data[i][j].value + '\t');
-		}
-		console.log('\n');
-	}
-
-};
-
-
