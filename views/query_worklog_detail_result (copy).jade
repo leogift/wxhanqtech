@@ -43,18 +43,12 @@
               td
                 | #{i+1}
               td
-                table.table.table-striped.table-advance
-                  tbody
-                    tr
-                      td
-                        .item
-                          a.fancybox-button(href='#{wklog.logLocation}', title="Photo", data-rel="fancybox-button")
-                            .zoom
-                              img(alt="Photo", src='#{wklog.logLocation}', width="200")
-                                .zoom-icon
-                    tr
-                      td
-                        | #{wklog.logLocationDesc}
+                .item
+                  a.fancybox-button(href='#{wklog.logLocation}', title="Photo", data-rel="fancybox-button")
+                    .zoom
+                      img(alt="Photo", src='#{wklog.logLocation}', width="200")
+                      .zoom-icon
+                //| #{wklog.logLocation}
               td(width="150")
                 table.table.table-striped.table-advance
                   tbody

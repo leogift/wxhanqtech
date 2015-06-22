@@ -23,6 +23,7 @@ var WorkRecord = new mongoose.Schema({
     logText : [String],
     logPicPath: [String],
     logLocation: String,
+    logLocationDesc: String,
     startTime: String,
     stopTime: String
 });
