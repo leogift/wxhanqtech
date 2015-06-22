@@ -128,14 +128,17 @@ exports.mbtn_id_superrestorelog = 'mbtnSuperRestoreSyslog';  //to restore sys wo
 
 //
 // subscribe tip message
-exports.submsg_start = '您现在可以开始提交文字和图片，完毕后请选择“信息提交”->“结束提交”来完成一次工作提交，否则提交内容不会被保存!';
+//exports.submsg_start = '您现在可以开始提交文字和图片，完毕后请选择“信息提交”->“结束提交”来完成一次工作提交，否则提交内容不会被保存!';
+exports.submsg_start = '您现在可以开始提交文字和图片!';
 exports.submsg_stop = '本次工作日志已提交';
 exports.submsg_tip1 = '请先选择“信息提交”->“开始提交”';
 //exports.submsg_resubscribe = '系统数据已经重置，您需要重新关注本微信号';
-exports.submsg_resubscribe = '您尚未成功注册，或系统管理员重置了系统数据，请重新关注微信号后，正确的填写注册信息';
+//exports.submsg_resubscribe = '您尚未成功注册，或系统管理员重置了系统数据，请重新关注微信号后，正确的填写注册信息';
+exports.submsg_resubscribe = '您尚未成功注册，请重新关注微信号后，正确填写注册信息';
 exports.submsg_abnormal = '系统异常错误，请联系管理员!';
 //exports.submsg_location_tryagain = '微信定位服务器繁忙，请退出并重新进入公众号界面';
-exports.submsg_location_tryagain = '微信定位服务器繁忙，请稍等或再次选择“信息提交”->“开始提交”';
+//exports.submsg_location_tryagain = '微信定位服务器繁忙，请稍等或再次选择“信息提交”->“开始提交”';
+exports.submsg_location_tryagain = '微信定位服务器繁忙，请稍等';
 
 exports.default_weixinid = 'default_weixin_id';
 
