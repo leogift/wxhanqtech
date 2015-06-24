@@ -298,3 +298,11 @@ process.on('uncaughtException', function (err) {
 // disable console output
 //console.log = function(){};
 
+//test distance
+var dis = comutil.CalcLatLonDistance(30.509258, 114.387520, 30.511774, 114.416618);
+console.log('dis=' + dis);
+
+
+
+
+
