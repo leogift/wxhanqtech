@@ -1043,6 +1043,8 @@ function getRad(d){
 //////////////////////////////////////////////////////////////////
 exports.CalcLatLonDistance = function (lat1,lng1,lat2,lng2) {
 
+	console.log('CalcLatLonDistance lat1=' + lat1 + ' lng1=' + lng1 + ' lat2=' + lat2 + ' lng2=' + lng2);
+
 	//otherwise return NaN
 	if(lat1==lat2 && lng1==lng2)
 		return 0;
