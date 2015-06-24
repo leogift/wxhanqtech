@@ -300,8 +300,8 @@ process.on('uncaughtException', function (err) {
 
 //test distance
 //var dis = comutil.CalcLatLonDistance(30.509258, 114.387520, 30.511774, 114.416618);
-var dis = comutil.CalcLatLonDistance(30.511774, 114.416618, 30.509258, 114.387520);
-console.log('dis=' + dis);
+// var dis = comutil.CalcLatLonDistance(30.511774, 114.416618, 30.509258, 114.387520);
+// console.log('dis=' + dis);
 
 
 
