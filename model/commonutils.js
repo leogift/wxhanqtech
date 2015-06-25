@@ -129,7 +129,7 @@ exports.mbtn_id_superrestorelog = 'mbtnSuperRestoreSyslog';  //to restore sys wo
 //
 // subscribe tip message
 //exports.submsg_start = '您现在可以开始提交文字和图片，完毕后请选择“信息提交”->“结束提交”来完成一次工作提交，否则提交内容不会被保存!';
-exports.submsg_start = '您现在可以开始提交文字和图片!';
+exports.submsg_start = '您现在可以开始提交文字和图片!请确保GPS开启!';
 exports.submsg_stop = '本次工作日志已提交';
 exports.submsg_tip1 = '请先选择“信息提交”->“开始提交”';
 //exports.submsg_resubscribe = '系统数据已经重置，您需要重新关注本微信号';
@@ -1093,8 +1093,8 @@ exports.CalcLatLonDistance = function (lat1,lng1,lat2,lng2) {
     }
 };
 
-// far distance of two point, 50m
-exports.FarDistance = 50;
+// far distance of two point, 20m
+exports.FarDistance = 20;
 
 
 
