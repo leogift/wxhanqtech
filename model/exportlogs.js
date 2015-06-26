@@ -180,6 +180,23 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 	 		{
 	 			console.log('logLocation not empty and is ' + logLocation);
 	 			data[k+j].push(logLocation);
+	 		}
+
+	 		var logLocationDesc = ' ';
+	 		if(docs.workRecords[i].logLocationDesc!=undefined)
+	 			logLocationDesc = docs.workRecords[i].logLocationDesc;
+
+	 		if(logLocationDesc==null || logLocationDesc=="" || logLocationDesc.trim()=="")
+	 		{
+	 			console.log('logLocationDesc is empty!!');
+	 			if(role!=comutil.userrole.student)
+	 				data[k+j].push('empty');
+	 		}
+	 		else
+	 		{
+	 			console.log('logLocation not empty and is ' + logLocationDesc);
+	 			if(role!=comutil.userrole.student)
+	 				data[k+j].push(logLocationDesc);
 	 		}	 			
 			
 			var strTime = ''
@@ -292,6 +309,7 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 			    { width: 12 },
 			    { width: 10 },
 			    { width: 60 },
+			    { width: 50 },
 			    { width: 45 },
 			    { width: 50 },
 			    { width: 50 }
@@ -343,9 +361,10 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 				    "教师姓名": data[i][5],
 				    "序号": data[i][6],
 				    "提交地点": {value:data[i][7], hyperlink:'./'+data[i][7]},
-				    "时间": data[i][8],
-				    "文本日志": data[i][9],
-				    "图片日志": {value:data[i][10], hyperlink:'./'+data[i][10]}
+				    "地点信息": data[i][8],
+				    "时间": data[i][9],
+				    "文本日志": data[i][10],
+				    "图片日志": {value:data[i][11], hyperlink:'./'+data[i][11]}
 				});
 			}
 			
