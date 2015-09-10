@@ -113,12 +113,6 @@ var ExportXlsx = function (docs, file_name, sheet_name, role, callback) {
 	var j = 0;
 	var k = 0;
 
-	//johnny 2015-09-10. if one student belong to a project, but has none submit, so the make archive will fail!
-	if(docs.workRecords.length<=0)
-	{
-		console.log('nothing submit!');
-		return;
-	}
 
 	var dataCount = 0; //整个数据表的行数
 	for(var m=0; m<docs.workRecords.length; m++)
@@ -326,6 +320,8 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 		//test
 		if(data.length==0)
 		{
+			console.log('data.length is 0!!!');
+
 			data[0] = new Array();
 			for(var j=0; j<11; j++)
 				data[0].push('empty');
