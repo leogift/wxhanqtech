@@ -325,10 +325,8 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 			data[0] = new Array();
 			for(var j=0; j<11; j++)
 				data[0].push('empty');
-		}
 
-		for(var i=0; i<data.length; i++)
-		{
+			var i = 0;
 			if(role==comutil.userrole.student)
 			{
 				console.log('logLocation:' + data[i][6]);
@@ -342,10 +340,10 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 				    "项目名称": data[i][3],
 				    "教师姓名": data[i][4],
 				    "序号": data[i][5],
-				    "提交地点": {value:data[i][6], hyperlink:'./'+data[i][6]},
+				    "提交地点": {value:data[i][6]},
 				    "时间": data[i][7],
 				    "文本日志": data[i][8],
-				    "图片日志": {value:data[i][9], hyperlink:'./'+data[i][9]}
+				    "图片日志": {value:data[i][9]}
 				});
 
 			}
@@ -363,15 +361,65 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 				    "项目名称": data[i][4],
 				    "教师姓名": data[i][5],
 				    "序号": data[i][6],
-				    "提交地点": {value:data[i][7], hyperlink:'./'+data[i][7]},
+				    "提交地点": {value:data[i][7]},
 				    "地点信息": data[i][8],
 				    "时间": data[i][9],
 				    "文本日志": data[i][10],
-				    "图片日志": {value:data[i][11], hyperlink:'./'+data[i][11]}
+				    "图片日志": {value:data[i][11]}
 				});
 			}
-			
 		}
+		else
+		{
+			for(var i=0; i<data.length; i++)
+			{
+				if(role==comutil.userrole.student)
+				{
+					console.log('logLocation:' + data[i][6]);
+					console.log('logPic:' + data[i][9]);
+
+					//add rows
+					writer.addRow({
+					    "提交序号": data[i][0],
+					    "学生姓名": data[i][1],
+					    "学号": data[i][2],
+					    "项目名称": data[i][3],
+					    "教师姓名": data[i][4],
+					    "序号": data[i][5],
+					    "提交地点": {value:data[i][6], hyperlink:'./'+data[i][6]},
+					    "时间": data[i][7],
+					    "文本日志": data[i][8],
+					    "图片日志": {value:data[i][9], hyperlink:'./'+data[i][9]}
+					});
+
+				}
+				else
+				{
+					console.log('logLocation:' + data[i][7]);
+					console.log('logPic:' + data[i][10]);
+
+					//add rows
+					writer.addRow({
+					    "提交序号": data[i][0],
+					    "学生姓名": data[i][1],
+					    "学号": data[i][2],
+					    "微信号": data[i][3],
+					    "项目名称": data[i][4],
+					    "教师姓名": data[i][5],
+					    "序号": data[i][6],
+					    "提交地点": {value:data[i][7], hyperlink:'./'+data[i][7]},
+					    "地点信息": data[i][8],
+					    "时间": data[i][9],
+					    "文本日志": data[i][10],
+					    "图片日志": {value:data[i][11], hyperlink:'./'+data[i][11]}
+					});
+				}
+				
+			}
+
+		}
+
+		
 
 		// Finalize the spreadsheet. If you don't do this, the readstream will not end.
 		writer.finalize();
