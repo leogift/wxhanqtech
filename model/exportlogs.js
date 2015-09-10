@@ -340,10 +340,10 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 				    "项目名称": data[i][3],
 				    "教师姓名": data[i][4],
 				    "序号": data[i][5],
-				    "提交地点": {value:data[i][6]},
+				    "提交地点": data[i][6],
 				    "时间": data[i][7],
 				    "文本日志": data[i][8],
-				    "图片日志": {value:data[i][9]}
+				    "图片日志": data[i][9]
 				});
 
 			}
@@ -361,11 +361,11 @@ var SaveToFile = function(file_name, sheet_name, data, role, callback) {
 				    "项目名称": data[i][4],
 				    "教师姓名": data[i][5],
 				    "序号": data[i][6],
-				    "提交地点": {value:data[i][7]},
+				    "提交地点": data[i][7],
 				    "地点信息": data[i][8],
 				    "时间": data[i][9],
 				    "文本日志": data[i][10],
-				    "图片日志": {value:data[i][11]}
+				    "图片日志": data[i][11]
 				});
 			}
 		}
