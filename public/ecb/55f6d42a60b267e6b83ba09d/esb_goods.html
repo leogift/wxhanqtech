@@ -93,23 +93,15 @@
                			 break;
                		 }
                 }
-				if(_needReplace){
-					document.write('<script src="http://st.360buyimg.com/item/js/zepto.min.js?v=jd20150915163723136"><\/script>');
-					document.write('<script type="text/javascript">window.jQuery=window.Zepto;<\/script>');
-				}else{
-					document.write('<script src="http://st.360buyimg.com/item/js/jquery-1.6.2.min.js?v=jd20150915163723136"><\/script>');
-				}
 			}else{//如果是非webkit内核直接使用jquery
 				document.write('<script src="http://st.360buyimg.com/item/js/jquery-1.6.2.min.js?v=jd20150915163723136"><\/script>');
 			}
-		</script><script src="./esb_goods_files/zepto.min.js"></script><script type="text/javascript">window.jQuery=window.Zepto;</script>
-						
-		<script src="./esb_goods_files/downloadAppPlugIn_imk2.js" type="text/javascript"></script>
+		</script><script type="text/javascript">window.jQuery=window.Zepto;</script>
+
 	    <script src="./esb_goods_files/m_common2.1.js" type="text/javascript"></script>
 	    <link rel="stylesheet" type="text/css" href="./esb_goods_files/header.css" charset="utf-8">
 		<script src="./esb_goods_files/m_common_header_bottom2.1.js" type="text/javascript"></script>
 		
-        <script type="text/javascript" src="./esb_goods_files/common.js"></script>
         <script type="text/javascript" src="./esb_goods_files/spin.min.js"></script><style></style>
 	<script src="./esb_goods_files/checkChat"></script><link rel="stylesheet" type="text/css" charset="utf-8" href="./esb_goods_files/header(1).css"><script src="./esb_goods_files/ja.js" type="text/javascript" charset="utf-8"></script><script async="" charset="utf-8" src="./esb_goods_files/view-uuid"></script><link type="text/css" href="./esb_goods_files/gwdang-notifier-new.css" rel="stylesheet"></head>
 
@@ -118,9 +110,6 @@
 <header>
     						<div id="m_common_header"><header class="jd-header">    <div class="jd-header-bar">        <div id="m_common_header_goback" class="jd-header-icon-back"><span></span></div>        <div class="jd-header-title">商品详情</div>        <div report-eventid="MCommonHead_NavigateButton" report-eventparam="" page_name="" id="m_common_header_jdkey" class="jd-header-icon-shortcut J_ping"><span></span></div>    </div>    <ul id="m_common_header_shortcut" class="jd-header-shortcut" style="display: none;">        <li id="m_common_header_shortcut_m_index">            <a class="J_ping" report-eventid="MCommonHead_home" report-eventparam="" page_name="" href="http://m.jd.com/index.html?sid=daf3307560b4898ec9a8848875c74027">                <span class="shortcut-home"></span>                <strong>首页</strong>            </a>        </li>        <li class="J_ping" report-eventid="MCommonHead_CategorySearch" report-eventparam="" page_name="" id="m_common_header_shortcut_category_search">            <a href="http://m.jd.com/category/all.html?sid=daf3307560b4898ec9a8848875c74027">                <span class="shortcut-categories"></span>                <strong>分类搜索</strong>            </a>        </li>        <li class="J_ping" report-eventid="MCommonHead_Cart" report-eventparam="" page_name="" id="m_common_header_shortcut_p_cart">            <a href="http://p.m.jd.com/cart/cart.action?sid=daf3307560b4898ec9a8848875c74027" id="html5_cart">                <span class="shortcut-cart"></span>                <strong>购物车</strong>            </a>        </li>        <li id="m_common_header_shortcut_h_home" class=" current">            <a class="J_ping" report-eventid="MCommonHead_MYJD" report-eventparam="" page_name="" href="http://home.m.jd.com/myJd/home.action?sid=daf3307560b4898ec9a8848875c74027">                <span class="shortcut-my-account"></span>                <strong>我的春之服</strong>            </a>        </li>    </ul></header></div>
 	</header>
-<script type="text/javascript" src="./esb_goods_files/detailView.js"></script>
-<script type="text/javascript" src="./esb_goods_files/region.js"></script>
-<script type="text/javascript" src="./esb_goods_files/jdslider.js"></script>
 <button id="tempforsuite" style="display:none;"></button>
 <div id="mainLayout">
 	<div id="mainStay" class="new-wt">
@@ -182,7 +171,8 @@
 			</dl>
 						 
 						<dl class="list-entry">
-				<dt class="row01 unite-font-size"> <a class="J_ping" report-eventid="MProductdetail_ProductdetailEntrance" report-pageparam="1588322972" href="http://item.m.jd.com/detail/1588322972.html?resourceType=unknown&resourceValue=unknown&sid=daf3307560b4898ec9a8848875c74027" id="wareInfo"> <span class="col01">商品详情</span><span class="col02 ebay-term" id="fareMoney">系统调试中，请勿购买！ 													</span><em class="icon-arr"></em>  </a></dt>
+				<dt class="row01 unite-font-size"> <a class="J_ping" report-eventid="MProductdetail_ProductdetailEntrance" report-pageparam="1588322972" href="http://item.m.jd.com/detail/1588322972.html?resourceType=unknown&resourceValue=unknown&sid=daf3307560b4898ec9a8848875c74027" id="wareInfo"> <span class="col01">商品详情</span>
+                    <span class="col02 ebay-term" id="fareMoney">系统调试中，请勿购买！ 													</span><em class="icon-arr"></em>  </a></dt>
 			</dl>
 					</div>
 		
@@ -301,154 +291,5 @@
     <div style="display:none;">
     					<img src="./esb_goods_files/ja.jsp">
 			    </div>
-
-    <script type="text/javascript" src="./esb_goods_files/mping.min.js"></script>
-    <script type="text/javascript">
-        try{
-            var pv= new MPing.inputs.PV();   //构造pv 请求
-            var mping = new MPing();        //构造上报实例
-            mping.send(pv);                //上报pv
-			MPing.inputs.Click.attachEvent();
-        } catch (e){}
-    </script>
-
-
-
-<script type="text/javascript">
-$("#unsupport").hide();
-if(!testLocalStorage()){ //not support html5
-    if(0!=0 && !$clearCart && !$teamId){
-		$("#html5_cart_num").text(0>0>0);
-	}
-}else{
-	updateToolBar('');
-}
-
-$("#html5_cart").click(function(){
-//	syncCart('daf3307560b4898ec9a8848875c74027',true);
-	location.href='/cart/cart.action';
-});
-
-function reSearch(){
-var depCity = window.sessionStorage.getItem("airline_depCityName");
-	if(testSessionStorage() && isNotBlank(depCity) && !/^\s*$/.test(depCity) && depCity!=""){
-    	var airStr = '<form action="/airline/list.action" method="post" id="reseach">'
-        +'<input type="hidden" name="sid"  value="daf3307560b4898ec9a8848875c74027"/>'
-        +'<input type="hidden" name="depCity" value="'+ window.sessionStorage.getItem("airline_depCityName") +'"/>'
-        +'<input type="hidden" name="arrCity" value="'+ window.sessionStorage.getItem("airline_arrCityName") +'"/>'
-        +'<input type="hidden" name="depDate" value="'+ window.sessionStorage.getItem("airline_depDate") +'"/>'
-        +'<input type="hidden" name="depTime" value="'+ window.sessionStorage.getItem("airline_depTime") +'"/>'
-        +'<input type="hidden" name="classNo" value="'+ window.sessionStorage.getItem("airline_classNo") +'"/>'
-        +'</form>';
-    	$("body").append(airStr);
-    	$("#reseach").submit();
-	}else{
-    	window.location.href='/airline/index.action?sid=daf3307560b4898ec9a8848875c74027';
-	}
-}
- //banner 关闭点击
-    $('.div_banner_close').click(function(){
-        $('#div_banner_header').unbind('click');
-        jQuery.post('/index/addClientCookieVal.json',function(d){
-              $('#div_banner_header').slideUp(500);
-        });
-    });
-    //banner 下载点击
-    $('.div_banner_download').click(function(){
-         var downloadUrl = $(this).attr('url');
-         jQuery.post('/index/addClientCookieVal.json',function(d){
-               window.location.href=downloadUrl;
-        });
-    });
-    window._clientVersion_ = '';
-    
-	$(document).ready(function(){
-		loadHB('1588322972','daf3307560b4898ec9a8848875c74027','商品详情','');
-		var _loadScript = function(url, options,cb){
-			var script = document.createElement("script");
-			var def = {
-				type: "text/javascript",
-				charset:"utf-8"
-			}
-			options= options|| {
-			}
-			for(var i in options){
-				def[i] = options[i];
-			}
-			script.src = url;
-			
-			for(var i in def){
-				script.setAttribute(i,def[i]);
-			}
-			script.addEventListener("load",function(){
-				cb && cb();
-			},false)
-			document.getElementsByTagName("head")[0].appendChild(script);
-		}
-		
-    	         	_loadScript("http://misc.360buyimg.com/jdf/1.0.0/unit/ja/1.0.0/ja.js?v=jd20150915163723136",{},null);
-        		
-	})
-			function skip(){
-		addCookie('pcm', '1' ,1, '', 'jd.com');
-		var localurl = 'http://item.jd.com/1588322972.html#m';
-		if(localurl == 'http://www.jd.com/#m'){
-			var localurl = document.location.href;
-    		if(localurl.indexOf('http://m.jd.com/sale/mall') == 0){
-    			var saleurl = localurl.replace('http://m.jd.com/sale/mall', 'http://sale.jd.com/mall');
-    			saleurl = saleurl+'#m'
-    			window.location.href = saleurl;
-				return;
-    		}else if(localurl.indexOf('http://m.jd.com/sale/act') == 0){
-    			var saleurl = localurl.replace('http://m.jd.com/sale/act', 'http://sale.jd.com/act');
-    			saleurl = saleurl+'#m'
-    		 	window.location.href = saleurl;
-				return;
-    		}else{
-    			 window.location.href = 'http://www.jd.com/#m';
-				 return;
-    		}
-		}
-		window.location.href = localurl;
-	}
-	
-	function addCookie(name, value, expires, path, domain){ 
-        var str=name+"="+escape(value); 
-        if(expires!=""){ 
-            var date=new Date(); 
-            date.setTime(date.getTime()+expires*24*3600*1000);//expires单位为天 
-            str+=";expires="+date.toGMTString(); 
-        } 
-        if(path!=""){ 
-        	str+=";path="+path;//指定可访问cookie的目录 
-        } 
-        if(domain!=""){ 
-        	str+=";domain="+domain;//指定可访问cookie的域 
-        } 
-        document.cookie=str; 
-    } 
-	function search_new(){
-		var a = $("#newkeyword").val();
-		addSearchHistory(a);
-		$('#searchForm').submit();
-	}
-	
-	        var jap = {
-            siteId : 'MO-J2011-1',
-            topic: 'traffic-jdm',
-            account : '',
-            skuid: '',
-            shopid: '',
-            orderid: '',
-            adsCookieName: 'mt_subsite',
-            jumpAppEnable : 1,
-            __cookie_jda: '__tra',
-            __cookie_jdb: '__trb',
-            __cookie_jdc: '__trc',
-            __cookie_jdu: '__tru',
-            __cookie_jdv: '__trv'
-        };
-   </script>
-
 
 </div><div id="GWDANG_HAS_BUILT"></div><div id="gwdang-notifier" style="display: none;"><div class="gwdang-mini" id="gwdang-mini" style="width: 180px; border-radius: 5px 0px 0px 5px; right: 0px;"><div class="gwdang-nav" id="gwdang-main-nav"><a class="unfold_pointer" title="点击收起" id="gwd_fold_pointer"></a><a class="gwd_logo" style="margin-left:0px;" href="http://www.gwdang.com/" target="_blank"></a><a class="search-mini gwdang-icon" id="gwdang-search" title="搜商品"></a><a class="promo gwd-icon" id="gwdang-promo" href="http://www.gwdang.com/promotion/activity/0-0-3-0-1.html?from=browser" target="_blank" title="查看春之服商城热门促销活动"></a><a class="sale gwd-icon" id="gwdang-sale" href="http://www.gwdang.com/quan/3-0-1.html?from=browser" target="_blank" style="clear:none;border:none;" title="查看春之服商城热门优惠券"></a><a class="gwd-favor-mini gwd-icon" id="gwdang-favor-mini" href="http://www.gwdang.com/mine/collection?from=browser" target="_blank" style="clear:none;border:none;height:22px;" title="查看我的全网收藏夹"></a><a href="javascript:" target="_self" class="gwd_close gwd_list_close gwd-icon" title="关闭购物党"></a></div><div id="gwdang-search-detail" class="panel-mini panel-search"><div class="pointer-up"></div><div class="panel-main"><ul class="search-tabs"><li id="search-gwdang" class="selected">购物党</li> <li id="search-taobao">淘宝</li> <li id="search-360buy">春之服</li> <li id="search-amazon">亚马逊</li> <li id="search-dangdang">当当</li> <li id="search-suning">苏宁</li></ul><form id="gwdang-search-form" target="_blank" action="http://u.gwdang.com/union/go/" method="get"><input class="keyword" id="gwdang-search-title" name="s_product" type="text" value=""><input name="target_url" id="gwdang-search-target_url" value="" type="hidden"><input name="from" id="from" value="browser" type="hidden"><input id="gwdang-search-site_id" type="hidden" name="site_id" value="0"><input class="search-keyword" id="gwdang-search-btn" type="button" style="font:14px/1.6 &#39;Microsoft YaHei&#39;,tahoma,arial,SimSun;" value="搜索"></form></div></div></div></div></body></html>
