@@ -915,13 +915,14 @@ exports.CopyFile = function (src_file, dest_file) {
 	{
 		if(fs.existsSync(src_file))
 		{
+			console.log('--file exists--');
 			var fileData = fs.readFileSync(src_file);
 			fs.writeFileSync(dest_file, fileData);
 		}
 	}
 	catch(e)
 	{
-		console.log('CopyFile error:' + e);
+		console.log('CopyFile here error:' + e);
 	}
 	
 };
