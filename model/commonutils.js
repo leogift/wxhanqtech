@@ -913,8 +913,11 @@ exports.CopyFile = function (src_file, dest_file) {
 
 	try
 	{
-		var fileData = fs.readFileSync(src_file);
-	    fs.writeFileSync(dest_file, fileData);
+		if(fs.existsSync(src_file))
+		{
+			var fileData = fs.readFileSync(src_file);
+			fs.writeFileSync(dest_file, fileData);
+		}
 	}
 	catch(e)
 	{
