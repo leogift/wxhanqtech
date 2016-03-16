@@ -904,9 +904,9 @@ var MakePrjArchive = function(req, res, prj_name, sys_records, tmp_dir){
 					console.log('not existed? ' + tmpSrcDir);
 				}
 
-	  	    }, 30000);
+	  	    }, 120000);
 
-		}, 3000);
+		}, 30000);
 		
 		//res.redirect('/super_makearchive/:' + prj_name);
 
