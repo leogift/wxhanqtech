@@ -905,6 +905,11 @@ exports.CopyFile = function (src_file, dest_file) {
 		console.log('src_file or dest_file is null');
 		return;
 	}
+	else if(!fs.existsSync(src_file))
+	{
+		console.log('src_file not exists!');
+		return;
+	}
 	else if(!IsFile(src_file))
 	{
 		console.log('src_file is not file!');
@@ -913,12 +918,8 @@ exports.CopyFile = function (src_file, dest_file) {
 
 	try
 	{
-		if(fs.existsSync(src_file))
-		{
-			console.log('--file exists--');
-			var fileData = fs.readFileSync(src_file);
-			fs.writeFileSync(dest_file, fileData);
-		}
+		var fileData = fs.readFileSync(src_file);
+		fs.writeFileSync(dest_file, fileData);
 	}
 	catch(e)
 	{
