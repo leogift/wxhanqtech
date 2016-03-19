@@ -2325,7 +2325,7 @@ var RefreshPrjInfoCollection = function(){
   	mgdb.RemoveCollection(comutil.prjinfo_collection_name, function(err, result){
   		if(err)
   			console.log(err);
-  		else
+  		//else
   		{
   			//restore prjInfo db
   			AddPrjInfo();
