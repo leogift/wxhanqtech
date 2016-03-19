@@ -1145,7 +1145,8 @@ var AddPrjInfo = function(){
 
 	console.log('AddPrjInfo start!');
 
-	mgdb.ModelSysRecord.distinct('prjName', {prjExpired:false}, function(err, docs){
+	//mgdb.ModelSysRecord.distinct('prjName', {prjExpired:false}, function(err, docs){
+	mgdb.ModelSysRecord.distinct('prjName', {}, function(err, docs){
 
 		if(err)
 		{
