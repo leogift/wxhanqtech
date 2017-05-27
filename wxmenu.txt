@@ -1,0 +1,50 @@
+{
+     "button":[
+     {
+           "name":"用户",
+           "sub_button":[
+           {
+               "type":"click",
+               "name":"注册",
+               "key":"Event_Opt_Reg"
+            },
+            {
+               "type":"click",
+               "name":"登录",
+               "key":"Event_Opt_Login"
+            }]
+       },
+       {
+           "name":"日志",
+           "sub_button":[
+           {
+               "type":"click",
+               "name":"开始提交",
+               "key":"Event_Upload_Begin"
+            },
+            {
+               "type":"click",
+               "name":"结束提交",
+               "key":"Event_Upload_End"
+            },
+            {
+               "type":"click",
+               "name":"查询记录",
+               "key":"Event_Opt_Query"
+            }]
+       },
+       {
+           "name":"图片",
+           "sub_button":[
+           {	
+               "type": "pic_sysphoto", 
+               "name": "拍照发图", 
+               "key": "rselfmenu_1_0",
+            },
+            {
+                "type": "pic_photo_or_album", 
+                "name": "相册选图", 
+                "key": "rselfmenu_1_1"
+             }]
+       }]
+ }
