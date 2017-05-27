@@ -519,7 +519,7 @@ exports.ViewSysWorklogQueryResult = function(req, res) {
 				optArrayYear
 			},
 			null,
-			{sort:[['stuNumber', 1]]},
+			/*{sort:[['stuNumber', 1]]},*/
 			function(err, logRecs){
 				if(err)
 				{
@@ -977,19 +977,20 @@ var XlsxFileToDb = function (req, res) {
 	    else 
 	    {
 	    	var saveOk = true;
-	        console.log('file info:');
-	        console.log(JSON.stringify(req.files[i]));
+	        //console.log('file info:');
+	        //console.log(JSON.stringify(req.files[i]));
 
 	        var target_path = comutil.uploadDir.toString() + req.files[i].name;
 	        console.log('filename=' + target_path);
 
 	        // 使用同步方式重命名一个文件
 	        fs.renameSync(req.files[i].path, target_path);
-	        console.log('文件上传成功');
+	        console.log('xlsx file upload ok!');
 
 	        //read file and record to db
 	        //var xlsx = require('../model/xlsx');
-	        xlsx.PrintTable(target_path);
+	        //xlsx.PrintTable(target_path);
+	        //return;
 
 	        //这个callback是在存入每一行就调用一次
 			xlsx.XlsxToDb(target_path, function(err){ 
@@ -1221,7 +1222,8 @@ var AddPrjInfoToDb = function(prjName, prjStartDate, prjStopDate){
 exports.ViewPrjs = function(req, res) {
 
 	//mgdb.ModelPrjInfo.find({}, null, {sort:[['prjName', 1]]}, function(err, docs){
-	mgdb.ModelPrjInfo.find({}, null, {sort:[['created', 1]]}, function(err, docs){
+	//mgdb.ModelPrjInfo.find({}, null, {sort:[['created', 1]]}, function(err, docs){
+	mgdb.ModelPrjInfo.find({}, null, function(err, docs){
 		if(err)
 		{
 			res.render('super_redirect_delay', 

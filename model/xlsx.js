@@ -52,9 +52,15 @@ exports.PrintTable = function (filename) {
 		console.log(ex.message);
 		throw ex;
 	}
+
+	if(xlsxObj.length>=500)
+	{
+		console.log("xlsx file error: lines=" + xlsxObj.length);
+		throw "error";
+	}
 	
 	//for debug
-	console.log(JSON.stringify(xlsxObj));
+	//console.log(JSON.stringify(xlsxObj));
 	console.log('obj.length=' + xlsxObj.length);
 	console.log('title=' + xlsxObj[0]['data']);
 	
@@ -63,6 +69,7 @@ exports.PrintTable = function (filename) {
 	var colNum = a[0].length;
 
 	console.log('rowNum=' + rowNum + '\t' + 'colNum=' + colNum);
+	return;
 
 	for(var i=0; i<rowNum; i++)
 	{
@@ -104,7 +111,7 @@ exports.XlsxToDb = function (fileName, callback) {
 	}
 	
 	//for debug
-	console.log(JSON.stringify(xlsxObj));
+	//console.log(JSON.stringify(xlsxObj));
 	console.log('obj.length=' + xlsxObj.length);
 	console.log('title=' + xlsxObj[0]['data']);
 	
@@ -115,27 +122,35 @@ exports.XlsxToDb = function (fileName, callback) {
 	//maybe check the repeat student
 	//...
 
-	console.log('rowNum=' + rowNum + '\t' + 'colNum=' + colNum);
-
-	for(var i=1; i<rowNum; i++) //start from 1, skip the title of datasheet
+	console.log('rowNum=' + rowNum + '\t' + 'colNum=' + colNum + '\t' + 'obj.length=' + xlsxObj.length);
+	if(rowNum>=500 || colNum!=10)
 	{
-		var line = (i+1) + '\t';
-		for(var j=0; j<colNum; j++)
-		{
-			line += (a[i][j] + '\t');
-		}
-		console.log(line);
-		var ret = LineToDb(line, function(err, entity){
-			if(err)
-			{
-				callback(err);
-				//return;
-			}
-				
-		});
+		var msg = 'xlsx file format error!';
+		console.log(msg);
+		callback(msg)
 	}
+	else
+	{
+		for(var i=1; i<rowNum; i++) //start from 1, skip the title of datasheet
+		{
+			var line = (i+1) + '\t';
+			for(var j=0; j<colNum; j++)
+			{
+				line += (a[i][j] + '\t');
+			}
+			console.log(line);
+			var ret = LineToDb(line, function(err, entity){
+				if(err)
+				{
+					callback(err);
+					//return;
+				}
+					
+			});
+		}
 
-	callback(null);
+		callback(null);
+	}
 
 };
 

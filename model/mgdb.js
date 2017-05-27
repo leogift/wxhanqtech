@@ -184,7 +184,7 @@ exports.FindAllbyOption = function(model, opt, callback)
 	model.find(
 		opt,
 		null,
-		{sort:[['stuNumber', 1]]},
+		/*{sort:[['stuNumber', 1]]},*/
 		function(err, docs){
 			callback(err, docs);
 		});
@@ -246,7 +246,7 @@ exports.DoQueryAll = function(model, callback)
 	model.find(
 		{},
 		null,
-		{sort:[['stuNumber', 1]]},
+		/*{sort:[['stuNumber', 1]]},*/
 		function(err, docs){
 			callback(err, docs);
 		});
@@ -305,7 +305,7 @@ exports.FindOneByOption = function(model, opt, callback)
 	model.findOne(
 		opt,
 		null,
-		{sort:[['stuNumber', 1]]},
+		/*{sort:[['stuNumber', 1]]},*/
 		function(err, docs){
 			callback(err, docs);
 		});

@@ -5,7 +5,7 @@ var child_process = require('child_process');
 var fs =require('fs');
 
 var appID = 'wx71e215af5551f27f';
-var appSecret = 'e26027c58a86f19e9adbf07edf373936';
+var appSecret = 'a0320c3422bd14cbdf77c9ae1b1937cb';
 
 var ACCESS_TOKEN = "";
 
